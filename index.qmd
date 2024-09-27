@@ -1,3 +1,22 @@
 ---
-title: "haylee360.github.io"
+#title: "Haylee Oyler"
+image: small_headshot.png
+about:
+  template: jolla
+  image-shape: round
+  image-width: 20em
+  links:
+    - text: LinkedIn
+      href: https://www.linkedin.com/in/haylee-oyler-788b7619a/
+      target: _blank
+    - text: GitHub
+      href: https://github.com/haylee360
+      target: _blank
+    - text: Email
+      href: mailto:hoyler@bren.ucsb.edu
+toc: false
 ---
+
+Haylee Oyler has always been interested in studying the intersection of people and nature. She graduated with honors from the University of California, Berkeley in 2021 with a degree in Environmental Science. There, she worked on multiple research projects about human-environment interactions. Haylee’s first introduction to working with large data was her senior thesis. She used open-access data from the platform eBird to analyze trends in citizen science participation during the COVID-19 pandemic. She was captivated by the power and scope of community-centered data and became even more intrigued by questions of access, equity, and representation in who contributes to the data. 
+
+Now, Haylee is a Master of Environmental Data Science student at the University of California Santa Barbara. She is excited to apply data science tools to study human-environment interactions, specifically issues of environmental justice, equitable climate change transitions, and community-based conservation. Her ethos for approaching environmental problems centers first and foremost on people, particularly the participation and experience of marginalized groups. 

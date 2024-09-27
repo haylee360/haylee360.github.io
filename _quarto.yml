@@ -3,18 +3,21 @@ project:
   output-dir: docs
 
 website:
-  title: "haylee360.github.io"
+  title: "Haylee Oyler"
   navbar:
     left:
       - href: index.qmd
         text: Home
       - about.qmd
+      - href: resources.qmd
+        text: Resources
 
 format:
   html:
-    theme: cosmo
+    theme: 
+      light: quartz
+      dark: solar
     css: styles.css
     toc: true
-
-editor: visual
+    page-layout: full
 
