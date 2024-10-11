@@ -7,12 +7,15 @@ about:
   image-width: 20em
   links:
     - text: LinkedIn
+      icon: linkedin
       href: https://www.linkedin.com/in/haylee-oyler-788b7619a/
       target: _blank
     - text: GitHub
+      icon: github
       href: https://github.com/haylee360
       target: _blank
     - text: Email
+      icon: envelope
       href: mailto:hoyler@bren.ucsb.edu
 toc: false
 ---

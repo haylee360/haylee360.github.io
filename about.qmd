@@ -3,3 +3,21 @@ title: "About"
 ---
 
 About this site 
+
+## What I do for work
+
+<p class="title">some text goes here</p> 
+
+## What I do for fun
+
+<p class="midgreen-text">fun stuff</p>
+
+[here is some midgreen text]{.midgreen-text}
+
+here is [a midgreen]{.midgreen-text} text
+
+::: {.center-text}
+here is a line
+
+here is a another line
+:::

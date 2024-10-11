@@ -4,20 +4,29 @@ project:
 
 website:
   title: "Haylee Oyler"
+  # favicon: images/my-favicon.png, adds logo to website bar thingy
   navbar:
-    left:
+    # title: false, remove title from navbar
+    # logo: images/my-logo.png, adds logo to navbar 
+    # logo-alt: "my alt text"
+    right:
       - href: index.qmd
         text: Home
       - about.qmd
       - href: resources.qmd
         text: Resources
+      # - text: CV
+      #   href: CV/my-cv.pdf
+  page-footer: 
+    background: light
+    left: Copyright 2024, Haylee Oyler
+    right: This website is built with GitHub {{< fa brands github title="octocat github icon" >}}
 
 format:
   html:
-    theme: 
-      light: quartz
-      dark: solar
-    css: styles.css
+    theme: styles.scss
+    mainfont: Figtree
+    # css: styles.css, not using a css file, can even delete from repo
     toc: true
     page-layout: full
 

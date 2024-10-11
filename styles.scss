@@ -1,0 +1,48 @@
+/*-- scss:defaults --*/
+
+// Import google fonts
+@import url('https://fonts.googleapis.com/css2?family=Figtree:ital,wght@0,300..900;1,300..900&family=Oswald:wght@200..700&display=swap');
+
+// Create font variables
+$oswald: "Oswald", sans-serif;
+
+// Colors
+$navyblue: #064789;
+$uclablue: #427AA1;
+$whiteblue: #EBF2FA;
+$midgreen: #679436;
+$applegreen: #A5BE00;
+
+// Quarto sass variables
+$body-bg: $whiteblue;
+$navbar-bg: $uclablue;
+$navbar-fg: $whiteblue;
+$navbar-hl: $navyblue;
+
+
+/*-- scss:rules --*/
+
+h1, h2 {
+  font-weight: 700;
+}
+
+.title {
+  color: maroon;
+}
+
+.center-text {
+  text-align: center;
+}
+
+.midgreen-text {
+  color: $midgreen;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: $oswald;
+}
+
+.navbar-brand img {
+  max-height: 40px;
+  width: auto;
+}
