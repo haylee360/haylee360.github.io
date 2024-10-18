@@ -15,6 +15,7 @@ website:
       - about.qmd
       - href: resources.qmd
         text: Resources
+      - posts.qmd
       # - text: CV
       #   href: CV/my-cv.pdf
   page-footer: 
@@ -27,6 +28,6 @@ format:
     theme: styles.scss
     mainfont: Figtree
     # css: styles.css, not using a css file, can even delete from repo
-    toc: true
+    toc: false
     page-layout: full
 
