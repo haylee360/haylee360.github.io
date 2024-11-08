@@ -21,6 +21,8 @@ draft-mode: visible
 
 ## This is my first section
 
+HEY TESTING OUT INDEX ACTION
+
 I'm going to insert a footnote here[^1]
 
 [^1]: Here is a new footnote
