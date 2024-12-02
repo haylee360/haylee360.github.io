@@ -1,6 +1,6 @@
 ---
 title: "Thomas Fire"
-description: "A short catchy description of the blog post"
+description: "Exploring the environmental and health effects of the 2017 Thomas Fire"
 author: 
   - name: Haylee Oyler
     url: https://haylee360.github.io/
@@ -8,13 +8,13 @@ author:
     affiliation: MEDS
     affiliation-url: https://bren.ucsb.edu/masters-programs/master-environmental-data-science
 date: 2024-10-18
-categories: [Quarto, MEDS, something-cool]
+categories: [Environmental-Health, Python, MEDS, EDS-220]
 toc: true 
 # bibliography: references.bib
 # csl: plos-computational-biology.csl
-image: rainy_sedgwick.jpeg
+image: thomas-fire-repo.jpeg
 citation: 
-  url: https://haylee360.github.io/posts/2024-10-18-my-first-post/
+  url: https://haylee360.github.io/posts/2024-12-01-thomas-fire/
 draft: true
 draft-mode: visible 
 ---
