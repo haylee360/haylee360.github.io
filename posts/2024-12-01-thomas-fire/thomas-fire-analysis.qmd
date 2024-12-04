@@ -296,6 +296,9 @@ landsat
 ```
 
 ```{python}
+#| code-fold: true
+#| code-summary: "Landsat info"
+
 # Examine raster attributes using rio accessor
 print('Height: ', landsat.rio.height)
 print('Width: ', landsat.rio.width, '\n')
