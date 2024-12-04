@@ -1,0 +1,51 @@
+[
+  {
+    "objectID": "DELETE-LATER/practice.html",
+    "href": "DELETE-LATER/practice.html",
+    "title": "Here is my level one header",
+    "section": "",
+    "text": "Here is my level one header\nHere is my first paragraph\nHere is my second paragraph, where you can read more about MEDS.\nThis is very important text!"
+  },
+  {
+    "objectID": "posts.html",
+    "href": "posts.html",
+    "title": "Blog",
+    "section": "",
+    "text": "No matching items"
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Haylee Oyler",
+    "section": "",
+    "text": "Haylee Oyler has always been interested in studying the intersection of people and nature. She graduated with honors from the University of California, Berkeley in 2021 with a degree in Environmental Science. There, she worked on multiple research projects about human-environment interactions. Haylee’s first introduction to working with large data was her senior thesis. She used open-access data from the platform eBird to analyze trends in citizen science participation during the COVID-19 pandemic. She was captivated by the power and scope of community-centered data and became even more intrigued by questions of access, equity, and representation in who contributes to the data.\nNow, Haylee is a Master of Environmental Data Science student at the University of California Santa Barbara. She is excited to apply data science tools to study human-environment interactions, specifically issues of environmental justice, equitable climate change transitions, and community-based conservation. Her ethos for approaching environmental problems centers first and foremost on people, particularly the participation and experience of marginalized groups."
+  },
+  {
+    "objectID": "about.html",
+    "href": "about.html",
+    "title": "About",
+    "section": "",
+    "text": "About this site"
+  },
+  {
+    "objectID": "about.html#what-i-do-for-work",
+    "href": "about.html#what-i-do-for-work",
+    "title": "About",
+    "section": "What I do for work",
+    "text": "What I do for work\n\nsome text goes here"
+  },
+  {
+    "objectID": "about.html#what-i-do-for-fun",
+    "href": "about.html#what-i-do-for-fun",
+    "title": "About",
+    "section": "What I do for fun",
+    "text": "What I do for fun\n\nfun stuff\n\nhere is some midgreen text\nhere is a midgreen text\n\nhere is a line\nhere is a another line"
+  },
+  {
+    "objectID": "resources.html",
+    "href": "resources.html",
+    "title": "Resources",
+    "section": "",
+    "text": "hello world"
+  }
+]
