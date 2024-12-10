@@ -11,7 +11,7 @@
     "href": "posts.html",
     "title": "Blog",
     "section": "",
-    "text": "Thomas Fire AQI and Burn Scar\n\n\n\nEnvironmental-Health\n\n\nPython\n\n\nMEDS\n\n\nEDS-220\n\n\n\nExploring the environmental and health effects of the 2017 Thomas Fire\n\n\n\nHaylee Oyler\n\n\nDec 7, 2024\n\n\n\n\n\n\n\n\nNo matching items"
+    "text": "Exploring the Effect of Wildfire and AQI on Asthma\n\n\n\n\n\n\nHaylee Oyler\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nThomas Fire AQI and Burn Scar\n\n\n\nEnvironmental-Health\n\n\nPython\n\n\nMEDS\n\n\nEDS-220\n\n\n\nExploring the environmental and health effects of the 2017 Thomas Fire\n\n\n\nHaylee Oyler\n\n\nDec 7, 2024\n\n\n\n\n\n\n\n\nNo matching items"
   },
   {
     "objectID": "index.html",
@@ -131,5 +131,19 @@
     "title": "Resources",
     "section": "",
     "text": "hello world"
+  },
+  {
+    "objectID": "posts/2024-12-13-asthma-aqi/asthma-aqi.html",
+    "href": "posts/2024-12-13-asthma-aqi/asthma-aqi.html",
+    "title": "Exploring the Effect of Wildfire and AQI on Asthma",
+    "section": "",
+    "text": "Asthma affects an estimated 262 million people and is the most common chronic disease among children. It is caused by inflammation in the small airways of the lungs that leads to wheezing, coughing, and shortness of breath. While inhaled medications can manage effectively manage symptoms, if left untreated, asthma attacks can be fatal. In fact, over 450,000 people died from asthma worldwide in 2019.\nMany things can trigger asthma symptoms. One example is fine particulate matter (PM). Scientists measure PM at two scales, PM 10 and PM 2.5, where the number refers to the size of the particles in micrograms. PM 2.5 is especially concerning for people with respiratory conditions such as asthma because its small size means it can get into even the narrowest of airways, causing irritation and inflammation.\nPM 2.5 can come from many sources, from industrial pollution to car exhaust, but recent research has shown that PM 2.5 from wildfires is particularly harmful. As wildfire regimes get more more volatile and extreme under climate change, more people will be exposed to these harmful particles.\nWhile it is difficult to directly measure PM 2.5 from wildfires, one useful proxy for wildfire air pollution is air quality. The Air Quality Index (AQI) is a measure of how polluted the air is. It uses a number of sources to\n\n\nLoad libraries\nlibrary(tidyverse)\nlibrary(here)\nlibrary(janitor)\nlibrary(tmap)\nlibrary(sf)\nlibrary(spatialreg)\nlibrary(stargazer)\nlibrary(patchwork)\nlibrary(sjPlot)\nlibrary(sjmisc)\nlibrary(sjlabelled)\n\n\n\n\n\nasthma_aqi &lt;- read_sf(here(\"posts\", \"2024-12-13-asthma-aqi\", \"data\",  \"asthma_aqi.geojson\"))\n\nfire_asthma &lt;- read_csv(here(\"posts\", \"2024-12-13-asthma-aqi\", \"data\",  \"fire_asthma.csv\"))"
+  },
+  {
+    "objectID": "posts/2024-12-13-asthma-aqi/asthma-aqi.html#introduction",
+    "href": "posts/2024-12-13-asthma-aqi/asthma-aqi.html#introduction",
+    "title": "Exploring the Effect of Wildfire and AQI on Asthma",
+    "section": "",
+    "text": "Asthma affects an estimated 262 million people and is the most common chronic disease among children. It is caused by inflammation in the small airways of the lungs that leads to wheezing, coughing, and shortness of breath. While inhaled medications can manage effectively manage symptoms, if left untreated, asthma attacks can be fatal. In fact, over 450,000 people died from asthma worldwide in 2019.\nMany things can trigger asthma symptoms. One example is fine particulate matter (PM). Scientists measure PM at two scales, PM 10 and PM 2.5, where the number refers to the size of the particles in micrograms. PM 2.5 is especially concerning for people with respiratory conditions such as asthma because its small size means it can get into even the narrowest of airways, causing irritation and inflammation.\nPM 2.5 can come from many sources, from industrial pollution to car exhaust, but recent research has shown that PM 2.5 from wildfires is particularly harmful. As wildfire regimes get more more volatile and extreme under climate change, more people will be exposed to these harmful particles.\nWhile it is difficult to directly measure PM 2.5 from wildfires, one useful proxy for wildfire air pollution is air quality. The Air Quality Index (AQI) is a measure of how polluted the air is. It uses a number of sources to\n\n\nLoad libraries\nlibrary(tidyverse)\nlibrary(here)\nlibrary(janitor)\nlibrary(tmap)\nlibrary(sf)\nlibrary(spatialreg)\nlibrary(stargazer)\nlibrary(patchwork)\nlibrary(sjPlot)\nlibrary(sjmisc)\nlibrary(sjlabelled)\n\n\n\n\n\nasthma_aqi &lt;- read_sf(here(\"posts\", \"2024-12-13-asthma-aqi\", \"data\",  \"asthma_aqi.geojson\"))\n\nfire_asthma &lt;- read_csv(here(\"posts\", \"2024-12-13-asthma-aqi\", \"data\",  \"fire_asthma.csv\"))"
   }
 ]
