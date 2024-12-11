@@ -12,8 +12,8 @@ categories:
   - MEDS
   - EDS-222
 toc: true
-bibliography: references.bib
-csl: plos-computational-biology.csl
+# bibliography: references.bib
+# csl: plos-computational-biology.csl
 # image: thomas-fire-repo.jpeg
 citation:
   url: https://haylee360.github.io/posts/2024-12-asthma-aqi/
@@ -37,11 +37,30 @@ Many things can trigger asthma symptoms. One example is fine particulate matter 
 
 PM 2.5 can come from many sources, from industrial pollution to car exhaust, but recent research has shown that PM 2.5 from wildfires is particularly harmful. As wildfire regimes get more more volatile and extreme under climate change, more people will be exposed to these harmful particles. 
 
-While it is difficult to directly measure PM 2.5 from wildfires, one useful proxy for wildfire air pollution is air quality. The Air Quality Index (AQI) is a measure of how polluted the air is. It uses a number of sources to 
+While it is difficult to directly measure PM 2.5 from wildfires, one useful proxy for wildfire air pollution is air quality. The Air Quality Index (AQI) is a measure of how polluted the air is. It is calculated based on the concentrations of a number of common pollutants (Ozone, particulate matter, CO, NO2, SO2) present in the air. 
+
+This analysis will use AQI data as a proxy for wildfire to explore how changing wildfire regimes are affecting the prevalence of asthma. 
+
+## Data
+
+I will use data from a number of sources to answer this question. 
+
+- Air Quality Index (AQI) data by county was retrieved from the EPA [\[5\]](https://aqs.epa.gov/aqsweb/airdata/download_files.html#Annual).
+
+- Yearly asthma hospitalization counts by county were retrieved from the California Health and Human Services (CHHS) Open Data Portal [\[7\]](https://data.chhs.ca.gov/gl/dataset/asthma-prevalence).
+
+- Fire frequency and area burned data was retrieved from CalFire [\[8\]](https://www.fire.ca.gov/what-we-do/fire-resource-assessment-program/fire-perimeters).
+
+- County level demographic information and geospatial data were retrieved from the United States Census Bureau [\[10\]](https://www.census.gov/data/datasets/time-series/demo/popest/2010s-counties-total.html#par_textimage_70769902).
+
+## Methods
+
+To start, I cleaned the data according to "Tidy Data" format such that I could join all my necessary information together. I divided the raw asthma hospitalization data by the population of each county, then multiplied by 100,000 to get the hospitalizations per 100,000 people. This was to account for the varying population sizes per county. I also capped the AQI value at 500 because that is the maximum standardized value listed on the EPA's website for air quality. Lastly, I used the area data and count data from CalFire to find the total acreage burned per year and total number of fires per year. This data was used to analyze trends in wildfire over time. 
+
+## Results and Discussion
 
 ```{r}
-#| code-fold: true
-#| code-summary: "Load libraries"
+#| echo: false
 
 library(tidyverse)
 library(here)
@@ -54,18 +73,104 @@ library(patchwork)
 library(sjPlot)
 library(sjmisc)
 library(sjlabelled)
-```
+library(dynlm)
 
-### Read in data
-
-```{r}
 asthma_aqi <- read_sf(here("posts", "2024-12-13-asthma-aqi", "data",  "asthma_aqi.geojson"))
 
 fire_asthma <- read_csv(here("posts", "2024-12-13-asthma-aqi", "data",  "fire_asthma.csv"))
 ```
 
 
+### Linear Model
+```{r}
+asthma_mod <- lm(log(hosp_per_100k) ~ median_aqi + year + per_capita_income, data = asthma_aqi)
 
+asthma_hosp_table <- tab_model(asthma_mod,
+                               pred.labels = c("Intercept", 
+                                               "Median AQI", 
+                                               "Year", 
+                                               "Per Capita Income (in $1000s)"),
+                               dv.labels = c("Hospitalizations (per 100k)"),
+                               string.ci = "Conf. Int (95%)",
+                               string.p = "P-value",
+                               title = "Table 1. Linear Model Results",
+                               digits = 3)
+
+asthma_hosp_table
+```
+
+```{r}
+#| echo: false
+
+# Drop geometry for ADL mod
+asthma_aqi <- asthma_aqi %>% 
+  st_drop_geometry()
+```
+
+
+### ADL model
+```{r}
+adl_mod <- dynlm(
+  hosp_per_100k ~ L(hosp_per_100k, 1) + L(median_aqi, 0:1) + L(year, 0:1) + L(per_capita_income, 0:1), ts(asthma_aqi, start = 2015)
+)
+
+adl_table <- tab_model(adl_mod,
+                       pred.labels = c("Intercept", 
+                                       "Lagged Hospitalizations\nper 100k", 
+                                       "Median AQI",
+                                       "Lagged Median AQI",
+                                       "Year",
+                                       "Per capita income (in $1000s)",
+                                       "Lagged per capita income\n(in $1000s)"),
+                               dv.labels = c("Hospitalizations (per 100k)"),
+                               string.ci = "Conf. Int (95%)",
+                               string.p = "P-value",
+                               title = "Table 2. ADL Model Results",
+                               digits = 3)
+
+adl_table
+```
+
+### ACF plot 
+```{r}
+residual_acf_before <- acf(resid(asthma_mod), 
+                           plot = FALSE, 
+                           na.action = na.pass)
+
+acf_before_df <- tibble(Lag = residual_acf_before$lag, 
+                        ACF = as.vector(residual_acf_before$acf)) 
+
+acf_before <-  ggplot(acf_before_df, aes(Lag, ACF)) + 
+  geom_hline(yintercept = 0, 
+             linetype = "dashed", 
+             color = "cornflowerblue",
+             linewidth = 1.5) +
+  geom_line(linewidth = 2) +
+  theme_minimal()
+
+residual_acf_after <- acf(resid(adl_mod), 
+                           plot = FALSE, 
+                           na.action = na.pass)
+
+acf_after_df <- tibble(Lag = residual_acf_after$lag, 
+                        ACF = as.vector(residual_acf_after$acf)) 
+
+acf_after <-  ggplot(acf_after_df, aes(Lag, ACF)) + 
+  geom_hline(yintercept = 0, 
+             linetype = "dashed", 
+             color = "cornflowerblue",
+             linewidth = 1.5) +
+  geom_line(linewidth = 2) +
+  theme_minimal()
+
+acf_before + acf_after
+```
+
+
+## Conclusion
+
+
+### References
 
 
 
