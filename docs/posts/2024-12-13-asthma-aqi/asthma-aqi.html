@@ -7,8 +7,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Haylee Oyler">
+<meta name="dcterms.date" content="2024-12-13">
+<meta name="description" content="Examining the Effect of Wildfire and AQI on Asthma">
 
-<title>Exploring the Effect of Wildfire and AQI on Asthma – Haylee Oyler</title>
+<title>Wildfires and Respiratory Health in California – Haylee Oyler</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -104,6 +106,35 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   }
 }</script>
 
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 </head>
 
@@ -151,20 +182,47 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <header id="title-block-header" class="quarto-title-block default page-columns page-full">
   <div class="quarto-title-banner page-columns page-full">
     <div class="quarto-title column-page-left">
-      <h1 class="title">Exploring the Effect of Wildfire and AQI on Asthma</h1>
-                      </div>
+      <h1 class="title">Wildfires and Respiratory Health in California</h1>
+                  <div>
+        <div class="description">
+          Examining the Effect of Wildfire and AQI on Asthma
+        </div>
+      </div>
+                          <div class="quarto-categories">
+                <div class="quarto-category">Environmental-Health</div>
+                <div class="quarto-category">R</div>
+                <div class="quarto-category">Statistics</div>
+                <div class="quarto-category">MEDS</div>
+                <div class="quarto-category">EDS-222</div>
+              </div>
+                  </div>
   </div>
     
-  
+  <div class="quarto-title-meta-author column-page-left">
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-heading">Affiliation</div>
+    
+      <div class="quarto-title-meta-contents">
+      <p class="author"><a href="https://haylee360.github.io/">Haylee Oyler</a> </p>
+    </div>
+    <div class="quarto-title-meta-contents">
+          <p class="affiliation">
+              <a href="https://bren.ucsb.edu/masters-programs/master-environmental-data-science">
+              MEDS
+              </a>
+            </p>
+        </div>
+    </div>
+
   <div class="quarto-title-meta column-page-left">
 
+        
       <div>
-      <div class="quarto-title-meta-heading">Author</div>
+      <div class="quarto-title-meta-heading">Published</div>
       <div class="quarto-title-meta-contents">
-               <p>Haylee Oyler </p>
-            </div>
+        <p class="date">December 13, 2024</p>
+      </div>
     </div>
-      
     
       
     </div>
@@ -178,9 +236,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction">Introduction</a>
+  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction">Introduction</a></li>
+  <li><a href="#data" id="toc-data" class="nav-link" data-scroll-target="#data">Data</a></li>
+  <li><a href="#methods" id="toc-methods" class="nav-link" data-scroll-target="#methods">Methods</a></li>
+  <li><a href="#results-and-discussion" id="toc-results-and-discussion" class="nav-link" data-scroll-target="#results-and-discussion">Results and Discussion</a>
   <ul class="collapse">
-  <li><a href="#read-in-data" id="toc-read-in-data" class="nav-link" data-scroll-target="#read-in-data">Read in data</a></li>
+  <li><a href="#linear-model" id="toc-linear-model" class="nav-link" data-scroll-target="#linear-model">Linear Model</a></li>
+  <li><a href="#adl-model" id="toc-adl-model" class="nav-link" data-scroll-target="#adl-model">ADL model</a></li>
+  <li><a href="#acf-plot" id="toc-acf-plot" class="nav-link" data-scroll-target="#acf-plot">ACF plot</a></li>
+  <li><a href="#fires-and-hospitalizations-over-time" id="toc-fires-and-hospitalizations-over-time" class="nav-link" data-scroll-target="#fires-and-hospitalizations-over-time">Fires and hospitalizations over time</a></li>
+  </ul></li>
+  <li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion">Conclusion</a>
+  <ul class="collapse">
+  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -192,41 +260,317 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 
+<p>The full code for this analysis can be accessed at <a href="https://github.com/haylee360/eds222-final-project">this repository</a></p>
 <section id="introduction" class="level2">
 <h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
-<p>Asthma affects an estimated 262 million people and is the most common chronic disease among children. It is caused by inflammation in the small airways of the lungs that leads to wheezing, coughing, and shortness of breath. While inhaled medications can manage effectively manage symptoms, if left untreated, asthma attacks can be fatal. In fact, over 450,000 people died from asthma worldwide in 2019.</p>
-<p>Many things can trigger asthma symptoms. One example is fine particulate matter (PM). Scientists measure PM at two scales, PM 10 and PM 2.5, where the number refers to the size of the particles in micrograms. PM 2.5 is especially concerning for people with respiratory conditions such as asthma because its small size means it can get into even the narrowest of airways, causing irritation and inflammation.</p>
-<p>PM 2.5 can come from many sources, from industrial pollution to car exhaust, but recent research has shown that PM 2.5 from wildfires is particularly harmful. As wildfire regimes get more more volatile and extreme under climate change, more people will be exposed to these harmful particles.</p>
-<p>While it is difficult to directly measure PM 2.5 from wildfires, one useful proxy for wildfire air pollution is air quality. The Air Quality Index (AQI) is a measure of how polluted the air is. It uses a number of sources to</p>
+<p>Asthma affects an estimated 262 million people and is the most common chronic disease among children<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>. It is caused by inflammation in the small airways of the lungs that leads to wheezing, coughing, and shortness of breath. While inhaled medications can manage effectively manage symptoms, if left untreated, asthma attacks can be fatal. In fact, over 450,000 people died from asthma worldwide in 2019.</p>
+<p>Many things can trigger asthma symptoms. One example is fine particulate matter (PM). Scientists measure PM at two scales, PM 10 and PM 2.5, where the number refers to the size of the particles in micrograms. PM 2.5 is especially concerning for people with respiratory conditions such as asthma because its small size means it can get into even the narrowest of airways, causing irritation and inflammation<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>.</p>
+<p>PM 2.5 can come from many sources, from industrial pollution to car exhaust, but recent research has shown that PM 2.5 from wildfires is particularly harmful<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a>. As wildfire regimes get more more volatile and extreme under climate change, more people will be exposed to these harmful particles<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a>.</p>
+<p>While it is difficult to directly measure PM 2.5 from wildfires, one useful proxy for wildfire air pollution is air quality. The Air Quality Index (AQI) is a measure of how polluted the air is. It is calculated based on the concentrations of a number of common pollutants (Ozone, particulate matter, CO, NO2, SO2) present in the air<a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a>.</p>
+<p>This analysis will use AQI data as a proxy for wildfire to explore how changing wildfire regimes are affecting the prevalence of asthma.</p>
+</section>
+<section id="data" class="level2">
+<h2 class="anchored" data-anchor-id="data">Data</h2>
+<p>I will use data from a number of sources to answer this question.</p>
+<ul>
+<li><p><a href="https://aqs.epa.gov/aqsweb/airdata/download_files.html#Annual">Air Quality Index (AQI) data</a> by county was retrieved from the EPA<a href="#fn6" class="footnote-ref" id="fnref6" role="doc-noteref"><sup>6</sup></a>.</p></li>
+<li><p><a href="https://data.ca.gov/dataset/asthma-emergency-department-visit-rates">Yearly asthma hospitalization counts by county</a> were retrieved from the California Health and Human Services (CHHS) Open Data Portal<a href="#fn7" class="footnote-ref" id="fnref7" role="doc-noteref"><sup>7</sup></a>.</p></li>
+<li><p><a href="https://www.fire.ca.gov/what-we-do/fire-resource-assessment-program/fire-perimeters">Fire frequency and area burned data</a> was retrieved from CalFire<a href="#fn8" class="footnote-ref" id="fnref8" role="doc-noteref"><sup>8</sup></a>.</p></li>
+<li><p><a href="https://www.census.gov/data/datasets/time-series/demo/popest/2010s-counties-total.html#par_textimage_70769902">County level demographic information and geospatial data</a> were retrieved from the United States Census Bureau<a href="#fn9" class="footnote-ref" id="fnref9" role="doc-noteref"><sup>9</sup></a>.</p></li>
+</ul>
+</section>
+<section id="methods" class="level2">
+<h2 class="anchored" data-anchor-id="methods">Methods</h2>
+<p>To start, I cleaned the data according to “Tidy Data” format such that I could join all my necessary information together. I divided the raw asthma hospitalization data by the population of each county, then multiplied by 100,000 to get the hospitalizations per 100,000 people. This was to account for the varying population sizes per county. I also capped the AQI value at 500 because that is the maximum standardized value listed on the EPA’s website for air quality. Lastly, I used the area data and count data from CalFire to find the total acreage burned per year and total number of fires per year. This data was used to analyze trends in wildfire over time.</p>
+<p>For my analysis, I started with a linear regression model. Because I couldn’t find open access data that directly quantified PM 2.5 from wildfires, I used a variety of measures of air quality from the EPA’s Aiq Quality Index. I tried looking at the median AQI, maximum AQI, days with PM 2.5, days with ozone, and days unhealthy for sensitive groups or worse. While these predictors were similar, median aqi had the highest R<sup>2</sup> and smallest p-value.</p>
+<p>I also added some demographic variables such as median per capita income and population density to see if these were important predictors of asthma hospitalizations, but found they were not signifcant. The other variable I added that was very significant was year.</p>
+<section id="model-1-linear-model" class="level4">
+<h4 class="anchored" data-anchor-id="model-1-linear-model">Model 1: Linear model</h4>
+<p>Overall, my first model looks like this:</p>
+<p><span class="math display">\[log(hosp\_per\_100k) = \beta_0 + \beta_1 median\_aqi + \beta_2year + u_i\]</span> Where <code>hosp_per_100k</code> is asthma hospitalizations per 100,000 people. This variable has been log transformed to establish a linear relationship. <code>median_aqi</code> is the median aqi for that year. <code>year</code> represents the year of interest.</p>
+<p>After conducting my first analysis, I decided to check for autocorrelation in my dataset. It turns out, my data was highly autocorrelated, therefore I moved onto an autoregressive distributive lag model (ADL).</p>
+</section>
+<section id="model-2-autoregressive-distributive-lag-model" class="level4">
+<h4 class="anchored" data-anchor-id="model-2-autoregressive-distributive-lag-model">Model 2: Autoregressive distributive lag model</h4>
+<p><span class="math display">\[log(hosp\_per\_100k)[t] = \beta_0 + \beta_1 median\_aqi[t] + \beta_2year[t] + \\ \beta_3log(hosp\_per\_100k)[t-1] + \beta_4 median\_aqi[t-1] + \beta_5year[t-1] + u_i\]</span> Where <code>t</code> is our data at <code>time = t</code> and <code>t-1</code> is our data at <code>time = t-1</code>.</p>
+<p>The ADL model accounted for much of the autocorrelation in the residuals of my first linear model.</p>
+</section>
+</section>
+<section id="results-and-discussion" class="level2">
+<h2 class="anchored" data-anchor-id="results-and-discussion">Results and Discussion</h2>
+<section id="linear-model" class="level3">
+<h3 class="anchored" data-anchor-id="linear-model">Linear Model</h3>
 <div class="cell">
 <details class="code-fold">
-<summary>Load libraries</summary>
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(here)</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(janitor)</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tmap)</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(sf)</span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(spatialreg)</span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(stargazer)</span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(patchwork)</span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(sjPlot)</span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(sjmisc)</span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(sjlabelled)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<summary>Reveal code</summary>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>asthma_mod <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="fu">log</span>(hosp_per_100k) <span class="sc">~</span> median_aqi <span class="sc">+</span> year <span class="sc">+</span> per_capita_income, <span class="at">data =</span> asthma_aqi)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>asthma_hosp_table <span class="ot">&lt;-</span> <span class="fu">tab_model</span>(asthma_mod,</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>                               <span class="at">pred.labels =</span> <span class="fu">c</span>(<span class="st">"Intercept"</span>, </span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>                                               <span class="st">"Median AQI"</span>, </span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>                                               <span class="st">"Year"</span>, </span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>                                               <span class="st">"Per capita Income (in $1000s)"</span>),</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>                               <span class="at">dv.labels =</span> <span class="fu">c</span>(<span class="st">"Asthma Hospitalizations (per 100k)"</span>),</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>                               <span class="at">string.ci =</span> <span class="st">"Conf. Int (95%)"</span>,</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>                               <span class="at">string.p =</span> <span class="st">"P-value"</span>,</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>                               <span class="at">title =</span> <span class="st">"Table 1. Linear Model Results"</span>,</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>                               <span class="at">digits =</span> <span class="dv">3</span>)</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>asthma_hosp_table</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small" data-quarto-postprocess="true">
+<caption>Table 1. Linear Model Results</caption>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th" style="text-align: center; border-top: double; font-style: normal; font-weight: bold; padding: 0.2cm;">&nbsp;</td>
+<td colspan="3" data-quarto-table-cell-role="th" style="text-align: center; border-top: double; font-style: normal; font-weight: bold; padding: 0.2cm;">Asthma Hospitalizations (per 100k)</td>
+</tr>
+<tr class="even">
+<td style="text-align: center; border-bottom: 1px solid; font-style: italic; font-weight: normal;">Predictors</td>
+<td style="text-align: center; border-bottom: 1px solid; font-style: italic; font-weight: normal;">Estimates</td>
+<td style="text-align: center; border-bottom: 1px solid; font-style: italic; font-weight: normal;">Conf. Int (95%)</td>
+<td style="text-align: center; border-bottom: 1px solid; font-style: italic; font-weight: normal;">P-value</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; padding: 0.2cm; vertical-align: top;">Intercept</td>
+<td style="text-align: left; padding: 0.2cm; vertical-align: top;">249.945</td>
+<td style="text-align: left; padding: 0.2cm; vertical-align: top;">215.914&nbsp;–&nbsp;283.976</td>
+<td style="text-align: left; padding: 0.2cm; vertical-align: top;"><strong>&lt;0.001</strong></td>
+</tr>
+<tr class="even">
+<td style="text-align: left; padding: 0.2cm; vertical-align: top;">Median AQI</td>
+<td style="text-align: left; padding: 0.2cm; vertical-align: top;">0.006</td>
+<td style="text-align: left; padding: 0.2cm; vertical-align: top;">0.004&nbsp;–&nbsp;0.009</td>
+<td style="text-align: left; padding: 0.2cm; vertical-align: top;"><strong>&lt;0.001</strong></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; padding: 0.2cm; vertical-align: top;">Year</td>
+<td style="text-align: left; padding: 0.2cm; vertical-align: top;">-0.122</td>
+<td style="text-align: left; padding: 0.2cm; vertical-align: top;">-0.139&nbsp;–&nbsp;-0.105</td>
+<td style="text-align: left; padding: 0.2cm; vertical-align: top;"><strong>&lt;0.001</strong></td>
+</tr>
+<tr class="even">
+<td style="text-align: left; padding: 0.2cm; vertical-align: top;">Per capita Income (in $1000s)</td>
+<td style="text-align: left; padding: 0.2cm; vertical-align: top;">-0.000</td>
+<td style="text-align: left; padding: 0.2cm; vertical-align: top;">-0.000&nbsp;–&nbsp;-0.000</td>
+<td style="text-align: left; padding: 0.2cm; vertical-align: top;"><strong>&lt;0.001</strong></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; padding: 0.2cm; vertical-align: top; padding-top: 0.1cm; padding-bottom: 0.1cm; border-top: 1px solid;">Observations</td>
+<td colspan="3" style="text-align: left; padding: 0.2cm; vertical-align: top; padding-top: 0.1cm; padding-bottom: 0.1cm; border-top: 1px solid;">381</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; padding: 0.2cm; vertical-align: top; padding-top: 0.1cm; padding-bottom: 0.1cm;">R<sup>2</sup> / R<sup>2</sup> adjusted</td>
+<td colspan="3" style="text-align: left; padding: 0.2cm; vertical-align: top; padding-top: 0.1cm; padding-bottom: 0.1cm;">0.415 / 0.410</td>
+</tr>
+</tbody>
+</table>
+
+
 </div>
-<section id="read-in-data" class="level3">
-<h3 class="anchored" data-anchor-id="read-in-data">Read in data</h3>
+</div>
+</section>
+<section id="adl-model" class="level3">
+<h3 class="anchored" data-anchor-id="adl-model">ADL model</h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>asthma_aqi <span class="ot">&lt;-</span> <span class="fu">read_sf</span>(<span class="fu">here</span>(<span class="st">"posts"</span>, <span class="st">"2024-12-13-asthma-aqi"</span>, <span class="st">"data"</span>,  <span class="st">"asthma_aqi.geojson"</span>))</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>fire_asthma <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="fu">here</span>(<span class="st">"posts"</span>, <span class="st">"2024-12-13-asthma-aqi"</span>, <span class="st">"data"</span>,  <span class="st">"fire_asthma.csv"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<details class="code-fold">
+<summary>Reveal code</summary>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>adl_mod <span class="ot">&lt;-</span> <span class="fu">dynlm</span>(</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">log</span>(hosp_per_100k) <span class="sc">~</span> <span class="fu">L</span>(<span class="fu">log</span>(hosp_per_100k), <span class="dv">1</span>) <span class="sc">+</span> <span class="fu">L</span>(median_aqi, <span class="dv">0</span><span class="sc">:</span><span class="dv">1</span>) <span class="sc">+</span> <span class="fu">L</span>(year, <span class="dv">0</span><span class="sc">:</span><span class="dv">1</span>), <span class="fu">ts</span>(asthma_aqi, <span class="at">start =</span> <span class="dv">2015</span>)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>adl_table <span class="ot">&lt;-</span> <span class="fu">tab_model</span>(adl_mod,</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>                       <span class="at">pred.labels =</span> <span class="fu">c</span>(<span class="st">"Intercept"</span>, </span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>                                       <span class="st">"Lagged Hospitalizations</span><span class="sc">\n</span><span class="st">per 100k"</span>, </span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>                                       <span class="st">"Median AQI"</span>,</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>                                       <span class="st">"Lagged Median AQI"</span>,</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>                                       <span class="st">"Year"</span>),</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>                               <span class="at">dv.labels =</span> <span class="fu">c</span>(<span class="st">"Hospitalizations (per 100k)"</span>),</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>                               <span class="at">string.ci =</span> <span class="st">"Conf. Int (95%)"</span>,</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>                               <span class="at">string.p =</span> <span class="st">"P-value"</span>,</span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>                               <span class="at">title =</span> <span class="st">"Table 2. ADL Model Results"</span>,</span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>                               <span class="at">digits =</span> <span class="dv">3</span>)</span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>adl_table</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small" data-quarto-postprocess="true">
+<caption>Table 2. ADL Model Results</caption>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th" style="text-align: center; border-top: double; font-style: normal; font-weight: bold; padding: 0.2cm;">&nbsp;</td>
+<td colspan="3" data-quarto-table-cell-role="th" style="text-align: center; border-top: double; font-style: normal; font-weight: bold; padding: 0.2cm;">Hospitalizations (per 100k)</td>
+</tr>
+<tr class="even">
+<td style="text-align: center; border-bottom: 1px solid; font-style: italic; font-weight: normal;">Predictors</td>
+<td style="text-align: center; border-bottom: 1px solid; font-style: italic; font-weight: normal;">Estimates</td>
+<td style="text-align: center; border-bottom: 1px solid; font-style: italic; font-weight: normal;">Conf. Int (95%)</td>
+<td style="text-align: center; border-bottom: 1px solid; font-style: italic; font-weight: normal;">P-value</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; padding: 0.2cm; vertical-align: top;">Intercept</td>
+<td style="text-align: left; padding: 0.2cm; vertical-align: top;">147.525</td>
+<td style="text-align: left; padding: 0.2cm; vertical-align: top;">105.749&nbsp;–&nbsp;189.301</td>
+<td style="text-align: left; padding: 0.2cm; vertical-align: top;"><strong>&lt;0.001</strong></td>
+</tr>
+<tr class="even">
+<td style="text-align: left; padding: 0.2cm; vertical-align: top;">Lagged Hospitalizations per 100k</td>
+<td style="text-align: left; padding: 0.2cm; vertical-align: top;">0.397</td>
+<td style="text-align: left; padding: 0.2cm; vertical-align: top;">0.296&nbsp;–&nbsp;0.498</td>
+<td style="text-align: left; padding: 0.2cm; vertical-align: top;"><strong>&lt;0.001</strong></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; padding: 0.2cm; vertical-align: top;">Median AQI</td>
+<td style="text-align: left; padding: 0.2cm; vertical-align: top;">0.010</td>
+<td style="text-align: left; padding: 0.2cm; vertical-align: top;">0.007&nbsp;–&nbsp;0.012</td>
+<td style="text-align: left; padding: 0.2cm; vertical-align: top;"><strong>&lt;0.001</strong></td>
+</tr>
+<tr class="even">
+<td style="text-align: left; padding: 0.2cm; vertical-align: top;">Lagged Median AQI</td>
+<td style="text-align: left; padding: 0.2cm; vertical-align: top;">-0.001</td>
+<td style="text-align: left; padding: 0.2cm; vertical-align: top;">-0.004&nbsp;–&nbsp;0.002</td>
+<td style="text-align: left; padding: 0.2cm; vertical-align: top;">0.407</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; padding: 0.2cm; vertical-align: top;">Year</td>
+<td style="text-align: left; padding: 0.2cm; vertical-align: top;">-0.072</td>
+<td style="text-align: left; padding: 0.2cm; vertical-align: top;">-0.093&nbsp;–&nbsp;-0.052</td>
+<td style="text-align: left; padding: 0.2cm; vertical-align: top;"><strong>&lt;0.001</strong></td>
+</tr>
+<tr class="even">
+<td style="text-align: left; padding: 0.2cm; vertical-align: top; padding-top: 0.1cm; padding-bottom: 0.1cm; border-top: 1px solid;">Observations</td>
+<td colspan="3" style="text-align: left; padding: 0.2cm; vertical-align: top; padding-top: 0.1cm; padding-bottom: 0.1cm; border-top: 1px solid;">363</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; padding: 0.2cm; vertical-align: top; padding-top: 0.1cm; padding-bottom: 0.1cm;">R<sup>2</sup> / R<sup>2</sup> adjusted</td>
+<td colspan="3" style="text-align: left; padding: 0.2cm; vertical-align: top; padding-top: 0.1cm; padding-bottom: 0.1cm;">0.466 / 0.460</td>
+</tr>
+</tbody>
+</table>
+
+
 </div>
+</div>
+<p>Model matrix is rank deficient. Parameters <code>L(year, 0:1)2</code> were not estimable.</p>
+</section>
+<section id="acf-plot" class="level3">
+<h3 class="anchored" data-anchor-id="acf-plot">ACF plot</h3>
+<div class="cell">
+<details class="code-fold">
+<summary>Reveal code</summary>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>residual_acf_before <span class="ot">&lt;-</span> <span class="fu">acf</span>(<span class="fu">resid</span>(asthma_mod), </span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>                           <span class="at">plot =</span> <span class="cn">FALSE</span>, </span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>                           <span class="at">na.action =</span> na.pass)</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>acf_before_df <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">Lag =</span> residual_acf_before<span class="sc">$</span>lag, </span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>                        <span class="at">ACF =</span> <span class="fu">as.vector</span>(residual_acf_before<span class="sc">$</span>acf)) </span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>acf_before <span class="ot">&lt;-</span>  <span class="fu">ggplot</span>(acf_before_df, <span class="fu">aes</span>(Lag, ACF)) <span class="sc">+</span> </span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="dv">0</span>, </span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>             <span class="at">linetype =</span> <span class="st">"dashed"</span>, </span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>             <span class="at">color =</span> <span class="st">"cornflowerblue"</span>,</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>             <span class="at">linewidth =</span> <span class="fl">1.5</span>) <span class="sc">+</span></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="at">linewidth =</span> <span class="dv">2</span>) <span class="sc">+</span></span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>residual_acf_after <span class="ot">&lt;-</span> <span class="fu">acf</span>(<span class="fu">resid</span>(adl_mod), </span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>                           <span class="at">plot =</span> <span class="cn">FALSE</span>, </span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>                           <span class="at">na.action =</span> na.pass)</span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>acf_after_df <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">Lag =</span> residual_acf_after<span class="sc">$</span>lag, </span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a>                        <span class="at">ACF =</span> <span class="fu">as.vector</span>(residual_acf_after<span class="sc">$</span>acf)) </span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a>acf_after <span class="ot">&lt;-</span>  <span class="fu">ggplot</span>(acf_after_df, <span class="fu">aes</span>(Lag, ACF)) <span class="sc">+</span> </span>
+<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="dv">0</span>, </span>
+<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a>             <span class="at">linetype =</span> <span class="st">"dashed"</span>, </span>
+<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a>             <span class="at">color =</span> <span class="st">"cornflowerblue"</span>,</span>
+<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a>             <span class="at">linewidth =</span> <span class="fl">1.5</span>) <span class="sc">+</span></span>
+<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="at">linewidth =</span> <span class="dv">2</span>) <span class="sc">+</span></span>
+<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span>
+<span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-31"><a href="#cb3-31" aria-hidden="true" tabindex="-1"></a>acf_before <span class="sc">+</span> acf_after</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="asthma-aqi_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="fires-and-hospitalizations-over-time" class="level3">
+<h3 class="anchored" data-anchor-id="fires-and-hospitalizations-over-time">Fires and hospitalizations over time</h3>
+<div class="cell">
+<details class="code-fold">
+<summary>Reveal code</summary>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot change in area burned over time</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>fire_plot <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(fire_asthma, <span class="fu">aes</span>(year, total_area)) <span class="sc">+</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>(<span class="at">fill=</span><span class="st">"firebrick"</span>) <span class="sc">+</span> </span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title=</span><span class="st">"Total Area Burned by Wildfires</span><span class="sc">\n</span><span class="st">in California by Year"</span>,</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>       <span class="at">x=</span><span class="st">"Year"</span>,</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>       <span class="at">y=</span><span class="st">"Area burned (acres)"</span>) <span class="sc">+</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme</span>(<span class="at">axis.title =</span> <span class="fu">element_text</span>(<span class="at">size=</span><span class="dv">13</span>),</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>        <span class="at">title =</span> <span class="fu">element_text</span>(<span class="at">size=</span><span class="dv">14</span>))</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot change in hospitalizations over time</span></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>hosp_plot <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(fire_asthma, <span class="fu">aes</span>(year, total_hosp_capita)) <span class="sc">+</span></span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>(<span class="at">fill=</span><span class="st">"cornflowerblue"</span>) <span class="sc">+</span></span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title=</span><span class="st">"Total Asthma Hospitalizations per</span><span class="sc">\n</span><span class="st">Capita in California by Year"</span>,</span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>       <span class="at">x=</span><span class="st">"Year"</span>,</span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>       <span class="at">y=</span><span class="st">"Hospitalizations per 100K"</span>) <span class="sc">+</span></span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.title =</span> <span class="fu">element_text</span>(<span class="at">size=</span><span class="dv">13</span>),</span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>        <span class="at">title =</span> <span class="fu">element_text</span>(<span class="at">size=</span><span class="dv">14</span>))</span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>fire_plot <span class="sc">|</span> hosp_plot  </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="asthma-aqi_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="conclusion" class="level2">
+<h2 class="anchored" data-anchor-id="conclusion">Conclusion</h2>
+<section id="references" class="level3">
+<h3 class="anchored" data-anchor-id="references">References</h3>
 
 
 </section>
 </section>
 
-</main> <!-- /main -->
+
+<div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
+
+<ol>
+<li id="fn1"><p>World Health Organization: WHO, World Health Organization: WHO. Asthma. 6 May 2024. Available: https://www.who.int/news-room/fact-sheets/detail/asthma<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>Health studies of criteria air pollutants. In: California Office of Environmental Health Hazard Assessment [Internet]. [cited 12 Dec 2024]. Available: https://oehha.ca.gov/air/health-studies-criteria-air-pollutants<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn3"><p>Aguilera, R., Corringham, T., Gershunov, A. et al.&nbsp;Wildfire smoke impacts respiratory health more than fine particles from other sources: observational evidence from Southern California. Nat Commun 12, 1493 (2021). https://doi.org/10.1038/s41467-021-21708-0<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn4"><p>D. Kiser et al., “Particulate matter and emergency visits for asthma: a time-series study of their association in the presence and absence of wildfire smoke in Reno, Nevada, 2013–2018,” Environ. Health, vol.&nbsp;19, no. 1, p.&nbsp;92, Aug.&nbsp;2020, doi: 10.1186/s12940-020-00646-2.<a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn5"><p>Technical assistance document for the reporting of daily air quality – the Air Quality Index (AQI). United States Environmental Protection Agency. 2024 May. Report No.: EPA-454/B-24-002. Available: https://document.airnow.gov/technical-assistance-document-for-the-reporting-of-daily-air-quailty.pdf<a href="#fnref5" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn6"><p>US Environmental Protection Agency. Air Quality System Data Mart AirNow available via https://www.epa.gov/outdoor-air-quality-data. Accessed December 8 2024.<a href="#fnref6" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn7"><p>“Asthma Emergency Department Visit Rates by County - California Health and Human Services Open Data Portal,” CHHS Open Data. https://data.ca.gov/dataset/asthma-emergency-department-visit-rates (accessed Dec.&nbsp;02, 2023).<a href="#fnref7" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn8"><p>California Department of Forestry and Fire Protection (CAL FIRE), [calfire_all.gdb], [2024-11-17], retrieved from CAL FIRE data portal. Accessed December 8 2024.<a href="#fnref8" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn9"><p>United States Census Bureau. County Population Totals: 2010-2019, 2020-2023. https://www.census.gov/data/datasets/time-series/demo/popest/2010s-counties-total.html#par_textimage_70769902. Accessed December 8 2024.<a href="#fnref9" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section><section class="quarto-appendix-contents" id="quarto-citation"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{oyler2024,
+  author = {Oyler, Haylee},
+  title = {Wildfires and {Respiratory} {Health} in {California}},
+  date = {2024-12-13},
+  url = {https://haylee360.github.io/posts/2024-12-asthma-aqi/},
+  langid = {en}
+}
+</code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-oyler2024" class="csl-entry quarto-appendix-citeas" role="listitem">
+Oyler, Haylee. 2024. <span>“Wildfires and Respiratory Health in
+California.”</span> December 13, 2024. <a href="https://haylee360.github.io/posts/2024-12-asthma-aqi/">https://haylee360.github.io/posts/2024-12-asthma-aqi/</a>.
+</div></div></section></div></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {

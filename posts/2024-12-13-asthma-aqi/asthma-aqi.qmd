@@ -34,13 +34,13 @@ The full code for this analysis can be accessed at [this repository](https://git
 
 ## Introduction
 
-Asthma affects an estimated 262 million people and is the most common chronic disease among children. It is caused by inflammation in the small airways of the lungs that leads to wheezing, coughing, and shortness of breath. While inhaled medications can manage effectively manage symptoms, if left untreated, asthma attacks can be fatal. In fact, over 450,000 people died from asthma worldwide in 2019.
+Asthma affects an estimated 262 million people and is the most common chronic disease among children[^1]. It is caused by inflammation in the small airways of the lungs that leads to wheezing, coughing, and shortness of breath. While inhaled medications can manage effectively manage symptoms, if left untreated, asthma attacks can be fatal. In fact, over 450,000 people died from asthma worldwide in 2019.
 
-Many things can trigger asthma symptoms. One example is fine particulate matter (PM). Scientists measure PM at two scales, PM 10 and PM 2.5, where the number refers to the size of the particles in micrograms. PM 2.5 is especially concerning for people with respiratory conditions such as asthma because its small size means it can get into even the narrowest of airways, causing irritation and inflammation. 
+Many things can trigger asthma symptoms. One example is fine particulate matter (PM). Scientists measure PM at two scales, PM 10 and PM 2.5, where the number refers to the size of the particles in micrograms. PM 2.5 is especially concerning for people with respiratory conditions such as asthma because its small size means it can get into even the narrowest of airways, causing irritation and inflammation[^2]. 
 
-PM 2.5 can come from many sources, from industrial pollution to car exhaust, but recent research has shown that PM 2.5 from wildfires is particularly harmful. As wildfire regimes get more more volatile and extreme under climate change, more people will be exposed to these harmful particles. 
+PM 2.5 can come from many sources, from industrial pollution to car exhaust, but recent research has shown that PM 2.5 from wildfires is particularly harmful[^3]. As wildfire regimes get more more volatile and extreme under climate change, more people will be exposed to these harmful particles[^4]. 
 
-While it is difficult to directly measure PM 2.5 from wildfires, one useful proxy for wildfire air pollution is air quality. The Air Quality Index (AQI) is a measure of how polluted the air is. It is calculated based on the concentrations of a number of common pollutants (Ozone, particulate matter, CO, NO2, SO2) present in the air. 
+While it is difficult to directly measure PM 2.5 from wildfires, one useful proxy for wildfire air pollution is air quality. The Air Quality Index (AQI) is a measure of how polluted the air is. It is calculated based on the concentrations of a number of common pollutants (Ozone, particulate matter, CO, NO2, SO2) present in the air[^5]. 
 
 This analysis will use AQI data as a proxy for wildfire to explore how changing wildfire regimes are affecting the prevalence of asthma. 
 
@@ -48,13 +48,13 @@ This analysis will use AQI data as a proxy for wildfire to explore how changing 
 
 I will use data from a number of sources to answer this question. 
 
-- [Air Quality Index (AQI) data](https://aqs.epa.gov/aqsweb/airdata/download_files.html#Annual) by county was retrieved from the EPA [\[5\]]().
+- [Air Quality Index (AQI) data](https://aqs.epa.gov/aqsweb/airdata/download_files.html#Annual) by county was retrieved from the EPA[^6].
 
-- [Yearly asthma hospitalization counts by county](https://data.ca.gov/dataset/asthma-emergency-department-visit-rates) were retrieved from the California Health and Human Services (CHHS) Open Data Portal [\[7\]]().
+- [Yearly asthma hospitalization counts by county](https://data.ca.gov/dataset/asthma-emergency-department-visit-rates) were retrieved from the California Health and Human Services (CHHS) Open Data Portal[^7].
 
-- [Fire frequency and area burned data](https://www.fire.ca.gov/what-we-do/fire-resource-assessment-program/fire-perimeters) was retrieved from CalFire [\[8\]]().
+- [Fire frequency and area burned data](https://www.fire.ca.gov/what-we-do/fire-resource-assessment-program/fire-perimeters) was retrieved from CalFire[^8].
 
-- [County level demographic information and geospatial data](https://www.census.gov/data/datasets/time-series/demo/popest/2010s-counties-total.html#par_textimage_70769902) were retrieved from the United States Census Bureau [\[10\]]().
+- [County level demographic information and geospatial data](https://www.census.gov/data/datasets/time-series/demo/popest/2010s-counties-total.html#par_textimage_70769902) were retrieved from the United States Census Bureau[^9].
 
 ## Methods
 
@@ -230,10 +230,23 @@ fire_plot | hosp_plot
 
 ### References
 
-[13] D. Kiser et al., “Particulate matter and emergency visits for asthma: a time-series study of their association in the presence and absence of wildfire smoke in Reno, Nevada, 2013–2018,” Environ. Health, vol. 19, no. 1, p. 92, Aug. 2020, doi: 10.1186/s12940-020-00646-2.
+[^1]: World Health Organization: WHO, World Health Organization: WHO. Asthma. 6 May 2024. Available: https://www.who.int/news-room/fact-sheets/detail/asthma
 
+[^2]: Health studies of criteria air pollutants. In: California Office of Environmental Health Hazard Assessment [Internet]. [cited 12 Dec 2024]. Available: https://oehha.ca.gov/air/health-studies-criteria-air-pollutants
 
-image credits: [SF Chronicle](https://www.sfchronicle.com/news/article/Residents-in-Napa-area-fire-zone-focus-on-12980433.php)
+[^3]: Aguilera, R., Corringham, T., Gershunov, A. et al. Wildfire smoke impacts respiratory health more than fine particles from other sources: observational evidence from Southern California. Nat Commun 12, 1493 (2021). https://doi.org/10.1038/s41467-021-21708-0
+
+[^4]: D. Kiser et al., “Particulate matter and emergency visits for asthma: a time-series study of their association in the presence and absence of wildfire smoke in Reno, Nevada, 2013–2018,” Environ. Health, vol. 19, no. 1, p. 92, Aug. 2020, doi: 10.1186/s12940-020-00646-2.
+
+[^5]: Technical assistance document for the reporting of daily air quality – the Air Quality Index (AQI). United States Environmental Protection Agency. 2024 May. Report No.: EPA-454/B-24-002. Available: https://document.airnow.gov/technical-assistance-document-for-the-reporting-of-daily-air-quailty.pdf 
+
+[^6]: US Environmental Protection Agency. Air Quality System Data Mart AirNow available via https://www.epa.gov/outdoor-air-quality-data. Accessed December 8 2024.
+
+[^7]: “Asthma Emergency Department Visit Rates by County - California Health and Human Services Open Data Portal,” CHHS Open Data. https://data.ca.gov/dataset/asthma-emergency-department-visit-rates (accessed Dec. 02, 2023). 
+
+[^8]: California Department of Forestry and Fire Protection (CAL FIRE), [calfire_all.gdb], [2024-11-17], retrieved from CAL FIRE data portal. Accessed December 8 2024. 
+
+[^9]: United States Census Bureau. County Population Totals: 2010-2019, 2020-2023. https://www.census.gov/data/datasets/time-series/demo/popest/2010s-counties-total.html#par_textimage_70769902. Accessed December 8 2024. 
 
 
 
