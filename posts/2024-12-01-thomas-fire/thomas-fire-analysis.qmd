@@ -66,15 +66,6 @@ Part 1 will using AQI data to the explore the Thomas Fire's effects on air quali
 
 This analysis uses data from the [Air Quality Index Daily Values Report](https://www.epa.gov/outdoor-air-quality-data/air-quality-index-daily-values-report) which provides daily AQI values for a specified year and location. We're working with two data sets `daily_aqi_by_county_2017` and `daily_aqi_by_county_2018`. These contain daily AQI values for U.S. counties in 2017 and 2018 respectively. The Thomas Fire occurred in December of 2017, so we've selected data before and after the fire to see a clear picture of its effect on air quality.
 
-#### References
-
--   [Air Quality Index (AQI)](https://www.airnow.gov/aqi/aqi-basics/) from [US Environmental Protection Agency](https://www.epa.gov).
-
-    -   US Environmental Protection Agency. Air Quality System Data Mart AirNow available via https://www.epa.gov/outdoor-air-quality-data. Accessed October 17 2024.
-
-#### Acknowledgements
-
-All materials were created by [Carmen Galaz-Garcia](https://github.com/carmengg) for [EDS-220: Working with Environmental Data](https://meds-eds-220.github.io/MEDS-eds-220-course/).
 
 ### Load Libraries
 Before we begin our analysis, we'll start by loading all the necessary libraries for this project. 
@@ -260,26 +251,11 @@ The Landsat data is a simplified collection of bands (red, green, blue, near-inf
 
 The Thomas Fire perimeter data comes from CalFire's data portal. CalFire is the department of forestry and fire protection. They have a Geodatabase of all historical fire perimeters in the state of California from 1878 until present. The database includes information on the fire date, managing agency, cause, acres, and the geospatial boundary of the fire, among other information. This data was pre-processed to select only the Thomas fire boundary geometry.
 
-#### References
-
--   [Landsat Data](https://planetarycomputer.microsoft.com/dataset/landsat-c2-l2) from Microsoft's Planetary Computer Data Catalogue.
-
-    -   Earth Resources Observation and Science (EROS) Center. (2020). Landsat 4-5 Thematic Mapper Level-2, Collection 2. U.S. Geological Survey. https://doi.org/10.5066/P9IAXOVV
-    -   Earth Resources Observation and Science (EROS) Center. (2020). Landsat 7 Enhanced Thematic Mapper Plus Level-2, Collection 2. U.S. Geological Survey. https://doi.org/10.5066/P9C7I13B
-    -   Earth Resources Observation and Science (EROS) Center. (2020). Landsat 8-9 Operational Land Imager / Thermal Infrared Sensor Level-2, Collection 2. U.S. Geological Survey. https://doi.org/10.5066/P9OGBGM6
-
--   [CalFire Fire Perimeter Data](https://www.fire.ca.gov/what-we-do/fire-resource-assessment-program/fire-perimeters)
-
-    -   California Department of Forestry and Fire Protection (CAL FIRE), \[calfire_all.gdb\], \[2024-11-17\], retrieved from [CAL FIRE data portal.](https://www.fire.ca.gov/what-we-do/fire-resource-assessment-program/fire-perimeters)
-
-#### Acknowledgements
-
-All materials were created by [Carmen Galaz-Garcia](https://github.com/carmengg) for [EDS-220: Working with Environmental Data](https://meds-eds-220.github.io/MEDS-eds-220-course/).
 
 ## Import geospatial data and explore
 
 ```{python}
-# Import landsat nc data
+# Import Landsat nc data
 landsat = rioxr.open_rasterio(os.path.join('data',
                                     'landsat8-2018-01-26-sb-simplified.nc')
                                     )
@@ -291,7 +267,7 @@ thomas_boundary = gpd.read_file(os.path.join('data',
 ```
 
 ```{python}
-# View the landsat data
+# View the Landsat data
 landsat
 ```
 
@@ -336,19 +312,20 @@ This fire perimeter data comes from CalFire and includes data for all fire perim
 landsat = landsat.squeeze().drop_vars('band')
 
 # Confirm it was removed correctly
-landsat
+# print(f"New dimensions:", {landsat.dims})
+print(landsat.sizes)
 ```
 
 ## Visualize the Thomas Fire with true color imagery
 
 ```{python}
-# First attempt to visualize the landsat data 
+# First attempt to visualize the Landsat data 
 landsat[['red', 'green', 'blue']].to_array().plot.imshow()
 ```
 Our first attempt to map the data didn't go quite as planned. Let's true adjusting the `robust` parameter of `.imshow()` and see what happens
 
 ```{python}
-# Visualize the landsat data using true color imagery
+# Visualize the Landsat data using true color imagery
 landsat[['red', 'green', 'blue']].to_array().plot.imshow(robust=True)
 ```
 
@@ -360,7 +337,7 @@ Next, we will use false color imagery to view the fire...
 To make the Thomas Fire burn scar more visible, we will use false color imagery by assigning short-wave infrared radiation to red, near infrared to green, and red to blue.
 
 ```{python}
-# Visualize the landsat data using false color imagery
+# Visualize the Landsat data using false color imagery
 landsat[['swir22', 'nir08', 'red']].to_array().plot.imshow(robust=True)
 ```
 
@@ -385,7 +362,7 @@ assert landsat.rio.crs == thomas_boundary.crs
 # Initialize figure
 fig, ax = plt.subplots()
 
-# Plot the landsat data
+# Plot the Landsat data
 landsat[['swir22', 'nir08', 'red']].to_array().plot.imshow(ax = ax, 
                                                         robust = True)
 
@@ -396,12 +373,12 @@ thomas_boundary.boundary.plot(ax=ax,
                             label='Thomas Fire Boundary')
 
 # Create a legend for the false color bands and boundary
-legend_swir = mpatches.Patch(color = "#eb6a4b", label = 'Shortwave Infrared \n - Burned Area')
-legend_nir = mpatches.Patch(color = "#a1fc81", label = 'Near Infrared \n - Vegetation')
-legend_bound = mpatches.Patch(color = "#f83c36", label = 'Thomas Fire Boundary')
+legend_swir = mpatches.Patch(color = "#eb6a4b", label = 'SWIR\n- Burned Area')
+legend_nir = mpatches.Patch(color = "#a1fc81", label = 'NIR\n- Vegetation')
+legend_bound = mpatches.Patch(color = "#f83c36", label = 'Thomas Fire\nBoundary')
 
 # Plot legend
-ax.legend(handles = [legend_swir, legend_nir, legend_bound], loc = 'upper right', fontsize = 10)
+ax.legend(handles = [legend_swir, legend_nir, legend_bound], bbox_to_anchor=(1.38,1), fontsize = 10)
 
 # Set title and axes labels
 ax.set_title('False Color Map of the 2017 Thomas Fire in California\nwith the Fire Perimeter',
@@ -415,3 +392,24 @@ plt.show()
 **Figure Description**
 
 This map shows a false color image of the Thomas Fire in Santa Barbara and Ventura Counties. The fire boundary is outlined in red. Satellite data works with wavelengths of light beyond what the human eye can see. False color imagery is the process of assigning colors to these wavelengths (i.e. near-infrared and short-wave infrared). In our map, we've chosen to visualize short-wave infrared as red, near-infrared as green, and red wavelengths as blue. This lets us produce an image that highlights exactly where the fire scar is, as opposed to the true color image where you it is much harder to distinguish. A true color image assigns the red, green, and blue wavelengths of light to the correct corresponding colors.
+
+#### References
+
+- [Air Quality Index (AQI)](https://www.airnow.gov/aqi/aqi-basics/) from [US Environmental Protection Agency](https://www.epa.gov).
+
+    - US Environmental Protection Agency. Air Quality System Data Mart AirNow available via https://www.epa.gov/outdoor-air-quality-data. Accessed October 17 2024.
+
+- [Landsat Data](https://planetarycomputer.microsoft.com/dataset/landsat-c2-l2) from Microsoft's Planetary Computer Data Catalogue.
+
+    - Earth Resources Observation and Science (EROS) Center. (2020). Landsat 4-5 Thematic Mapper Level-2, Collection 2. U.S. Geological Survey. https://doi.org/10.5066/P9IAXOVV
+    - Earth Resources Observation and Science (EROS) Center. (2020). Landsat 7 Enhanced Thematic Mapper Plus Level-2, Collection 2. U.S. Geological Survey. https://doi.org/10.5066/P9C7I13B
+    - Earth Resources Observation and Science (EROS) Center. (2020). Landsat 8-9 Operational Land Imager / Thermal Infrared Sensor Level-2, Collection 2. U.S. Geological Survey. https://doi.org/10.5066/P9OGBGM6
+
+- [CalFire Fire Perimeter Data](https://www.fire.ca.gov/what-we-do/fire-resource-assessment-program/fire-perimeters)
+
+    - California Department of Forestry and Fire Protection (CAL FIRE), \[calfire_all.gdb\], \[2024-11-17\], retrieved from [CAL FIRE data portal.](https://www.fire.ca.gov/what-we-do/fire-resource-assessment-program/fire-perimeters)
+
+
+#### Acknowledgements
+
+This code is based on exercises from [Carmen Galaz-Garcia](https://github.com/carmengg) for [EDS-220: Working with Environmental Data](https://meds-eds-220.github.io/MEDS-eds-220-course/).
