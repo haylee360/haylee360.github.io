@@ -1,20 +1,22 @@
 ---
-title: "Exploring the Effect of Wildfire and AQI on Asthma"
+title: "Wildfires and Respiratory Health in California"
+description: "Examining the Effect of Wildfire and AQI on Asthma"
 author:
   - name: Haylee Oyler
     url: https://haylee360.github.io/
     affiliation: MEDS
     affiliation-url: https://bren.ucsb.edu/masters-programs/master-environmental-data-science
-date: '2024-12-07'
+date: '2024-12-13'
 categories:
   - Environmental-Health
+  - R
   - Statistics
   - MEDS
   - EDS-222
 toc: true
 # bibliography: references.bib
 # csl: plos-computational-biology.csl
-# image: thomas-fire-repo.jpeg
+image: napa-fire.png
 citation:
   url: https://haylee360.github.io/posts/2024-12-asthma-aqi/
 # draft: true
@@ -28,6 +30,7 @@ editor_options:
   chunk_output_type: console
 ---
 
+The full code for this analysis can be accessed at [this repository](https://github.com/haylee360/eds222-final-project)
 
 ## Introduction
 
@@ -45,17 +48,36 @@ This analysis will use AQI data as a proxy for wildfire to explore how changing 
 
 I will use data from a number of sources to answer this question. 
 
-- Air Quality Index (AQI) data by county was retrieved from the EPA [\[5\]](https://aqs.epa.gov/aqsweb/airdata/download_files.html#Annual).
+- [Air Quality Index (AQI) data](https://aqs.epa.gov/aqsweb/airdata/download_files.html#Annual) by county was retrieved from the EPA [\[5\]]().
 
-- Yearly asthma hospitalization counts by county were retrieved from the California Health and Human Services (CHHS) Open Data Portal [\[7\]](https://data.chhs.ca.gov/gl/dataset/asthma-prevalence).
+- [Yearly asthma hospitalization counts by county](https://data.ca.gov/dataset/asthma-emergency-department-visit-rates) were retrieved from the California Health and Human Services (CHHS) Open Data Portal [\[7\]]().
 
-- Fire frequency and area burned data was retrieved from CalFire [\[8\]](https://www.fire.ca.gov/what-we-do/fire-resource-assessment-program/fire-perimeters).
+- [Fire frequency and area burned data](https://www.fire.ca.gov/what-we-do/fire-resource-assessment-program/fire-perimeters) was retrieved from CalFire [\[8\]]().
 
-- County level demographic information and geospatial data were retrieved from the United States Census Bureau [\[10\]](https://www.census.gov/data/datasets/time-series/demo/popest/2010s-counties-total.html#par_textimage_70769902).
+- [County level demographic information and geospatial data](https://www.census.gov/data/datasets/time-series/demo/popest/2010s-counties-total.html#par_textimage_70769902) were retrieved from the United States Census Bureau [\[10\]]().
 
 ## Methods
 
 To start, I cleaned the data according to "Tidy Data" format such that I could join all my necessary information together. I divided the raw asthma hospitalization data by the population of each county, then multiplied by 100,000 to get the hospitalizations per 100,000 people. This was to account for the varying population sizes per county. I also capped the AQI value at 500 because that is the maximum standardized value listed on the EPA's website for air quality. Lastly, I used the area data and count data from CalFire to find the total acreage burned per year and total number of fires per year. This data was used to analyze trends in wildfire over time. 
+
+For my analysis, I started with a linear regression model. Because I couldn't find open access data that directly quantified PM 2.5 from wildfires, I used a variety of measures of air quality from the EPA's Aiq Quality Index. I tried looking at the median AQI, maximum AQI, days with PM 2.5, days with ozone, and days unhealthy for sensitive groups or worse. While these predictors were similar, median aqi had the highest R<sup>2</sup> and smallest p-value. 
+
+I also added some demographic variables such as median per capita income and population density to see if these were important predictors of asthma hospitalizations, but found they were not signifcant. The other variable I added that was very significant was year. 
+
+#### Model 1: Linear model
+Overall, my first model looks like this: 
+
+$$log(hosp\_per\_100k) = \beta_0 + \beta_1 median\_aqi + \beta_2year + u_i$$
+Where `hosp_per_100k` is asthma hospitalizations per 100,000 people. This variable has been log transformed to establish a linear relationship. `median_aqi` is the median aqi for that year. `year` represents the year of interest. 
+
+After conducting my first analysis, I decided to check for autocorrelation in my dataset. It turns out, my data was highly autocorrelated, therefore I moved onto an autoregressive distributive lag model (ADL). 
+
+#### Model 2: Autoregressive distributive lag model
+
+$$log(hosp\_per\_100k)[t] = \beta_0 + \beta_1 median\_aqi[t] + \beta_2year[t] + \\ \beta_3log(hosp\_per\_100k)[t-1] + \beta_4 median\_aqi[t-1] + \beta_5year[t-1] + u_i$$
+Where `t` is our data at `time = t` and `t-1` is our data at `time = t-1`. 
+
+The ADL model accounted for much of the autocorrelation in the residuals of my first linear model. 
 
 ## Results and Discussion
 
@@ -83,14 +105,17 @@ fire_asthma <- read_csv(here("posts", "2024-12-13-asthma-aqi", "data",  "fire_as
 
 ### Linear Model
 ```{r}
+#| code-fold: true
+#| code-summary: "Reveal code"
+
 asthma_mod <- lm(log(hosp_per_100k) ~ median_aqi + year + per_capita_income, data = asthma_aqi)
 
 asthma_hosp_table <- tab_model(asthma_mod,
                                pred.labels = c("Intercept", 
                                                "Median AQI", 
                                                "Year", 
-                                               "Per Capita Income (in $1000s)"),
-                               dv.labels = c("Hospitalizations (per 100k)"),
+                                               "Per capita Income (in $1000s)"),
+                               dv.labels = c("Asthma Hospitalizations (per 100k)"),
                                string.ci = "Conf. Int (95%)",
                                string.p = "P-value",
                                title = "Table 1. Linear Model Results",
@@ -110,8 +135,11 @@ asthma_aqi <- asthma_aqi %>%
 
 ### ADL model
 ```{r}
+#| code-fold: true
+#| code-summary: "Reveal code"
+
 adl_mod <- dynlm(
-  hosp_per_100k ~ L(hosp_per_100k, 1) + L(median_aqi, 0:1) + L(year, 0:1) + L(per_capita_income, 0:1), ts(asthma_aqi, start = 2015)
+  log(hosp_per_100k) ~ L(log(hosp_per_100k), 1) + L(median_aqi, 0:1) + L(year, 0:1), ts(asthma_aqi, start = 2015)
 )
 
 adl_table <- tab_model(adl_mod,
@@ -119,9 +147,7 @@ adl_table <- tab_model(adl_mod,
                                        "Lagged Hospitalizations\nper 100k", 
                                        "Median AQI",
                                        "Lagged Median AQI",
-                                       "Year",
-                                       "Per capita income (in $1000s)",
-                                       "Lagged per capita income\n(in $1000s)"),
+                                       "Year"),
                                dv.labels = c("Hospitalizations (per 100k)"),
                                string.ci = "Conf. Int (95%)",
                                string.p = "P-value",
@@ -130,9 +156,13 @@ adl_table <- tab_model(adl_mod,
 
 adl_table
 ```
+Model matrix is rank deficient. Parameters `L(year, 0:1)2` were not estimable.
 
 ### ACF plot 
 ```{r}
+#| code-fold: true
+#| code-summary: "Reveal code"
+
 residual_acf_before <- acf(resid(asthma_mod), 
                            plot = FALSE, 
                            na.action = na.pass)
@@ -166,13 +196,44 @@ acf_after <-  ggplot(acf_after_df, aes(Lag, ACF)) +
 acf_before + acf_after
 ```
 
+### Fires and hospitalizations over time
+```{r}
+#| code-fold: true
+#| code-summary: "Reveal code"
+
+# Plot change in area burned over time
+fire_plot <- ggplot(fire_asthma, aes(year, total_area)) +
+  geom_col(fill="firebrick") + 
+  labs(title="Total Area Burned by Wildfires\nin California by Year",
+       x="Year",
+       y="Area burned (acres)") +
+  theme_minimal() +
+    theme(axis.title = element_text(size=13),
+        title = element_text(size=14))
+
+# Plot change in hospitalizations over time
+hosp_plot <- ggplot(fire_asthma, aes(year, total_hosp_capita)) +
+  geom_col(fill="cornflowerblue") +
+  labs(title="Total Asthma Hospitalizations per\nCapita in California by Year",
+       x="Year",
+       y="Hospitalizations per 100K") +
+  theme_minimal() +
+  theme(axis.title = element_text(size=13),
+        title = element_text(size=14))
+
+fire_plot | hosp_plot  
+```
+
 
 ## Conclusion
 
 
 ### References
 
+[13] D. Kiser et al., “Particulate matter and emergency visits for asthma: a time-series study of their association in the presence and absence of wildfire smoke in Reno, Nevada, 2013–2018,” Environ. Health, vol. 19, no. 1, p. 92, Aug. 2020, doi: 10.1186/s12940-020-00646-2.
 
+
+image credits: [SF Chronicle](https://www.sfchronicle.com/news/article/Residents-in-Napa-area-fire-zone-focus-on-12980433.php)
 
 
 
