@@ -312,7 +312,6 @@ This fire perimeter data comes from CalFire and includes data for all fire perim
 landsat = landsat.squeeze().drop_vars('band')
 
 # Confirm it was removed correctly
-# print(f"New dimensions:", {landsat.dims})
 print(landsat.sizes)
 ```
 
