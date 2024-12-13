@@ -241,11 +241,10 @@ window.Quarto = {
   <li><a href="#analysis-plan" id="toc-analysis-plan" class="nav-link" data-scroll-target="#analysis-plan">Analysis plan</a></li>
   <li><a href="#results-and-discussion" id="toc-results-and-discussion" class="nav-link" data-scroll-target="#results-and-discussion">Results and Discussion</a>
   <ul class="collapse">
-  <li><a href="#linear-model" id="toc-linear-model" class="nav-link" data-scroll-target="#linear-model">Linear Model</a></li>
-  <li><a href="#acf-plot" id="toc-acf-plot" class="nav-link" data-scroll-target="#acf-plot">ACF plot</a></li>
-  <li><a href="#fires-and-hospitalizations-over-time" id="toc-fires-and-hospitalizations-over-time" class="nav-link" data-scroll-target="#fires-and-hospitalizations-over-time">Fires and hospitalizations over time</a></li>
+  <li><a href="#model-results" id="toc-model-results" class="nav-link" data-scroll-target="#model-results">Model Results</a></li>
+  <li><a href="#model-visualization" id="toc-model-visualization" class="nav-link" data-scroll-target="#model-visualization">Model visualization</a></li>
   </ul></li>
-  <li><a href="#next-steps" id="toc-next-steps" class="nav-link" data-scroll-target="#next-steps">Next steps</a>
+  <li><a href="#conclusions-and-next-steps" id="toc-conclusions-and-next-steps" class="nav-link" data-scroll-target="#conclusions-and-next-steps">Conclusions and next steps</a>
   <ul class="collapse">
   <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
   </ul></li>
@@ -264,7 +263,7 @@ window.Quarto = {
 <h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
 <p>Asthma affects an estimated 262 million people and is the most common chronic disease among children<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>. It is caused by inflammation in the small airways of the lungs that leads to wheezing, coughing, and shortness of breath. While inhaled medications can manage effectively manage symptoms, if left untreated, asthma attacks can be fatal. In fact, over 450,000 people died from asthma worldwide in 2019.</p>
 <p>Many things can trigger asthma symptoms. One example is fine particulate matter (PM). Scientists measure PM at two scales, PM 10 and PM 2.5, where the number refers to the size of the particles in micrograms. PM 2.5 is especially concerning for people with respiratory conditions such as asthma because its small size means it can get into even the narrowest of airways, causing irritation and inflammation<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>.</p>
-<p>PM 2.5 can come from many sources, from industrial pollution to car exhaust, but recent research has shown that PM 2.5 from wildfires is particularly harmful<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a>. As wildfire regimes get more more volatile and extreme under climate change, more people will be exposed to these harmful particles<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a>.</p>
+<p>PM 2.5 comes from many sources, from industrial pollution to car exhaust, but recent research has shown that PM 2.5 from wildfires is particularly harmful<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a>. As wildfire regimes become more volatile under climate change, more people will likely be exposed to these harmful particles<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a>.</p>
 <p>While it is difficult to directly measure PM 2.5 from wildfires, one useful proxy for wildfire air pollution is air quality. The Air Quality Index (AQI) is a measure of how polluted the air is. It is calculated based on the concentrations of a number of common pollutants (Ozone, particulate matter, CO, NO2, SO2) present in the air<a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a>.</p>
 <p>This analysis will use AQI data as a proxy for wildfire to explore how changing wildfire regimes are affecting the prevalence of asthma.</p>
 </section>
@@ -272,160 +271,51 @@ window.Quarto = {
 <h2 class="anchored" data-anchor-id="data">Data</h2>
 <p>I will use data from a number of sources to answer this question.</p>
 <ul>
-<li><p><a href="https://data.ca.gov/dataset/asthma-emergency-department-visit-rates">Yearly asthma hospitalization counts by county</a> were retrieved from the California Health and Human Services (CHHS) Open Data Portal<a href="#fn6" class="footnote-ref" id="fnref6" role="doc-noteref"><sup>6</sup></a>. This data includes the number of asthma-related hosptitalizations by county and year. It also provides strata by age various age groups. I filtered down to only the observations by total population, as I am interested in hospitalizations for all age groups. Additionally, data was only available from 2015-2022, so this became my time range of interest that I filtered the rest of my data to match.</p></li>
+<li><p><a href="https://data.ca.gov/dataset/asthma-emergency-department-visit-rates">Yearly asthma hospitalization counts by county</a> were retrieved from the California Health and Human Services (CHHS) Open Data Portal<a href="#fn6" class="footnote-ref" id="fnref6" role="doc-noteref"><sup>6</sup></a>. This data includes the number of asthma-related hospitalizations by county and year. It also provides strata by age various age groups. I filtered down to only the observations by total population, as I am interested in hospitalizations for all age groups. Additionally, data was only available from 2015-2022, so this became my time range of interest that I filtered the rest of my data to match.</p></li>
 <li><p><a href="https://aqs.epa.gov/aqsweb/airdata/download_files.html#Annual">Air Quality Index (AQI) data</a> by county was retrieved from the EPA<a href="#fn7" class="footnote-ref" id="fnref7" role="doc-noteref"><sup>7</sup></a>. This data includes various assessments of AQI at a yearly scale across California counties. AQI is available at a finer temporal scale, but I chose to look at yearly AQI data from 2015-2022 to match the temporal scale of the asthma data.</p></li>
-<li><p><a href="https://www.fire.ca.gov/what-we-do/fire-resource-assessment-program/fire-perimeters">Fire frequency and area burned data</a> was retrieved from CalFire<a href="#fn8" class="footnote-ref" id="fnref8" role="doc-noteref"><sup>8</sup></a>. This is a geodatabase of all the fire perimeters and associated fire information from 1858 until 2023 in California. I filtered down to just fires between 2015 and 2022 and used calculated the total area burned by year and the total number of fires burned by year. While this data did not factor into my main analysis, it was useful in understanding the larger context of the question and looking for confounding variables.</p></li>
-<li><p><a href="https://www.census.gov/data/datasets/time-series/demo/popest/2010s-counties-total.html#par_textimage_70769902">County level demographic information and geospatial data</a> were retrieved from the United States Census Bureau<a href="#fn9" class="footnote-ref" id="fnref9" role="doc-noteref"><sup>9</sup></a>. This data contains informations on population totals by county and year for California. It also has vector data on the county boundaries. This data was used to standardize the number of hospitalizations by the population size per county. Similarly, this data was filtered to 2015-2022.</p></li>
+<li><p><a href="https://www.fire.ca.gov/what-we-do/fire-resource-assessment-program/fire-perimeters">Fire frequency and area burned data</a> was retrieved from CalFire<a href="#fn8" class="footnote-ref" id="fnref8" role="doc-noteref"><sup>8</sup></a>. This is a geodatabase of all the fire perimeters and associated fire information from 1858 until 2023 in California. I filtered down to just fires between 2015 and 2022 and calculated the total area burned by year and the total number of fires burned by year. While this data did not factor into my main analysis, it was useful in understanding the larger context of the question and looking for confounding variables.</p></li>
+<li><p><a href="https://www.census.gov/data/datasets/time-series/demo/popest/2010s-counties-total.html#par_textimage_70769902">County level demographic information and geospatial data</a> were retrieved from the United States Census Bureau<a href="#fn9" class="footnote-ref" id="fnref9" role="doc-noteref"><sup>9</sup></a>. This data contains information on population totals by county and year for California. It also has vector data on the county boundaries. This data was used to standardize the number of hospitalizations by the population size per county and to look for trends along latitude in hospitalizations. Similarly, this data was filtered to 2015-2022.</p></li>
 </ul>
-<p>Before beginning my analysis, I cleaned the data according to “Tidy Data” format such that I could join all my necessary information together. I divided the raw asthma hospitalization data by the population of each county, then multiplied by 100,000 to get the hospitalizations per 100,000 people. This was to account for the varying population sizes per county. I also capped the AQI value at 500 because that is the maximum standardized value listed on the EPA’s website for air quality. Lastly, I used the area data and count data from CalFire to find the total acreage burned per year and total number of fires per year. This data was used to analyze trends in wildfire over time.</p>
+<p>Before beginning my analysis, I cleaned the data such that I could join all my necessary information together. I divided the raw asthma hospitalization data by the population of each county, then multiplied by 100,000 to get the hospitalizations per 100,000 people. This was to account for the varying population sizes per county. I also capped the AQI value at 500 because that is the maximum standardized value listed on the EPA’s website for air quality. I converted the county boundary polygon data into coordinates to look for trends along latitude. Lastly, I used the area data and count data from CalFire to find the total acreage burned per year and total number of fires per year. This data was used to analyze trends in wildfires over time.</p>
 </section>
 <section id="analysis-plan" class="level2">
 <h2 class="anchored" data-anchor-id="analysis-plan">Analysis plan</h2>
-<p>For my analysis, I started with a linear regression model. This was my first approach because at the start, I just wanted to understand if there was a linear relationship between wildfire PM 2.5 and asthma hospitalizations. Because I couldn’t find open access data that directly quantified PM 2.5 from wildfires, I used a variety of measures of air quality from the EPA’s Air Quality Index. I tried looking at the median AQI, maximum AQI, days with PM 2.5, days with ozone, and days unhealthy for sensitive groups or worse. While these predictors were similar, median aqi had the highest R<sup>2</sup> and smallest p-value. There are some limitations here simply because I am using a proxy for wildfire PM 2.5 and I do not know what the relationship is between the AQI data I have, and the wildfire PM 2.5 data I was unable to access.</p>
-<p>I also added demographic variables such as median per capita income and population density to see if these were important predictors of asthma hospitalizations. However, I found they were not signifcant.</p>
-<p>The last variable I tried was year, had a large R<sup>2</sup> value and a significant p-value.</p>
-<section id="model-1-linear-model" class="level4">
-<h4 class="anchored" data-anchor-id="model-1-linear-model">Model 1: Linear model</h4>
-<p>Overall, my first model looks like this:</p>
-<p><span class="math display">\[log(hosp\_per\_100k) = \beta_0 + \beta_1 median\_aqi + \beta_2year + u_i\]</span> Where <code>hosp_per_100k</code> is asthma hospitalizations per 100,000 people. This variable has been log transformed to establish a linear relationship. <code>median_aqi</code> is the median aqi for that year. <code>year</code> represents the year of interest.</p>
-<p>The next step in my analysis plan was to check for autocorrelation because I was using time series data. Autocorrelation can occur in temporal and spatial data sets because data collected near each other in space and time have the potential to be more similar to each other. I used the autocorrelation function <code>acf</code> on the residuals from my first linear model to see if there was any autocorrelation. As it turns out, there was. So, I turned to a new analysis.</p>
-</section>
-<section id="model-2-autoregressive-distributive-lag-model" class="level4">
-<h4 class="anchored" data-anchor-id="model-2-autoregressive-distributive-lag-model">Model 2: Autoregressive distributive lag model</h4>
-<p>Because my data was highly autocorrelated, I decided to use an autoregressive distributive lag model next. This model lags the response of the</p>
-<p><span class="math display">\[\begin{align*}
-log(hosp\_per\_100k)[t] = \beta_0 + \beta_1 median\_aqi[t] + \beta_2year[t] + \beta_3log(hosp\_per\_100k)[t-1] + \\
-                          \beta_4 median\_aqi[t-1] + \beta_5year[t-1] + u_i
-\end{align*}\]</span></p>
-<p>Where <code>t</code> is our data at <code>time = t</code> and <code>t-1</code> is our data at <code>time = t-1</code>.</p>
-<p>The ADL model accounted for much of the autocorrelation in the residuals of my first linear model.</p>
+<p>For my analysis, I chose a multiple linear regression model. I started by running simple linear regressions with single predictors to get a sense of what variables were and were not important to my analysis. I was interested in understanding if there was a linear relationship between wildfire PM 2.5 and asthma hospitalizations. Because I couldn’t find open access data that directly quantified PM 2.5 from wildfires, I used a variety of measures of air quality from the EPA’s Air Quality Index. I tried looking at the median AQI, maximum AQI, days with PM 2.5, days with ozone, and days unhealthy for sensitive groups or worse. While these predictors were similar, median AQI had the highest R<sup>2</sup> and smallest p-value. There are large limitations here simply because I am using a proxy for wildfire PM 2.5 and I do not know what the relationship is between the AQI data I have and the wildfire PM 2.5 data I was unable to access.</p>
+<p>I also added demographic variables such as median per capita income and population density to see if these were important predictors of asthma hospitalizations. However, I found they were not significant.</p>
+<p>Lastly, I incorporated spatial and temporal variables to see if those affected hospitalizations. There was no significant effect of latitude, but year was very significant. Thus, my final model looks as follows:</p>
+<section id="multiple-linear-regression-model" class="level4">
+<h4 class="anchored" data-anchor-id="multiple-linear-regression-model">Multiple linear regression model:</h4>
+<p><span class="math display">\[log(hosp\_per\_100k) = \beta_0 + \beta_1 median\_aqi + \beta_2year2015 ... \beta_9year2022 + u_i\]</span> Where <code>hosp_per_100k</code> is asthma hospitalizations per 100,000 people. This variable has been log transformed to establish a linear relationship. <code>median_aqi</code> is the median aqi for that year. <code>year</code> represents the year of interest treated as a categorical variable.</p>
+<p>I chose to analyze year as a categorical variable because of the frequency with which the asthma data was collected. Since the asthma data is reported on a yearly basis, there is no intra-year variability in the data. Therefore, I decided to treat year as a categorical instead of a continuous numerical variable. There are 8 years of data included in my analysis, but the formula here does not list all of them for brevity.</p>
+<p>The next step in my analysis plan was to check for autocorrelation because I was using time series data. Autocorrelation can occur in temporal and spatial data sets because data collected near each other in space and time have the potential to be more similar to each other. I used the autocorrelation function <code>acf</code> on the residuals from my linear model and there was no obvious autocorrelation in my data.</p>
 </section>
 </section>
 <section id="results-and-discussion" class="level2">
 <h2 class="anchored" data-anchor-id="results-and-discussion">Results and Discussion</h2>
-<section id="linear-model" class="level3">
-<h3 class="anchored" data-anchor-id="linear-model">Linear Model</h3>
+<section id="model-results" class="level3">
+<h3 class="anchored" data-anchor-id="model-results">Model Results</h3>
 <div class="cell">
 <details class="code-fold">
 <summary>Reveal code</summary>
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>median_mod<span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="fu">log</span>(hosp_per_100k) <span class="sc">~</span> median_aqi, <span class="at">data =</span> asthma_aqi)</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(median_mod)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-Call:
-lm(formula = log(hosp_per_100k) ~ median_aqi, data = asthma_aqi)
-
-Residuals:
-     Min       1Q   Median       3Q      Max 
--1.49854 -0.29022  0.02557  0.32207  1.18478 
-
-Coefficients:
-            Estimate Std. Error t value Pr(&gt;|t|)    
-(Intercept) 2.997001   0.093018  32.220  &lt; 2e-16 ***
-median_aqi  0.009386   0.001733   5.415 1.09e-07 ***
----
-Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
-
-Residual standard error: 0.4791 on 379 degrees of freedom
-  (18 observations deleted due to missingness)
-Multiple R-squared:  0.0718,    Adjusted R-squared:  0.06935 
-F-statistic: 29.32 on 1 and 379 DF,  p-value: 1.093e-07</code></pre>
-</div>
-<details class="code-fold">
-<summary>Reveal code</summary>
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>year_mod<span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="fu">log</span>(hosp_per_100k) <span class="sc">~</span> <span class="fu">as.factor</span>(year), <span class="at">data =</span> asthma_aqi)</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(year_mod)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-Call:
-lm(formula = log(hosp_per_100k) ~ as.factor(year), data = asthma_aqi)
-
-Residuals:
-     Min       1Q   Median       3Q      Max 
--0.99976 -0.21562  0.01967  0.25110  1.20531 
-
-Coefficients:
-                    Estimate Std. Error t value Pr(&gt;|t|)    
-(Intercept)          4.05715    0.04856  83.547  &lt; 2e-16 ***
-as.factor(year)2016 -0.45303    0.06968  -6.502 2.43e-10 ***
-as.factor(year)2017 -0.34455    0.07004  -4.920 1.28e-06 ***
-as.factor(year)2018 -0.45912    0.06868  -6.685 7.97e-11 ***
-as.factor(year)2019 -0.43175    0.07041  -6.132 2.12e-09 ***
-as.factor(year)2020 -1.13656    0.07119 -15.966  &lt; 2e-16 ***
-as.factor(year)2021 -1.08157    0.07119 -15.193  &lt; 2e-16 ***
-as.factor(year)2022 -0.72665    0.07119 -10.208  &lt; 2e-16 ***
----
-Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
-
-Residual standard error: 0.3568 on 391 degrees of freedom
-Multiple R-squared:  0.5055,    Adjusted R-squared:  0.4967 
-F-statistic: 57.11 on 7 and 391 DF,  p-value: &lt; 2.2e-16</code></pre>
-</div>
-<details class="code-fold">
-<summary>Reveal code</summary>
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>asthma_mod <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="fu">log</span>(hosp_per_100k) <span class="sc">~</span> median_aqi <span class="sc">+</span> <span class="fu">as.factor</span>(year), <span class="at">data =</span> asthma_aqi)</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(asthma_mod)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-Call:
-lm(formula = log(hosp_per_100k) ~ median_aqi + as.factor(year), 
-    data = asthma_aqi)
-
-Residuals:
-     Min       1Q   Median       3Q      Max 
--0.88965 -0.18911 -0.01496  0.22310  1.25769 
-
-Coefficients:
-                     Estimate Std. Error t value Pr(&gt;|t|)    
-(Intercept)          3.515416   0.076453  45.981  &lt; 2e-16 ***
-median_aqi           0.009622   0.001165   8.261 2.56e-15 ***
-as.factor(year)2016 -0.411476   0.063985  -6.431 3.90e-10 ***
-as.factor(year)2017 -0.327486   0.064285  -5.094 5.58e-07 ***
-as.factor(year)2018 -0.424514   0.063002  -6.738 6.12e-11 ***
-as.factor(year)2019 -0.355287   0.064923  -5.472 8.17e-08 ***
-as.factor(year)2020 -1.137920   0.065379 -17.405  &lt; 2e-16 ***
-as.factor(year)2021 -1.061844   0.065387 -16.239  &lt; 2e-16 ***
-as.factor(year)2022 -0.648274   0.065847  -9.845  &lt; 2e-16 ***
----
-Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
-
-Residual standard error: 0.3197 on 372 degrees of freedom
-  (18 observations deleted due to missingness)
-Multiple R-squared:  0.5943,    Adjusted R-squared:  0.5856 
-F-statistic: 68.13 on 8 and 372 DF,  p-value: &lt; 2.2e-16</code></pre>
-</div>
-<details class="code-fold">
-<summary>Reveal code</summary>
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>asthma_hosp_table <span class="ot">&lt;-</span> <span class="fu">tab_model</span>(asthma_mod,</span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>                               <span class="at">pred.labels =</span> <span class="fu">c</span>(<span class="st">"Intercept (year 2015)"</span>, </span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>                                               <span class="st">"Median AQI"</span>, </span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>                                               <span class="st">"2016"</span>,</span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>                                               <span class="st">"2017"</span>,</span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>                                               <span class="st">"2018"</span>,</span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>                                               <span class="st">"2019"</span>,</span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>                                               <span class="st">"2020"</span>,</span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>                                               <span class="st">"2021"</span>,</span>
-<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>                                               <span class="st">"2022"</span>), </span>
-<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>                               <span class="at">dv.labels =</span> <span class="fu">c</span>(<span class="st">"Asthma Hospitalizations (per 100k)"</span>),</span>
-<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>                               <span class="at">string.ci =</span> <span class="st">"95% Conf. Int."</span>,</span>
-<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>                               <span class="at">string.p =</span> <span class="st">"P-value"</span>,</span>
-<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>                               <span class="at">title =</span> <span class="st">"Table 1. Linear Model Results"</span>,</span>
-<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>                               <span class="at">digits =</span> <span class="dv">3</span>)</span>
-<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a><span class="co"># asthma_hosp_table &lt;- tab_model(asthma_mod,</span></span>
-<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a><span class="co">#                                pred.labels = c("Intercept", </span></span>
-<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a><span class="co">#                                                "Median AQI", </span></span>
-<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a><span class="co">#                                                "Year"), </span></span>
-<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a><span class="co">#                                dv.labels = c("Asthma Hospitalizations (per 100k)"),</span></span>
-<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a><span class="co">#                                string.ci = "95% Conf. Int.",</span></span>
-<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a><span class="co">#                                string.p = "P-value",</span></span>
-<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a><span class="co">#                                title = "Table 1. Linear Model Results",</span></span>
-<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a><span class="co">#                                digits = 3)</span></span>
-<span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-27"><a href="#cb7-27" aria-hidden="true" tabindex="-1"></a>asthma_hosp_table</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>asthma_mod <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="fu">log</span>(hosp_per_100k) <span class="sc">~</span> median_aqi <span class="sc">+</span> <span class="fu">as.factor</span>(year), <span class="at">data =</span> asthma_aqi)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>asthma_hosp_table <span class="ot">&lt;-</span> <span class="fu">tab_model</span>(asthma_mod,</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>                               <span class="at">pred.labels =</span> <span class="fu">c</span>(<span class="st">"Intercept (year 2015)"</span>, </span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>                                               <span class="st">"Median AQI"</span>, </span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>                                               <span class="st">"2016"</span>,</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>                                               <span class="st">"2017"</span>,</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>                                               <span class="st">"2018"</span>,</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>                                               <span class="st">"2019"</span>,</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>                                               <span class="st">"2020"</span>,</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>                                               <span class="st">"2021"</span>,</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>                                               <span class="st">"2022"</span>), </span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>                               <span class="at">dv.labels =</span> <span class="fu">c</span>(<span class="st">"Asthma Hospitalizations (per 100k)"</span>),</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>                               <span class="at">string.ci =</span> <span class="st">"95% Conf. Int."</span>,</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>                               <span class="at">string.p =</span> <span class="st">"P-value"</span>,</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>                               <span class="at">title =</span> <span class="st">"Table 1. Linear Model Results"</span>,</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>                               <span class="at">digits =</span> <span class="dv">3</span>)</span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>asthma_hosp_table</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
 <table class="caption-top table table-sm table-striped small" data-quarto-postprocess="true">
@@ -509,64 +399,33 @@ F-statistic: 68.13 on 8 and 372 DF,  p-value: &lt; 2.2e-16</code></pre>
 
 </div>
 </div>
+<p><em>Note to Max: these results vary so drastically from what I presented because I had simply forgot to add year into my model. Sorry about that!</em></p>
+<p>The results of the linear model show that median AQI and all years of interest had significant coefficients at the 0.05 significance level. Additionally, the adjusted R<sup>2</sup> of 0.586 tells us that ~58.6% of the variability in hospitalizations can be explained by median aqi and year. However, if we examine the R<sup>2</sup> values from my earlier preliminary models, we can see roughly what the breakdown of this multiple linear regression is.</p>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "R squared for median aqi as sole predictor: 0.07"</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "R squared for year as sole predictor: 0.51"</code></pre>
+</div>
+</div>
+<p>When we take into account all three R<sup>2</sup> values together, we can see that roughly 7% of the variation in the complete model comes from median AQI, and roughly 51% of the variation from year.</p>
 </section>
-<section id="acf-plot" class="level3">
-<h3 class="anchored" data-anchor-id="acf-plot">ACF plot</h3>
+<section id="model-visualization" class="level3">
+<h3 class="anchored" data-anchor-id="model-visualization">Model visualization</h3>
+<p>Next, we can plot the parts of our linear model results to see how well our predicted line fits our data.</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Reveal code</summary>
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>residual_acf_before <span class="ot">&lt;-</span> <span class="fu">acf</span>(<span class="fu">resid</span>(asthma_mod), </span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>                           <span class="at">plot =</span> <span class="cn">FALSE</span>, </span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>                           <span class="at">na.action =</span> na.pass)</span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>acf_before_df <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">Lag =</span> residual_acf_before<span class="sc">$</span>lag, </span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>                        <span class="at">ACF =</span> <span class="fu">as.vector</span>(residual_acf_before<span class="sc">$</span>acf)) </span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>acf_before <span class="ot">&lt;-</span>  <span class="fu">ggplot</span>(acf_before_df, <span class="fu">aes</span>(Lag, ACF)) <span class="sc">+</span> </span>
-<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="dv">0</span>, </span>
-<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>             <span class="at">linetype =</span> <span class="st">"dashed"</span>, </span>
-<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>             <span class="at">color =</span> <span class="st">"cornflowerblue"</span>,</span>
-<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>             <span class="at">linewidth =</span> <span class="fl">1.5</span>) <span class="sc">+</span></span>
-<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="at">linewidth =</span> <span class="dv">2</span>) <span class="sc">+</span></span>
-<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span>
-<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>acf_before</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="asthma-aqi_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
-</div>
-</div>
-</section>
-<section id="fires-and-hospitalizations-over-time" class="level3">
-<h3 class="anchored" data-anchor-id="fires-and-hospitalizations-over-time">Fires and hospitalizations over time</h3>
-<div class="cell">
-<details class="code-fold">
-<summary>Reveal code</summary>
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot change in area burned over time</span></span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>fire_plot <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(fire_asthma, <span class="fu">aes</span>(year, total_area)) <span class="sc">+</span></span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>(<span class="at">fill=</span><span class="st">"firebrick"</span>) <span class="sc">+</span> </span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title=</span><span class="st">"Total Area Burned by Wildfires</span><span class="sc">\n</span><span class="st">in California by Year"</span>,</span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>       <span class="at">x=</span><span class="st">"Year"</span>,</span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>       <span class="at">y=</span><span class="st">"Area burned (acres)"</span>) <span class="sc">+</span></span>
-<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
-<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme</span>(<span class="at">axis.title =</span> <span class="fu">element_text</span>(<span class="at">size=</span><span class="dv">13</span>),</span>
-<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>        <span class="at">title =</span> <span class="fu">element_text</span>(<span class="at">size=</span><span class="dv">14</span>))</span>
-<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot change in hospitalizations over time</span></span>
-<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>hosp_plot <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(fire_asthma, <span class="fu">aes</span>(year, total_hosp_capita)) <span class="sc">+</span></span>
-<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>(<span class="at">fill=</span><span class="st">"cornflowerblue"</span>) <span class="sc">+</span></span>
-<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title=</span><span class="st">"Total Asthma Hospitalizations per</span><span class="sc">\n</span><span class="st">Capita in California by Year"</span>,</span>
-<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>       <span class="at">x=</span><span class="st">"Year"</span>,</span>
-<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a>       <span class="at">y=</span><span class="st">"Hospitalizations per 100K"</span>) <span class="sc">+</span></span>
-<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
-<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.title =</span> <span class="fu">element_text</span>(<span class="at">size=</span><span class="dv">13</span>),</span>
-<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a>        <span class="at">title =</span> <span class="fu">element_text</span>(<span class="at">size=</span><span class="dv">14</span>))</span>
-<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a>fire_plot <span class="sc">|</span> hosp_plot  </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(asthma_aqi, <span class="fu">aes</span>(median_aqi, <span class="fu">log</span>(hosp_per_100k))) <span class="sc">+</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">"lm"</span>,</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>              <span class="at">se=</span><span class="cn">FALSE</span>,</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>              <span class="at">color=</span><span class="st">"red"</span>) <span class="sc">+</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title=</span><span class="st">"Hospitalizations and Median AQI"</span>,</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>       <span class="at">x=</span><span class="st">"Median AQI"</span>,</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>       <span class="at">y=</span><span class="st">"log(Hospitalizations per 100k)"</span>) <span class="sc">+</span></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
 <div>
@@ -576,17 +435,87 @@ F-statistic: 68.13 on 8 and 372 DF,  p-value: &lt; 2.2e-16</code></pre>
 </div>
 </div>
 </div>
+<p>This graph shows how hospitalizations are changing with median AQI through time. There is a weak, positive, linear relationship between median AQI and hospitalizations with no obvious outliers. We can also see our line of best fit. The residuals for this particular model were evenly distributed and showed no trend.</p>
+<p>We can also visualize how hospitalizations are changing with time.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Reveal code</summary>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(asthma_aqi, <span class="fu">aes</span>(<span class="fu">as.factor</span>(year), <span class="fu">log</span>(hosp_per_100k))) <span class="sc">+</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="fu">aes</span>(<span class="at">fill=</span><span class="fu">as.factor</span>(year))) <span class="sc">+</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(<span class="at">title=</span><span class="st">"Hospitalizations by Year"</span>,</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>       <span class="at">x=</span><span class="st">"Year"</span>,</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>       <span class="at">y=</span><span class="st">"log(Hospitalizations per 100k)"</span>,</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>       <span class="at">fill=</span><span class="st">"Year"</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="asthma-aqi_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>This graph shows the boxplot of hospitalizations by year. While we cannot plot our best fit line onto this graph, we can see that hospitalizations seem to be decreasing with time. This tracks with our estimated coefficients from our above multiple regression model. Every coefficient for year after the reference level of 2015 is negative, showing how hospitalizations are decreasing in magnitude relative to 2015.</p>
 </section>
 </section>
-<section id="next-steps" class="level2">
-<h2 class="anchored" data-anchor-id="next-steps">Next steps</h2>
-<p>ADL graph is inconclusive because while it improves the autocorrelation, it does not remove it entirely. The data still exhibits a large amount of positive autocorrelation.</p>
-<p>A big limitation of this analysis was the lack of finer temporal scale data for asthma-related hospitalizations. All of the other datasets I was using had data available at the daily and sometimes even hourly time scale. Because I had to aggregate data about AQI to such a broad time scale, much of the variation in AQI across seasons is lost. There are certain asthma triggers that are seasonal, such as pollen in the spring or cold air in the winter. Being able to track how month-to-month seasonality is affecting hospitalizations would be a great next step.</p>
+<section id="conclusions-and-next-steps" class="level2">
+<h2 class="anchored" data-anchor-id="conclusions-and-next-steps">Conclusions and next steps</h2>
+<p>Overall, these results only provide very weak evidence that there is a relationship between wildfires and respiratory health. While the results of my model were significant, there were many limitations in the data I was using that could be affecting my results. For example, a large limitation of this analysis was the lack of finer temporal scale data for asthma-related hospitalizations. All of the other datasets I was using had data available at the daily and sometimes even hourly time scale. Because I had to aggregate data about AQI to such a broad time scale, much of the variation in AQI across seasons is lost. There are certain asthma triggers that are seasonal, such as pollen in the spring or cold air in the winter. Being able to track how month-to-month seasonality is affecting hospitalizations would be a great next step.</p>
 <p>Another limitation was that I was unable to find any open-source data on PM 2.5 directly from wildfires. This meant I was unable to examine a direct relationship between wildfire and asthma hospitalizations, I could only use AQI as a proxy. There certainly is data on wildfire PM 2.5, and if given more time, I would reach out to the data owners and authors of papers who have published scholarship on this topic to try and request access to the data.</p>
+<p>Lastly, this analysis contained many omitted variables that might be influencing trends in asthma hospitalizations over time.</p>
+<p>For example:</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Fires and hospitalizations over time</summary>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot change in area burned over time</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>fire_plot <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(fire_asthma, <span class="fu">aes</span>(year, total_area)) <span class="sc">+</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>(<span class="at">fill=</span><span class="st">"firebrick"</span>) <span class="sc">+</span> </span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>(<span class="at">data =</span> . <span class="sc">%&gt;%</span> <span class="fu">filter</span>(year <span class="sc">==</span> <span class="dv">2020</span>),</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>           <span class="at">color=</span><span class="st">"red"</span>,</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>           <span class="at">fill=</span><span class="st">"firebrick"</span>,</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>           <span class="at">lwd=</span><span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title=</span><span class="st">"Total Area Burned by Wildfires</span><span class="sc">\n</span><span class="st">in California by Year"</span>,</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>       <span class="at">x=</span><span class="st">"Year"</span>,</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>       <span class="at">y=</span><span class="st">"Area burned (acres)"</span>) <span class="sc">+</span></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme</span>(<span class="at">axis.title =</span> <span class="fu">element_text</span>(<span class="at">size=</span><span class="dv">12</span>),</span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>        <span class="at">title =</span> <span class="fu">element_text</span>(<span class="at">size=</span><span class="dv">12</span>))</span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot change in hospitalizations over time</span></span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>hosp_plot <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(fire_asthma, <span class="fu">aes</span>(year, total_hosp_capita)) <span class="sc">+</span></span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>(<span class="at">fill=</span><span class="st">"cornflowerblue"</span>) <span class="sc">+</span></span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>(<span class="at">data =</span> . <span class="sc">%&gt;%</span> <span class="fu">filter</span>(year <span class="sc">==</span> <span class="dv">2020</span>),</span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a>           <span class="at">color=</span><span class="st">"red"</span>,</span>
+<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a>           <span class="at">fill=</span><span class="st">"cornflowerblue"</span>,</span>
+<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a>           <span class="at">lwd=</span><span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title=</span><span class="st">"Total Asthma Hospitalizations</span><span class="sc">\n</span><span class="st">per 100k in California by Year"</span>,</span>
+<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a>       <span class="at">x=</span><span class="st">"Year"</span>,</span>
+<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a>       <span class="at">y=</span><span class="st">"Hospitalizations per 100K"</span>) <span class="sc">+</span></span>
+<span id="cb6-25"><a href="#cb6-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb6-26"><a href="#cb6-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.title =</span> <span class="fu">element_text</span>(<span class="at">size=</span><span class="dv">12</span>),</span>
+<span id="cb6-27"><a href="#cb6-27" aria-hidden="true" tabindex="-1"></a>        <span class="at">title =</span> <span class="fu">element_text</span>(<span class="at">size=</span><span class="dv">12</span>))</span>
+<span id="cb6-28"><a href="#cb6-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-29"><a href="#cb6-29" aria-hidden="true" tabindex="-1"></a>fire_plot <span class="sc">|</span> hosp_plot  </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="asthma-aqi_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>This plot shows the total area burned by wildfires in California from 2015 to 2022, and the total number of asthma hospitalizations per 100k people in California from 2015-2022. The year 2020 in particular stands out. Despite it being a record year for the amount of area burned in the state, it was also the year with the fewest hospitalizations. An obvious factor that is likely influencing this is COVID-19. The shelter-in-place mandates likely greatly influenced people who were seeking out asthma care, even if there were more wildfires that year.</p>
+<p>This is just one example of an important cause of variation in asthma hospitalizations that I was unable to capture in my model. Going forward, I would like to have access to much more comprehensive data to truly unpack the connection between wildfires and respiratory health.</p>
 <section id="references" class="level3">
 <h3 class="anchored" data-anchor-id="references">References</h3>
+<section id="acknowledgements" class="level4">
+<h4 class="anchored" data-anchor-id="acknowledgements">Acknowledgements</h4>
+<p>This code is based on material from <a href="https://github.com/FlukeAndFeather">Max Czapanskiy</a> for <a href="https://eds-222-statistics.github.io/">EDS-222: Statistics for Environmental Data Scientists</a>.</p>
 
 
+</section>
 </section>
 </section>
 

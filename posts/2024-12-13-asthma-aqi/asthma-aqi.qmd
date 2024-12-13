@@ -38,7 +38,7 @@ Asthma affects an estimated 262 million people and is the most common chronic di
 
 Many things can trigger asthma symptoms. One example is fine particulate matter (PM). Scientists measure PM at two scales, PM 10 and PM 2.5, where the number refers to the size of the particles in micrograms. PM 2.5 is especially concerning for people with respiratory conditions such as asthma because its small size means it can get into even the narrowest of airways, causing irritation and inflammation[^2]. 
 
-PM 2.5 can come from many sources, from industrial pollution to car exhaust, but recent research has shown that PM 2.5 from wildfires is particularly harmful[^3]. As wildfire regimes get more more volatile and extreme under climate change, more people will be exposed to these harmful particles[^4]. 
+PM 2.5 comes from many sources, from industrial pollution to car exhaust, but recent research has shown that PM 2.5 from wildfires is particularly harmful[^3]. As wildfire regimes become more volatile under climate change, more people will likely be exposed to these harmful particles[^4].
 
 While it is difficult to directly measure PM 2.5 from wildfires, one useful proxy for wildfire air pollution is air quality. The Air Quality Index (AQI) is a measure of how polluted the air is. It is calculated based on the concentrations of a number of common pollutants (Ozone, particulate matter, CO, NO2, SO2) present in the air[^5]. 
 
@@ -48,43 +48,32 @@ This analysis will use AQI data as a proxy for wildfire to explore how changing 
 
 I will use data from a number of sources to answer this question. 
 
-- [Yearly asthma hospitalization counts by county](https://data.ca.gov/dataset/asthma-emergency-department-visit-rates) were retrieved from the California Health and Human Services (CHHS) Open Data Portal[^6]. This data includes the number of asthma-related hosptitalizations by county and year. It also provides strata by age various age groups. I filtered down to only the observations by total population, as I am interested in hospitalizations for all age groups. Additionally, data was only available from 2015-2022, so this became my time range of interest that I filtered the rest of my data to match.
+- [Yearly asthma hospitalization counts by county](https://data.ca.gov/dataset/asthma-emergency-department-visit-rates) were retrieved from the California Health and Human Services (CHHS) Open Data Portal[^6]. This data includes the number of asthma-related hospitalizations by county and year. It also provides strata by age various age groups. I filtered down to only the observations by total population, as I am interested in hospitalizations for all age groups. Additionally, data was only available from 2015-2022, so this became my time range of interest that I filtered the rest of my data to match.
 
 - [Air Quality Index (AQI) data](https://aqs.epa.gov/aqsweb/airdata/download_files.html#Annual) by county was retrieved from the EPA[^7]. This data includes various assessments of AQI at a yearly scale across California counties. AQI is available at a finer temporal scale, but I chose to look at yearly AQI data from 2015-2022 to match the temporal scale of the asthma data. 
 
-- [Fire frequency and area burned data](https://www.fire.ca.gov/what-we-do/fire-resource-assessment-program/fire-perimeters) was retrieved from CalFire[^8]. This is a geodatabase of all the fire perimeters and associated fire information from 1858 until 2023 in California. I filtered down to just fires between 2015 and 2022 and used calculated the total area burned by year and the total number of fires burned by year. While this data did not factor into my main analysis, it was useful in understanding the larger context of the question and looking for confounding variables. 
+- [Fire frequency and area burned data](https://www.fire.ca.gov/what-we-do/fire-resource-assessment-program/fire-perimeters) was retrieved from CalFire[^8]. This is a geodatabase of all the fire perimeters and associated fire information from 1858 until 2023 in California. I filtered down to just fires between 2015 and 2022 and calculated the total area burned by year and the total number of fires burned by year. While this data did not factor into my main analysis, it was useful in understanding the larger context of the question and looking for confounding variables. 
 
-- [County level demographic information and geospatial data](https://www.census.gov/data/datasets/time-series/demo/popest/2010s-counties-total.html#par_textimage_70769902) were retrieved from the United States Census Bureau[^9]. This data contains informations on population totals by county and year for California. It also has vector data on the county boundaries. This data was used to standardize the number of hospitalizations by the population size per county. Similarly, this data was filtered to 2015-2022. 
+- [County level demographic information and geospatial data](https://www.census.gov/data/datasets/time-series/demo/popest/2010s-counties-total.html#par_textimage_70769902) were retrieved from the United States Census Bureau[^9]. This data contains information on population totals by county and year for California. It also has vector data on the county boundaries. This data was used to standardize the number of hospitalizations by the population size per county and to look for trends along latitude in hospitalizations. Similarly, this data was filtered to 2015-2022. 
 
-Before beginning my analysis, I cleaned the data according to "Tidy Data" format such that I could join all my necessary information together. I divided the raw asthma hospitalization data by the population of each county, then multiplied by 100,000 to get the hospitalizations per 100,000 people. This was to account for the varying population sizes per county. I also capped the AQI value at 500 because that is the maximum standardized value listed on the EPA's website for air quality. Lastly, I used the area data and count data from CalFire to find the total acreage burned per year and total number of fires per year. This data was used to analyze trends in wildfire over time. 
+Before beginning my analysis, I cleaned the data such that I could join all my necessary information together. I divided the raw asthma hospitalization data by the population of each county, then multiplied by 100,000 to get the hospitalizations per 100,000 people. This was to account for the varying population sizes per county. I also capped the AQI value at 500 because that is the maximum standardized value listed on the EPA's website for air quality. I converted the county boundary polygon data into coordinates to look for trends along latitude. Lastly, I used the area data and count data from CalFire to find the total acreage burned per year and total number of fires per year. This data was used to analyze trends in wildfires over time. 
 
 ## Analysis plan
 
-For my analysis, I started with a linear regression model. This was my first approach because at the start, I just wanted to understand if there was a linear relationship between wildfire PM 2.5 and asthma hospitalizations. Because I couldn't find open access data that directly quantified PM 2.5 from wildfires, I used a variety of measures of air quality from the EPA's Air Quality Index. I tried looking at the median AQI, maximum AQI, days with PM 2.5, days with ozone, and days unhealthy for sensitive groups or worse. While these predictors were similar, median aqi had the highest R<sup>2</sup> and smallest p-value. There are some limitations here simply because I am using a proxy for wildfire PM 2.5 and I do not know what the relationship is between the AQI data I have, and the wildfire PM 2.5 data I was unable to access. 
+For my analysis, I chose a multiple linear regression model. I started by running simple linear regressions with single predictors to get a sense of what variables were and were not important to my analysis. I was interested in understanding if there was a linear relationship between wildfire PM 2.5 and asthma hospitalizations. Because I couldn't find open access data that directly quantified PM 2.5 from wildfires, I used a variety of measures of air quality from the EPA's Air Quality Index. I tried looking at the median AQI, maximum AQI, days with PM 2.5, days with ozone, and days unhealthy for sensitive groups or worse. While these predictors were similar, median AQI had the highest R<sup>2</sup> and smallest p-value. There are large limitations here simply because I am using a proxy for wildfire PM 2.5 and I do not know what the relationship is between the AQI data I have and the wildfire PM 2.5 data I was unable to access. 
 
-I also added demographic variables such as median per capita income and population density to see if these were important predictors of asthma hospitalizations. However, I found they were not signifcant.
+I also added demographic variables such as median per capita income and population density to see if these were important predictors of asthma hospitalizations. However, I found they were not significant. 
 
-The last variable I tried was year, had a large R<sup>2</sup> value and a significant p-value. 
+Lastly, I incorporated spatial and temporal variables to see if those affected hospitalizations. There was no significant effect of latitude, but year was very significant. Thus, my final model looks as follows: 
 
-#### Model 1: Linear model
-Overall, my first model looks like this: 
+#### Multiple linear regression model:
 
-$$log(hosp\_per\_100k) = \beta_0 + \beta_1 median\_aqi + \beta_2year + u_i$$
-Where `hosp_per_100k` is asthma hospitalizations per 100,000 people. This variable has been log transformed to establish a linear relationship. `median_aqi` is the median aqi for that year. `year` represents the year of interest. 
+$$log(hosp\_per\_100k) = \beta_0 + \beta_1 median\_aqi + \beta_2year2015 ... \beta_9year2022 + u_i$$
+Where `hosp_per_100k` is asthma hospitalizations per 100,000 people. This variable has been log transformed to establish a linear relationship. `median_aqi` is the median aqi for that year. `year` represents the year of interest treated as a categorical variable. 
 
-The next step in my analysis plan was to check for autocorrelation because I was using time series data. Autocorrelation can occur in temporal and spatial data sets because data collected near each other in space and time have the potential to be more similar to each other. I used the autocorrelation function `acf` on the residuals from my first linear model to see if there was any autocorrelation. As it turns out, there was. So, I turned to a new analysis. 
+I chose to analyze year as a categorical variable because of the frequency with which the asthma data was collected. Since the asthma data is reported on a yearly basis, there is no intra-year variability in the data. Therefore, I decided to treat year as a categorical instead of a continuous numerical variable. There are 8 years of data included in my analysis, but the formula here does not list all of them for brevity. 
 
-#### Model 2: Autoregressive distributive lag model
-Because my data was highly autocorrelated, I decided to use an autoregressive distributive lag model next. This model lags the response of the
-
-\begin{align*}
-log(hosp\_per\_100k)[t] = \beta_0 + \beta_1 median\_aqi[t] + \beta_2year[t] + \beta_3log(hosp\_per\_100k)[t-1] + \\
-                          \beta_4 median\_aqi[t-1] + \beta_5year[t-1] + u_i
-\end{align*}
-
-Where `t` is our data at `time = t` and `t-1` is our data at `time = t-1`. 
-
-The ADL model accounted for much of the autocorrelation in the residuals of my first linear model. 
+The next step in my analysis plan was to check for autocorrelation because I was using time series data. Autocorrelation can occur in temporal and spatial data sets because data collected near each other in space and time have the potential to be more similar to each other. I used the autocorrelation function `acf` on the residuals from my linear model and there was no obvious autocorrelation in my data.  
 
 ## Results and Discussion
 
@@ -110,19 +99,12 @@ fire_asthma <- read_csv(here("posts", "2024-12-13-asthma-aqi", "data",  "fire_as
 ```
 
 
-### Linear Model
+### Model Results
 ```{r}
 #| code-fold: true
 #| code-summary: "Reveal code"
 
-median_mod<- lm(log(hosp_per_100k) ~ median_aqi, data = asthma_aqi)
-summary(median_mod)
-
-year_mod<- lm(log(hosp_per_100k) ~ as.factor(year), data = asthma_aqi)
-summary(year_mod)
-
 asthma_mod <- lm(log(hosp_per_100k) ~ median_aqi + as.factor(year), data = asthma_aqi)
-summary(asthma_mod)
 
 asthma_hosp_table <- tab_model(asthma_mod,
                                pred.labels = c("Intercept (year 2015)", 
@@ -140,89 +122,124 @@ asthma_hosp_table <- tab_model(asthma_mod,
                                title = "Table 1. Linear Model Results",
                                digits = 3)
 
-# asthma_hosp_table <- tab_model(asthma_mod,
-#                                pred.labels = c("Intercept", 
-#                                                "Median AQI", 
-#                                                "Year"), 
-#                                dv.labels = c("Asthma Hospitalizations (per 100k)"),
-#                                string.ci = "95% Conf. Int.",
-#                                string.p = "P-value",
-#                                title = "Table 1. Linear Model Results",
-#                                digits = 3)
-
 asthma_hosp_table
 ```
+*Note to Max: these results vary so drastically from what I presented because I had simply forgot to add year into my model. Sorry about that!*
+
+The results of the linear model show that median AQI and all years of interest had significant coefficients at the 0.05 significance level. Additionally, the adjusted R<sup>2</sup> of 0.586 tells us that ~58.6% of the variability in hospitalizations can be explained by median aqi and year. However, if we examine the R<sup>2</sup> values from my earlier preliminary models, we can see roughly what the breakdown of this multiple linear regression is. 
 
 ```{r}
 #| echo: false
 
-# Drop geometry for ADL mod
-asthma_aqi <- asthma_aqi %>% 
-  mutate(year = as.factor(year)) %>% 
-  st_drop_geometry()
+median_mod <- lm(log(hosp_per_100k) ~ median_aqi, data = asthma_aqi)
+year_mod <- lm(log(hosp_per_100k) ~ as.factor(year), data = asthma_aqi)
+
+print(paste0("R squared for median aqi as sole predictor: ", round(summary(median_mod)$r.squared, 2)))
+print(paste0("R squared for year as sole predictor: ", round(summary(year_mod)$r.squared, 2)))
+
 ```
 
+When we take into account all three R<sup>2</sup> values together, we can see that roughly 7% of the variation in the complete model comes from median AQI, and roughly 51% of the variation from year. 
 
-### ACF plot 
+### Model visualization
+Next, we can plot the parts of our linear model results to see how well our predicted line fits our data. 
 ```{r}
-#| code-fold: true
-#| code-summary: "Reveal code"
-
-residual_acf_before <- acf(resid(asthma_mod), 
-                           plot = FALSE, 
-                           na.action = na.pass)
-
-acf_before_df <- tibble(Lag = residual_acf_before$lag, 
-                        ACF = as.vector(residual_acf_before$acf)) 
-
-acf_before <-  ggplot(acf_before_df, aes(Lag, ACF)) + 
-  geom_hline(yintercept = 0, 
-             linetype = "dashed", 
-             color = "cornflowerblue",
-             linewidth = 1.5) +
-  geom_line(linewidth = 2) +
+#| echo: false
+#| eval: false
+ggplot(asthma_aqi, aes(median_aqi, log(hosp_per_100k))) +
+  geom_point(aes(color=as.factor(year)),
+             alpha=0.7) +
+  geom_smooth(method = "lm",
+              se=FALSE,
+              color="red") +
+  facet_wrap(~as.factor(year)) +
+  labs(title="Hospitalizations and Median AQI by Year",
+       x="Median AQI",
+       y="log(Hospitalizations per 100k)",
+       color="Year") +
   theme_minimal()
-
-acf_before
 ```
 
-### Fires and hospitalizations over time
+
 ```{r}
 #| code-fold: true
 #| code-summary: "Reveal code"
+ggplot(asthma_aqi, aes(median_aqi, log(hosp_per_100k))) +
+  geom_point() +
+  geom_smooth(method = "lm",
+              se=FALSE,
+              color="red") +
+  labs(title="Hospitalizations and Median AQI",
+       x="Median AQI",
+       y="log(Hospitalizations per 100k)") +
+  theme_minimal()
+```
+This graph shows how hospitalizations are changing with median AQI through time. There is a weak, positive, linear relationship between median AQI and hospitalizations with no obvious outliers. We can also see our line of best fit. The residuals for this particular model were evenly distributed and showed no trend. 
+
+We can also visualize how hospitalizations are changing with time. 
+
+```{r}
+#| code-fold: true
+#| code-summary: "Reveal code"
+
+ggplot(asthma_aqi, aes(as.factor(year), log(hosp_per_100k))) +
+  geom_boxplot(aes(fill=as.factor(year))) +
+  theme_minimal() +
+    labs(title="Hospitalizations by Year",
+       x="Year",
+       y="log(Hospitalizations per 100k)",
+       fill="Year") 
+```
+
+This graph shows the boxplot of hospitalizations by year. While we cannot plot our best fit line onto this graph, we can see that hospitalizations seem to be decreasing with time. This tracks with our estimated coefficients from our above multiple regression model. Every coefficient for year after the reference level of 2015 is negative, showing how hospitalizations are decreasing in magnitude relative to 2015. 
+
+## Conclusions and next steps
+
+Overall, these results only provide very weak evidence that there is a relationship between wildfires and respiratory health. While the results of my model were significant, there were many limitations in the data I was using that could be affecting my results. For example, a large limitation of this analysis was the lack of finer temporal scale data for asthma-related hospitalizations. All of the other datasets I was using had data available at the daily and sometimes even hourly time scale. Because I had to aggregate data about AQI to such a broad time scale, much of the variation in AQI across seasons is lost. There are certain asthma triggers that are seasonal, such as pollen in the spring or cold air in the winter. Being able to track how month-to-month seasonality is affecting hospitalizations would be a great next step.
+
+Another limitation was that I was unable to find any open-source data on PM 2.5 directly from wildfires. This meant I was unable to examine a direct relationship between wildfire and asthma hospitalizations, I could only use AQI as a proxy. There certainly is data on wildfire PM 2.5, and if given more time, I would reach out to the data owners and authors of papers who have published scholarship on this topic to try and request access to the data. 
+
+Lastly, this analysis contained many omitted variables that might be influencing trends in asthma hospitalizations over time. 
+
+For example:
+```{r}
+#| code-fold: true
+#| code-summary: "Fires and hospitalizations over time"
 
 # Plot change in area burned over time
 fire_plot <- ggplot(fire_asthma, aes(year, total_area)) +
   geom_col(fill="firebrick") + 
+  geom_col(data = . %>% filter(year == 2020),
+           color="red",
+           fill="firebrick",
+           lwd=1) +
   labs(title="Total Area Burned by Wildfires\nin California by Year",
        x="Year",
        y="Area burned (acres)") +
   theme_minimal() +
-    theme(axis.title = element_text(size=13),
-        title = element_text(size=14))
+    theme(axis.title = element_text(size=12),
+        title = element_text(size=12))
 
 # Plot change in hospitalizations over time
 hosp_plot <- ggplot(fire_asthma, aes(year, total_hosp_capita)) +
   geom_col(fill="cornflowerblue") +
-  labs(title="Total Asthma Hospitalizations per\nCapita in California by Year",
+  geom_col(data = . %>% filter(year == 2020),
+           color="red",
+           fill="cornflowerblue",
+           lwd=1) +
+  labs(title="Total Asthma Hospitalizations\nper 100k in California by Year",
        x="Year",
        y="Hospitalizations per 100K") +
   theme_minimal() +
-  theme(axis.title = element_text(size=13),
-        title = element_text(size=14))
+  theme(axis.title = element_text(size=12),
+        title = element_text(size=12))
 
 fire_plot | hosp_plot  
 ```
 
+This plot shows the total area burned by wildfires in California from 2015 to 2022, and the total number of asthma hospitalizations per 100k people in California from 2015-2022. The year 2020 in particular stands out. Despite it being a record year for the amount of area burned in the state, it was also the year with the fewest hospitalizations. An obvious factor that is likely influencing this is COVID-19. The shelter-in-place mandates likely greatly influenced people who were seeking out asthma care, even if there were more wildfires that year. 
 
-## Next steps
-
-ADL graph is inconclusive because while it improves the autocorrelation, it does not remove it entirely. The data still exhibits a large amount of positive autocorrelation. 
-
-A big limitation of this analysis was the lack of finer temporal scale data for asthma-related hospitalizations. All of the other datasets I was using had data available at the daily and sometimes even hourly time scale. Because I had to aggregate data about AQI to such a broad time scale, much of the variation in AQI across seasons is lost. There are certain asthma triggers that are seasonal, such as pollen in the spring or cold air in the winter. Being able to track how month-to-month seasonality is affecting hospitalizations would be a great next step.
-
-Another limitation was that I was unable to find any open-source data on PM 2.5 directly from wildfires. This meant I was unable to examine a direct relationship between wildfire and asthma hospitalizations, I could only use AQI as a proxy. There certainly is data on wildfire PM 2.5, and if given more time, I would reach out to the data owners and authors of papers who have published scholarship on this topic to try and request access to the data. 
-
+This is just one example of an important cause of variation in asthma hospitalizations that I was unable to capture in my model. Going forward, I would like to have access to much more comprehensive data to truly unpack the connection between wildfires and respiratory health. 
 
 ### References
 
@@ -245,4 +262,6 @@ Another limitation was that I was unable to find any open-source data on PM 2.5 
 [^9]: United States Census Bureau. County Population Totals: 2010-2019, 2020-2023. https://www.census.gov/data/datasets/time-series/demo/popest/2010s-counties-total.html#par_textimage_70769902. Accessed December 8 2024. 
 
 
+#### Acknowledgements
 
+This code is based on material from [Max Czapanskiy](https://github.com/FlukeAndFeather) for [EDS-222: Statistics for Environmental Data Scientists](https://eds-222-statistics.github.io/).

@@ -48,11 +48,11 @@ Additional information can be found at [the GitHub repository](https://github.co
 
 #### Purpose
 
-Part one of this analysis explores the change in air quality in Santa Barbara county during the 2017 Thomas Fire. The Thomas Fire was one of the regions largest fires to date, burning over 280,000 acres in Ventura and Santa Barbara counties in December 2017. It caused widespread ecological damage, displaced communities, and left lasting environmental impacts. Additionally, wildfire smoke is a strong trigger for respiratory diseases such as asthma. One way to measure wildfire's environmental health effects is through air quality.
+Part one of this analysis explores the change in air quality in Santa Barbara County during the 2017 Thomas Fire. The Thomas Fire was one of the region's largest fires to date, burning over 280,000 acres in Ventura and Santa Barbara counties in December 2017. It caused widespread ecological damage, displaced communities, and left lasting environmental impacts. Additionally, wildfire smoke is a strong trigger for respiratory diseases such as asthma. One way to measure wildfire's environmental health effects is through air quality.
 
-The air quality index (AQI) is a measure of how clean or polluted the air is and what associated health effects might be a concern. It is a scale that ranges from 0-500 with 0-50 being good, 151-200 being unhealth, and 301-500 being hazardous.
+The air quality index (AQI) is a measure of how clean or polluted the air is and what associated health effects might be a concern. It is a scale that ranges from 0-500 with 0-50 being good, 151-200 being unhealthy, and 301-500 being hazardous.
 
-Part 1 will using AQI data to the explore the Thomas Fire's effects on air quality and environmental health in Santa Barbara County.
+Part 1 will use AQI data to explore the Thomas Fire's effects on air quality and environmental health in Santa Barbara County.
 
 #### Highlights
 
@@ -84,7 +84,7 @@ pd.set_option("display.max.columns", None)
 
 
 ## Import AQI data and explore
-We'll start by importing our air quality index data for 2017 and 2018 and conducting a prelimnary exploration. 
+We'll start by importing our air quality index data for 2017 and 2018 and conducting a preliminary exploration. 
 ```{python}
 # Read in AQI data for both years
 aqi_17 = pd.read_csv('https://aqs.epa.gov/aqsweb/airdata/daily_aqi_by_county_2017.zip', 
@@ -104,7 +104,7 @@ aqi_17.head(3)
 aqi_18.head(3)
 ```
 ```{python}
-# View unique defining paramters of the aqi data 
+# View unique defining parameters of the aqi data 
 aqi_17['Defining Parameter'].unique()
 ```
 
@@ -119,7 +119,7 @@ Our AQI data contains information about the state and county location, date, and
 
 Currently, our AQI data is housed in two separate data frames. We will join them together using the `pandas` function `pd.concat()` and save them as one data frame named `aqi`.
 
-NOTE: When we concatenate data frames without any extra parameters specified in `pd.concat()`, the indices are simply stacked on top of one another. Therefore, the resuling index values of `aqi` will not match the length of the new data frame.
+NOTE: When we concatenate data frames without any extra parameters specified in `pd.concat()`, the indices are simply stacked on top of one another. Therefore, the resulting index values of `aqi` will not match the length of the new data frame.
 
 ```{python}
 # Bind 2017 and 2018 AQI data together
@@ -143,8 +143,8 @@ aqi.head(3)
 Next, we will clean the column names of our new data frame. We will make all the column names lower snake case via the operations below. Here is a step-by-step of what the functions do:
 
 -   `aqi.columns = (aqi.columns` selects the columns from the `aqi` data frame and reassigns them to the original data frame
--   `.str.lower()` uses the string operator to make all the letters lower case
--   `.str.replace(' ','_')` converts the output of the lower case columns to a string and replaces all spaces with an underscore
+-   `.str.lower()` uses the string operator to make all the letters lowercase
+-   `.str.replace(' ','_')` converts the output of the lowercase columns to a string and replaces all spaces with an underscore
 -   `)` closes the method chaining
 -   `print(aqi.columns, '\n')` lets us view the output of our modified column names
 
@@ -175,12 +175,12 @@ aqi_sb.head(3)
 
 ## AQI rolling average
 
-In the next cell we will calculate an average over a [rolling window](https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.Series.rolling.html) using the `rolling()`method for `pandas.Series`:
+In the next cell we will calculate an average over a [rolling window](https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.Series.rolling.html) using the `rolling()` method for `pandas.Series`:
 
 -   `rolling()` is a lazy method, so we need to specify what we want to calculate over each window before it does something.
--   in this example we use the aggregator function `mean()` to calculate the average over each window
+-   in this example, we use the aggregator function `mean()` to calculate the average over each window
 -   the parameter '5D' indicates we want the window for our rolling average to be 5 days.
--   we get a `pandas.Series` as ouput
+-   we get a `pandas.Series` as the output
 
 ```{python}
 # Calculate AQI rolling average over 5 days
@@ -222,7 +222,7 @@ ax.legend()
 # Display the figure
 plt.show()
 ```
-This plot shows the drastic spike in AQI shortly after the thomas fire in December of 2017. The daily AQI peaks at just over 300, which is into the hazardous classification, and the five day average AQI is around 220, which is in the unhealthy classification. Widlfire's are known to release many harmful chemicals and particulates that contribute to worsening air quality. This in turn leads to worsening health outcomes for illnesses such as respiratory disease, heart disease, asthma, and more. 
+This plot shows the drastic spike in AQI shortly after the Thomas fire in December of 2017. The daily AQI peaks at just over 300, which is into the hazardous classification, and the five day average AQI is around 220, which is in the unhealthy classification. Wildfire's are known to release many harmful chemicals and particulates that contribute to worsening air quality. This in turn leads to worsening health outcomes for illnesses such as respiratory disease, heart disease, asthma, and more. 
 
 # Part 2: False Color Imagery of the 2017 Thomas Fire
 
@@ -230,9 +230,7 @@ This plot shows the drastic spike in AQI shortly after the thomas fire in Decemb
 
 #### Purpose
 
-Part 2 of this analysis details the steps to visualize Landsat multispectral geospatial data for the 2017 Thomas Fire. The Thomas Fire, which burned over 280,000 acres in Ventura and Santa Barbara counties in December 2017, was one of California’s largest wildfires at the time. It caused widespread ecological damage, displaced communities, and left lasting environmental impacts.
-
-False color imagery, created using satellite data from instruments like Landsat, is a useful tool for monitoring wildfire impacts. By assigning infrared bands to visible colors, these images highlight vegetation health, burn severity, and the extent of fire scars. This approach helps researchers and land managers assess recovery efforts, identify high-risk areas, and plan restoration strategies.
+Part 2 of this analysis details the steps to visualize Landsat multispectral geospatial data for the 2017 Thomas Fire. False color imagery, created using satellite data from instruments like Landsat, is a useful tool for monitoring wildfire impacts. By assigning infrared bands to visible colors, these images highlight vegetation health, burn severity, and the extent of fire scars. This approach helps researchers and land managers assess recovery efforts, identify high-risk areas, and plan restoration strategies.
 
 Part 2 will create a false color image of the Thomas Fire using remote sensing data, highlighting the fire scar and exploring how coding and data visualization support environmental monitoring.
 
@@ -241,8 +239,8 @@ Part 2 will create a false color image of the Thomas Fire using remote sensing d
 -   Import Thomas fire perimeter data with `geopandas` and `os`
 -   Import Landsat data with `rioxarray` and `os`
 -   Explore and clean geospatial data with `pandas` and `rioxarray`
--   Construct a true color image of the Thomas Fire with `matplotlib`
--   Construct a false color image of the Thomas Fire with `matplotlib`
+-   Construct a true color image of the Thomas Fire with `rioxarray`
+-   Construct a false color image of the Thomas Fire with `rioxarray`
 -   Visualize the Thomas Fire false color scar with the fire perimeter data using `matplotlib`
 
 #### About the Data
@@ -303,7 +301,7 @@ thomas_boundary.crs
 
 #### Fire perimeter data description
 
-This fire perimeter data comes from CalFire and includes data for all fire perimeters from 1878 to 2023. It has data on the year, the fire name, the reporting agency, the cause, duration, among other data. The CRS is NAD83 California Albers and it is a projected CRS (EPSG:3310)
+This fire perimeter data comes from CalFire and includes data for all fire perimeters from 1878 to 2023. It has data on the year, the fire name, the reporting agency, the cause, and the duration, among other data. The CRS is NAD83 California Albers and it is a projected CRS (EPSG:3310)
 
 ## Clean the Landsat data
 
@@ -321,14 +319,14 @@ print(landsat.sizes)
 # First attempt to visualize the Landsat data 
 landsat[['red', 'green', 'blue']].to_array().plot.imshow()
 ```
-Our first attempt to map the data didn't go quite as planned. Let's true adjusting the `robust` parameter of `.imshow()` and see what happens
+Our first attempt to map the data didn't go quite as planned. Let's try adjusting the `robust` parameter of `.imshow()` and see what happens
 
 ```{python}
 # Visualize the Landsat data using true color imagery
 landsat[['red', 'green', 'blue']].to_array().plot.imshow(robust=True)
 ```
 
-After we adjusted the scale for plotting the bands, we got a much more comprehensible image. The clouds were throwing off the scale for plotting. The `robust=True` argument allows us infer a different set vmin and vmax values to properly color the image. It takes out the 2nd and 98th percentile, removing outliers which makes it easier to visualize.
+After we adjusted the scale for plotting the bands, we got a much more comprehensible image. The clouds were throwing off the scale for plotting. The `robust=True` argument allows us to infer a different set vmin and vmax values to properly color the image. It takes out the 2nd and 98th percentile, removing outliers which makes it easier to visualize.
 
 Next, we will use false color imagery to view the fire...
 
@@ -390,7 +388,7 @@ plt.show()
 
 **Figure Description**
 
-This map shows a false color image of the Thomas Fire in Santa Barbara and Ventura Counties. The fire boundary is outlined in red. Satellite data works with wavelengths of light beyond what the human eye can see. False color imagery is the process of assigning colors to these wavelengths (i.e. near-infrared and short-wave infrared). In our map, we've chosen to visualize short-wave infrared as red, near-infrared as green, and red wavelengths as blue. This lets us produce an image that highlights exactly where the fire scar is, as opposed to the true color image where you it is much harder to distinguish. A true color image assigns the red, green, and blue wavelengths of light to the correct corresponding colors.
+This map shows a false color image of the Thomas Fire in Santa Barbara and Ventura Counties. The fire boundary is outlined in red. Satellite data works with wavelengths of light beyond what the human eye can see. False color imagery is the process of assigning colors to these wavelengths (i.e. near-infrared and short-wave infrared). In our map, we've chosen to visualize short-wave infrared as red, near-infrared as green, and red wavelengths as blue. This lets us produce an image that highlights exactly where the fire scar is, as opposed to the true color image where it is much harder to distinguish. A true color image assigns the red, green, and blue wavelengths of light to the correct corresponding colors.
 
 #### References
 
