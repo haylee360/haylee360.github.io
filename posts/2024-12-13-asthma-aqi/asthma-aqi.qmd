@@ -18,7 +18,7 @@ toc: true
 # csl: plos-computational-biology.csl
 image: napa-fire.png
 citation:
-  url: https://haylee360.github.io/posts/2024-12-asthma-aqi/
+  url: https://haylee360.github.io/posts/2024-12-13-asthma-aqi/
 # draft: true
 # draft-mode: visible
 format: html
