@@ -1,6 +1,53 @@
 ---
 title: "About"
+title-block-banner: images/lizards_mouth.jpeg
+include-in-header:
+  - text: |
+      <style>
+      .quarto-title-block .quarto-title-banner {
+        background-position-y: center;
+        height: 220px;
+        opacity: 0.9;
+      }
+      </style>
 ---
+
+```{r}
+#| echo: false
+#| eval: false
+
+# HOW TO ADD NICE BANNERS AT THE TOP OF A POST PUT IN YAML
+
+# include CSS style for title blocks
+title-block-banner: "#00000000"
+title-block-banner-color: "rgba(255, 255, 255, 0.9)"
+include-in-header:
+  - text: |
+      <style>
+      #title-block-header.quarto-title-block.default .quarto-title-meta {
+        color: rgba(255, 255, 255, 0.9);
+      }
+      .quarto-title-block .quarto-title-banner {
+        height: 0; /* hide */
+      }
+      #title-block-header {
+        background: 
+          /* top, transparent black, faked with gradient */
+          linear-gradient(
+            rgba(0, 0, 0, 0.7),
+            rgba(0, 0, 0, 0.7)
+          ),
+          /* bottom, image */ 
+          url(./banner-image.jpg);
+        background-size: cover;
+        background-position-y: center;
+        height: 450px;
+        opacity: 0.7; /* image opacity, lower means lighter */
+        z-index: -1;
+      }
+      </style>
+```
+
 
 About this site 
 

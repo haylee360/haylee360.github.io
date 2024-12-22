@@ -16,8 +16,8 @@ website:
       - href: resources.qmd
         text: Resources
       - posts.qmd
-      # - text: CV
-      #   href: CV/my-cv.pdf
+      - text: CV
+        href: resumes/hoyler-cv.pdf
   page-footer: 
     background: light
     left: Copyright 2024, Haylee Oyler

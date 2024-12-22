@@ -1,6 +1,6 @@
 ---
 #title: "Haylee Oyler"
-image: small_headshot.png
+image: images/small_headshot.png
 about:
   template: jolla
   image-shape: round

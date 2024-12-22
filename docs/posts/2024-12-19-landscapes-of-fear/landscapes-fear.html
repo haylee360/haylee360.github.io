@@ -23,7 +23,26 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
-</style>
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
 
 
 <script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
@@ -188,8 +207,8 @@ ul.task-list li input[type="checkbox"] {
 <section id="fear.-weve-all-felt-it." class="level2">
 <h2 class="anchored" data-anchor-id="fear.-weve-all-felt-it.">Fear. We’ve all felt it.</h2>
 <p>The snap of the twig outside your tent in the dead of night, the dizzying swoop of your stomach when you look over a high ledge. Your palms sweat, your heart races. Fear is designed to keep us alive–a mechanism we’ve evolved to assess threats to our safety.</p>
-<p>Ecologists, in particular, think about fear in many ways. They’ve coined the term “landscapes of fear,” which is a framework to describe how prey perceive and respond to the risk of predation (Bleicher 2017). For example, to a deer, the best food in the forest might be in the center of the open meadow, but the deer is also aware that being in the open meadow makes them an obvious target to the mountain lion. While ecologists consider how fear affects the decision-making of species, new scholarship has posed a different perspective: how does fear affect the decision-making of the ecologists themselves?</p>
-<p>A recent publication by Gabriel Gadsden, Nigel Golden, and Nyeema Harris repurposes this term into what they call <strong>social-ecological landscapes of fear</strong>, that is, a landscape of fear derived from the impact of negative human histories across space (Gadsden et al.&nbsp;2023). They call for the inclusion of negative human histories as important drivers of landscape change. This means considering the legacy of “mortality, extermination, subordination, and dispossession related to ethically controversial conditions, including overpolicing, redlining, racial or ethnic violence, corrupt governments, low social capital, and segregation” across space and time (Gadsden et al.&nbsp;2023). They also posit that failing to address negative human histories generates a place-based bias that affects where and how scientists conduct research.</p>
+<p>Ecologists, in particular, think about fear in many ways. They’ve coined the term “landscapes of fear,” which is a framework to describe how prey perceive and respond to the risk of predation<span class="citation" data-cites="Bleicher2017">[<a href="#ref-Bleicher2017" role="doc-biblioref">1</a>]</span>). For example, to a deer, the best food in the forest might be in the center of the open meadow, but the deer is also aware that being in the open meadow makes them an obvious target to the mountain lion. While ecologists consider how fear affects the decision-making of species, new scholarship has posed a different perspective: how does fear affect the decision-making of the ecologists themselves?</p>
+<p>A recent publication by Gabriel Gadsden, Nigel Golden, and Nyeema Harris repurposes this term into what they call <strong>social-ecological landscapes of fear</strong>, that is, a landscape of fear derived from the impact of negative human histories across space<span class="citation" data-cites="Gadsden2022">[<a href="#ref-Gadsden2022" role="doc-biblioref">2</a>]</span>. They call for the inclusion of negative human histories as important drivers of landscape change. This means considering the legacy of “mortality, extermination, subordination, and dispossession related to ethically controversial conditions, including overpolicing, redlining, racial or ethnic violence, corrupt governments, low social capital, and segregation” across space and time<span class="citation" data-cites="Gadsden2022">[<a href="#ref-Gadsden2022" role="doc-biblioref">2</a>]</span>. They also posit that failing to address negative human histories generates a place-based bias that affects where and how scientists conduct research.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="images/lof.jpg" class="img-fluid figure-img"></p>
@@ -200,33 +219,60 @@ ul.task-list li input[type="checkbox"] {
 </section>
 <section id="case-study-uranium-mining-on-navajo-land" class="level2">
 <h2 class="anchored" data-anchor-id="case-study-uranium-mining-on-navajo-land">Case Study: Uranium Mining on Navajo Land</h2>
-<p>In the 1940s, uranium mining began in the U.S. when the Atomic Energy Commission was seeking a local source of uranium to supply nuclear power plants (Brugge &amp; Goble 2002). Several areas in the Southwestern United States were selected as suitable sites, including land on the Navajo Nation. For the next 40 years, Navajo people and other community members would work in radioactive mines where they were exposed to harmful chemicals known to cause lung cancer. However, thanks to the tireless work of Navajo activists and public health officials, these mines were eventually shut down. The Radiation Exposure Compensation Act (RECA) was passed in 1990, in which the U.S. government acknowledged its responsibility for the mistreatment of miners and provided financial compensation for illness.</p>
-<p>While RECA was a huge step forward, remediation and cleanup of radioactive waste is still an active problem in the region today (Arnold 2014). Remediation is a primary focus of research in the area, but the scientific literature around the mines in the Navajo Nation still predominantly centers on narratives of deficit and dysfunction. Connecting this legacy to social-ecological landscapes of fear, I argue that the negative histories around radioactive pollution have created an underlying place-based bias in the environmental literature of the region. The perception of the landscape as degraded has led to a dismissal of the region as important for conservation efforts. While data bias can come from many sources, in this case, the place-based bias originates from the underlying frameworks researchers use for analysis. One of the first steps in experimental design is selecting a study site and population. If your selection process does not consider landscapes across a spectrum of negative human histories equally, then you are generating a place-based selection bias in your methods.</p>
+<p>In the 1940s, uranium mining began in the U.S. when the Atomic Energy Commission was seeking a local source of uranium to supply nuclear power plants<span class="citation" data-cites="Brugge2002">[<a href="#ref-Brugge2002" role="doc-biblioref">3</a>]</span>. Several areas in the Southwestern United States were selected as suitable sites, including land on the Navajo Nation. For the next 40 years, Navajo people and other community members would work in radioactive mines where they were exposed to harmful chemicals known to cause lung cancer. However, thanks to the tireless work of Navajo activists and public health officials, these mines were eventually shut down. The Radiation Exposure Compensation Act (RECA) was passed in 1990, in which the U.S. government acknowledged its responsibility for the mistreatment of miners and provided financial compensation for illness.</p>
+<p>While RECA was a huge step forward, remediation and cleanup of radioactive waste is still an active problem in the region today<span class="citation" data-cites="Arnold2014">[<a href="#ref-Arnold2014" role="doc-biblioref">4</a>]</span>. Remediation is a primary focus of research in the area, but the scientific literature around the mines in the Navajo Nation still predominantly centers on narratives of deficit and dysfunction. Connecting this legacy to social-ecological landscapes of fear, I argue that the negative histories around radioactive pollution have created an underlying place-based bias in the environmental literature of the region. The perception of the landscape as degraded has led to a dismissal of the region as important for conservation efforts.</p>
+<p>While data bias can come from many sources, in this case, the place-based bias originates from the underlying frameworks researchers use for analysis. One of the first steps in experimental design is selecting a study site and population. If your selection process does not consider landscapes across a spectrum of negative human histories equally, then you are generating a place-based selection bias in your methods.</p>
 </section>
 <section id="the-impact-of-place-based-bias" class="level2">
 <h2 class="anchored" data-anchor-id="the-impact-of-place-based-bias">The Impact of Place-Based Bias</h2>
-<p>When researchers do not perceive landscapes equally, then they do not study those landscapes equally. Place-based bias in environmental scholarship means conservation efforts are overvaluing places seen as “pristine” while undervaluing areas seen as “degraded.” For example, Chapin discusses how large conservation organizations have historically seen places where Indigenous people reside as unfit for conservation because they prioritize “their economic wellbeing over preservation of natural resources” (Chapin 2004). Indigenous nations want the autonomy to manage their lands and resources as they see fit. Yet because their decision-making on that land now marks it as less than pristine from the dominant global north perspective, it becomes understudied and undervalued. Their mere presence on the land adds it to the subconscious social-ecological landscape of fear that underpins dominant science research.</p>
+<p>When researchers do not perceive landscapes equally, then they do not study those landscapes equally. Place-based bias in environmental scholarship means conservation efforts are overvaluing places seen as “pristine” while undervaluing areas seen as “degraded.” For example, Chapin discusses how large conservation organizations have historically seen places where Indigenous people reside as unfit for conservation because they prioritize “their economic wellbeing over preservation of natural resources<span class="citation" data-cites="Chapin2004">[<a href="#ref-Chapin2004" role="doc-biblioref">5</a>]</span>. Indigenous nations want the autonomy to manage their lands and resources as they see fit. Yet because their decision-making on that land now marks it as less than pristine from the dominant global north perspective, it becomes understudied and undervalued. Their mere presence on the land adds it to the subconscious social-ecological landscape of fear that underpins dominant science research.</p>
 <p>In the case of the Navajo people, the landscape of fear around the legacy of the mines has meant a lack of consideration of the ecological value of the region, such as its biodiversity and ecosystem services. When the dominant narrative of a place becomes entrenched in its complicated past, then it is easy to reduce that place down to its worst qualities. This reductionism occurs not only to the physical space itself but also to the people who occupy that space.</p>
-<p>Place-based bias can also be readily found across urban and suburban landscapes. Community science data, for example, often display a strong bias toward areas the participants find enjoyable, aesthetically pleasing, or safe. This leads to an oversurveying of urban green spaces and an undersurveying of dense cityscapes (Carlen et al.&nbsp;2024). Negative human histories of redlining, segregation, and discrimination shape what urban areas are desirable to conduct community science, and what urban areas are erased from the narrative. These factors contribute to the social-ecological landscape of fear that guides environmental scholarship.</p>
+<p>Place-based bias can also be readily found across urban and suburban landscapes. Community science data, for example, often display a strong bias toward areas the participants find enjoyable, aesthetically pleasing, or safe. This leads to an oversurveying of urban green spaces and an undersurveying of dense cityscapes<span class="citation" data-cites="Carlen2024">[<a href="#ref-Carlen2024" role="doc-biblioref">6</a>]</span>. Negative human histories of redlining, segregation, and discrimination shape what urban areas are desirable to conduct community science, and what urban areas are erased from the narrative. These factors contribute to the social-ecological landscape of fear that guides environmental scholarship.</p>
 <p>Place-based bias from landscapes of fear is a subtle, pervasive bias across environmental literature. As researchers, we must acknowledge that true objectivity does not exist. There are always unknown unknowns that impact our decision-making. By calling attention to how fear colors our perception of landscapes, we can turn this place-based bias into a known unknown. While recognition of the impact of negative human histories on research is the first step, there are also solutions to mitigate the effects of landscapes of fear.</p>
 </section>
 <section id="solutions" class="level2">
 <h2 class="anchored" data-anchor-id="solutions">Solutions</h2>
 <p>Place-based bias generated from landscapes of fear can be mitigated by two broad paths: recognizing negative histories, and the collaborative cocreation of knowledge with community members. Recognizing histories starts with an acknowledgment of past harm. In environmental scholarship, a common example is land acknowledgments. Situating your research in the larger colonial context is a simple and effective first step toward shedding light on potential negative human histories associated with your work.</p>
-<p>Community collaboration and cocreation go beyond acknowledgement and seek to create meaningful connections with the people who live in places of interest. It also involves scrutinizing underlying power structures and cocreating new methods that seek to rectify an imbalance of power. The rise of indigenous data sovereignty and data methods is an example of a framework that gives authority back to historically marginalized groups. This means bringing capacity for research to Indigenous communities, such as data collection, analysis, and reporting methods, and advocating for Indigenous research methodologies to be prioritized and respected in academic settings (Walter &amp; Suina 2019). This also looks like shifting the narrative around the values that underpin data collection and use. For example, the CARE principles for Indigenous data governance center on collective benefit, authority to control, responsibility, and ethics (Carrol et al.&nbsp;2020).</p>
+<p>Community collaboration and cocreation go beyond acknowledgement and seek to create meaningful connections with the people who live in places of interest. It also involves scrutinizing underlying power structures and cocreating new methods that seek to rectify an imbalance of power. The rise of indigenous data sovereignty and data methods is an example of a framework that gives authority back to historically marginalized groups. This means bringing capacity for research to Indigenous communities, such as data collection, analysis, and reporting methods, and advocating for Indigenous research methodologies to be prioritized and respected in academic settings<span class="citation" data-cites="Walter2019">[<a href="#ref-Walter2019" role="doc-biblioref">7</a>]</span>. This also looks like shifting the narrative around the values that underpin data collection and use. For example, the CARE principles for Indigenous data governance center on collective benefit, authority to control, responsibility, and ethics<span class="citation" data-cites="Carroll2020">[<a href="#ref-Carroll2020" role="doc-biblioref">8</a>]</span>.</p>
 <p>As researchers from a settler colonial positionality, recognizing the data sovereignty of Indigenous peoples and prioritizing CARE principles in our underlying framework of data science is the first step toward cocreating knowledge with Indigenous communities. However, it is important to mention that these things only matter if you have been invited in. The legacy of colonialism is fraught with violence. Approaching collaboration from a place of humility, introspection, and respect is necessary to ensure collaborative efforts don’t reproduce harm.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="images/scales.jpg" class="img-fluid figure-img"></p>
-<figcaption>Figure 2. A guide designed as a catalyst to overcome social–ecological landscapes of fear in environmental scholarship (Gadsden et al.&nbsp;2023).</figcaption>
+<figcaption>Figure 2. A guide designed as a catalyst to overcome social–ecological landscapes of fear in environmental scholarship (Gadsden et al.&nbsp;2022)</figcaption>
 </figure>
 </div>
 <p>These principles of acknowledgement and cocreation apply to all community groups that exist in spaces impacted by negative human histories. As environmental scientists invested in conserving the world around us–both people and place–we must listen and understand the stories of negative human histories across landscapes. Only by having the full perspective can we make informed decisions about how we study natural spaces. Often, we fear things simply because we do not understand them. But knowledge disrupts fear, and as researchers, we must respect and value the knowledge of those who live in the landscapes we study.</p>
 
 
+
 </section>
 
-<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" id="quarto-citation"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{oyler2024,
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body" role="list">
+<div id="ref-Bleicher2017" class="csl-entry" role="listitem">
+<div class="csl-left-margin">1. </div><div class="csl-right-inline">Bleicher SS. The landscape of fear conceptual framework: Definition and review of current applications and misuses. PeerJ. 2017;5: e3772–e3772. doi:<a href="https://doi.org/10.7717/peerj.3772.">https://doi.org/10.7717/peerj.3772.</a></div>
+</div>
+<div id="ref-Gadsden2022" class="csl-entry" role="listitem">
+<div class="csl-left-margin">2. </div><div class="csl-right-inline">Gadsden GI, Golden N, Harris NC. Place-based bias in environmental scholarship derived from social–ecological landscapes of fear. BioScience. 2022;73: 23–35. doi:<a href="https://doi.org/10.1093/biosci/biac095">10.1093/biosci/biac095</a></div>
+</div>
+<div id="ref-Brugge2002" class="csl-entry" role="listitem">
+<div class="csl-left-margin">3. </div><div class="csl-right-inline">Brugge D, Goble R. The history of uranium mining and the navajo people. American Journal of Public Health. 2002;92: 1410–1419. doi:<a href="https://doi.org/10.2105/AJPH.92.9.1410">10.2105/AJPH.92.9.1410</a></div>
+</div>
+<div id="ref-Arnold2014" class="csl-entry" role="listitem">
+<div class="csl-left-margin">4. </div><div class="csl-right-inline">Arnold C. Once upon a mine: The legacy of uranium on the navajo nation. Environmental Health Perspectives. 2014;122: A44–A49. doi:<a href="https://doi.org/10.1289/ehp.122-A44">10.1289/ehp.122-A44</a></div>
+</div>
+<div id="ref-Chapin2004" class="csl-entry" role="listitem">
+<div class="csl-left-margin">5. </div><div class="csl-right-inline">Chapin M. A challenge to conservationists. World Watch Institute. 2004;17: 17–17. </div>
+</div>
+<div id="ref-Carlen2024" class="csl-entry" role="listitem">
+<div class="csl-left-margin">6. </div><div class="csl-right-inline">Carlen EJ, Estien CO, Caspi T, Perkins D, Goldstein BR, Kreling SES, et al. A framework for contextualizing social-ecological biases in contributory science data. People and Nature. 2024;6: 377–390. doi:<a href="https://doi.org/10.1002/pan3.10592">https://doi.org/10.1002/pan3.10592</a></div>
+</div>
+<div id="ref-Walter2019" class="csl-entry" role="listitem">
+<div class="csl-left-margin">7. </div><div class="csl-right-inline">Walter M, Suina M. Indigenous data, indigenous methodologies and indigenous data sovereignty. International Journal of Social Research Methodology. 2019;22: 233–243. doi:<a href="https://doi.org/10.1080/13645579.2018.1531228">10.1080/13645579.2018.1531228</a></div>
+</div>
+<div id="ref-Carroll2020" class="csl-entry" role="listitem">
+<div class="csl-left-margin">8. </div><div class="csl-right-inline">Carroll SR, Garba I, Figueroa-Rodríguez OL, Holbrook J, Lovett R, Materechera S, et al. The CARE principles for indigenous data governance. Data Science Journal. 2020. doi:<a href="https://doi.org/10.5334/dsj-2020-043">10.5334/dsj-2020-043</a></div>
+</div>
+</div></section><section class="quarto-appendix-contents" id="quarto-citation"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{oyler2024,
   author = {Oyler, Haylee},
   title = {What {You} {Don’t} {Know} {You’re} {Afraid} {Of}},
   date = {2024-12-19},
@@ -234,8 +280,8 @@ ul.task-list li input[type="checkbox"] {
   langid = {en}
 }
 </code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-oyler2024" class="csl-entry quarto-appendix-citeas" role="listitem">
-Oyler, Haylee. 2024. <span>“What You Don’t Know You’re Afraid
-Of.”</span> December 19, 2024. <a href="https://haylee360.github.io/posts/2024-12-19-landscapes-of-fear/">https://haylee360.github.io/posts/2024-12-19-landscapes-of-fear/</a>.
+<div class="">Oyler H. What You Don’t Know You’re Afraid Of.
+19 Dec 2024. Available: <a href="https://haylee360.github.io/posts/2024-12-19-landscapes-of-fear/">https://haylee360.github.io/posts/2024-12-19-landscapes-of-fear/</a></div>
 </div></div></section></div></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
