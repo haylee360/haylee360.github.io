@@ -38,7 +38,7 @@ ul.task-list li input[type="checkbox"] {
 <link href="site_libs/quarto-html/quarto-syntax-highlighting-e26003cea8cd680ca0c55a263523d882.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-271adaf43c60b508c28de3313278ac8c.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-a4a2713c9d010dc1ac139f0ba12b616b.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <link href="site_libs/quarto-contrib/fontawesome6-0.1.0/all.css" rel="stylesheet">
 <link href="site_libs/quarto-contrib/fontawesome6-0.1.0/latex-fontsize.css" rel="stylesheet">
 <script id="quarto-search-options" type="application/json">{
@@ -90,10 +90,6 @@ ul.task-list li input[type="checkbox"] {
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
   <li class="nav-item">
-    <a class="nav-link" href="./index.html"> 
-<span class="menu-text">Home</span></a>
-  </li>  
-  <li class="nav-item">
     <a class="nav-link" href="./about.html"> 
 <span class="menu-text">About</span></a>
   </li>  
@@ -106,7 +102,7 @@ ul.task-list li input[type="checkbox"] {
 <span class="menu-text">Blog</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./resumes/hoyler-cv.pdf"> 
+    <a class="nav-link" href="./resumes/hoyler-cv.pdf" target="_blank"> 
 <span class="menu-text">CV</span></a>
   </li>  
 </ul>
@@ -143,7 +139,66 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<p>hello world</p>
+<!-- Slideshow container -->
+<div class="slideshow-container">
+<!-- Full-width images with number and caption text -->
+<div class="mySlides fade">
+<div class="numbertext">
+1 / 3
+</div>
+<img src="images/cr/bridge.jpeg" style="width:100%">
+<div class="text">
+Caption Text
+</div>
+</div>
+<div class="mySlides fade">
+<div class="numbertext">
+2 / 3
+</div>
+<img src="images/cr/island.jpeg" style="width:100%">
+<div class="text">
+Caption Two
+</div>
+</div>
+<div class="mySlides fade">
+<div class="numbertext">
+3 / 3
+</div>
+<img src="images/cr/mangrove.jpeg" style="width:100%">
+<div class="text">
+Caption Three
+</div>
+</div>
+<!-- Next and previous buttons -->
+<p><a class="prev" onclick="plusSlides(-1)">❮</a> <a class="next" onclick="plusSlides(1)">❯</a></p>
+<p><br></p>
+<!-- The dots/circles -->
+<div style="text-align:center">
+<p><span class="dot" onclick="currentSlide(1)"></span> <span class="dot" onclick="currentSlide(2)"></span> <span class="dot" onclick="currentSlide(3)"></span></p>
+</div>
+</div>
+<script>
+  var slideIndex = 0;
+  showSlides();
+
+// Function to show the current slide
+  function showSlides() {
+    var i;
+    var slides = document.getElementsByClassName("mySlides");
+    // Hide all slides initially
+    for (i = 0; i < slides.length; i++) {
+      slides[i].classList.remove("show");
+    }
+    // Increment slide index (automatic)
+    slideIndex++;
+    if (slideIndex > slides.length) {slideIndex = 1}
+    // Show the current slide
+    slides[slideIndex - 1].classList.add("show");
+    setTimeout(showSlides, 3000); // Change image every 4 seconds
+
+  }
+
+</script>
 
 
 

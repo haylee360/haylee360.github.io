@@ -11,7 +11,6 @@ categories:
   - Environmental-Health
   - Python
   - MEDS
-  - EDS-220
 toc: true
 bibliography: references.bib
 csl: plos-computational-biology.csl

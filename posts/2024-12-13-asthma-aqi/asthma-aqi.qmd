@@ -12,7 +12,6 @@ categories:
   - R
   - Statistics
   - MEDS
-  - EDS-222
 toc: true
 # bibliography: references.bib
 # csl: plos-computational-biology.csl

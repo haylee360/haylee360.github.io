@@ -11,7 +11,7 @@
     "href": "posts.html",
     "title": "Blog",
     "section": "",
-    "text": "What You Don’t Know You’re Afraid Of\n\n\n\nEnvironmental-Justice\n\n\nMEDS\n\n\nEDS-242\n\n\n\nHow landscapes of fear drive environmental research\n\n\n\nHaylee Oyler\n\n\nDec 19, 2024\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nWildfires and Respiratory Health in California\n\n\n\nEnvironmental-Health\n\n\nR\n\n\nStatistics\n\n\nMEDS\n\n\nEDS-222\n\n\n\nExamining the Effect of Wildfire and AQI on Asthma\n\n\n\nHaylee Oyler\n\n\nDec 13, 2024\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nThomas Fire AQI and Burn Scar\n\n\n\nEnvironmental-Health\n\n\nPython\n\n\nMEDS\n\n\nEDS-220\n\n\n\nExploring the environmental and health effects of the 2017 Thomas Fire\n\n\n\nHaylee Oyler\n\n\nDec 7, 2024\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nBlog post title\n\n\n\nQuarto\n\n\nMEDS\n\n\nsomething-cool\n\n\n\nA short catchy description of the blog post\n\n\n\nHaylee Oyler\n\n\nOct 18, 2024\n\n\n\n\n\n\n\n\nNo matching items"
+    "text": "What You Don’t Know You’re Afraid Of\n\n\n\nEnvironmental-Justice\n\n\nMEDS\n\n\nEthics\n\n\n\nHow Landscapes of Fear Drive Environmental Research\n\n\n\nHaylee Oyler\n\n\nDec 19, 2024\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nWildfires and Respiratory Health in California\n\n\n\nEnvironmental-Health\n\n\nR\n\n\nStatistics\n\n\nMEDS\n\n\n\nExamining the Effect of Wildfire and AQI on Asthma\n\n\n\nHaylee Oyler\n\n\nDec 13, 2024\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nThomas Fire AQI and Burn Scar\n\n\n\nEnvironmental-Health\n\n\nPython\n\n\nMEDS\n\n\n\nExploring the environmental and health effects of the 2017 Thomas Fire\n\n\n\nHaylee Oyler\n\n\nDec 7, 2024\n\n\n\n\n\n\n\n\nNo matching items"
   },
   {
     "objectID": "index.html",
@@ -158,28 +158,28 @@
     "href": "about.html",
     "title": "About",
     "section": "",
-    "text": "About this site"
+    "text": "test\nAbout this site"
   },
   {
     "objectID": "about.html#what-i-do-for-work",
     "href": "about.html#what-i-do-for-work",
     "title": "About",
     "section": "What I do for work",
-    "text": "What I do for work\n\nsome text goes here"
+    "text": "What I do for work"
   },
   {
     "objectID": "about.html#what-i-do-for-fun",
     "href": "about.html#what-i-do-for-fun",
     "title": "About",
     "section": "What I do for fun",
-    "text": "What I do for fun\n\nfun stuff\n\nhere is some midgreen text\nhere is a midgreen text\n\nhere is a line\nhere is a another line"
+    "text": "What I do for fun"
   },
   {
     "objectID": "resources.html",
     "href": "resources.html",
     "title": "Resources",
     "section": "",
-    "text": "hello world"
+    "text": "1 / 3\n\n\n\nCaption Text\n\n\n\n\n2 / 3\n\n\n\nCaption Two\n\n\n\n\n3 / 3\n\n\n\nCaption Three\n\n\n\n❮ ❯"
   },
   {
     "objectID": "posts/2024-12-19-landscapes-of-fear/landscapes-fear.html",

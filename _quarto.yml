@@ -10,16 +10,17 @@ website:
     # logo: images/my-logo.png, adds logo to navbar 
     # logo-alt: "my alt text"
     right:
-      - href: index.qmd
-        text: Home
+      # - href: index.qmd
+      #   text: Home
       - about.qmd
       - href: resources.qmd
         text: Resources
       - posts.qmd
       - text: CV
         href: resumes/hoyler-cv.pdf
+        target: _blank # Make resume open in new page
   page-footer: 
-    background: light
+    background: "#232f1a"
     left: Copyright 2024, Haylee Oyler
     right: This website is built with GitHub {{< fa brands github title="octocat github icon" >}}
 
