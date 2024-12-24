@@ -1,0 +1,144 @@
+/*-- scss:defaults --*/
+
+// Import google fonts
+@import url('https://fonts.googleapis.com/css2?family=Figtree:ital,wght@0,300..900;1,300..900&family=Oswald:wght@200..700&display=swap');
+
+// Create font variables
+$oswald: "Oswald", sans-serif;
+
+// Colors
+$navyblue: #064789;
+$uclablue: #427AA1;
+$skyblue: #aec9f2;
+$whiteblue: #EBF2FA;
+$midgreen: #679436;
+$applegreen: #A5BE00;
+
+// Quarto sass variables
+$body-bg: $whiteblue;
+$navbar-bg: $skyblue;
+$navbar-fg: $whiteblue;
+$navbar-hl: $navyblue;
+
+
+/*-- scss:rules --*/
+
+h1, h2 {
+  font-weight: 700;
+}
+
+.title {
+  color: $navyblue;
+}
+
+.center-text {
+  text-align: center;
+}
+
+.midgreen-text {
+  color: $midgreen;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: $oswald;
+}
+
+.navbar-brand img {
+  max-height: 40px;
+  width: auto;
+}
+
+
+/*-- SLIDESHOW STUFF --*/
+
+* {box-sizing:border-box}
+
+/* Slideshow container */
+.slideshow-container {
+  max-width: 1000px;
+  position: relative;
+  
+}
+
+/* Hide the images by default */
+.mySlides {
+  display: none;
+  position: relative;
+  width: 100%;
+}
+
+
+/* From chatgpt, to make images appear longer */
+.mySlides.show {
+  display: block; /* Display the active slide */
+  opacity: 1; /* Make the active slide fully visible */
+}
+
+.mySlides img {
+  width: 100%;
+  height: auto;
+  display: block; /* Ensures images are treated as block elements */
+}
+
+
+
+/* Next & previous buttons */
+.prev, .next {
+  cursor: pointer;
+  position: absolute;
+  top: 50%;
+  width: auto;
+  margin-top: -22px;
+  padding: 16px;
+  color: white;
+  font-weight: bold;
+  font-size: 18px;
+  transition: 0.6s ease;
+  border-radius: 0 3px 3px 0;
+  user-select: none;
+}
+
+/* Position the "next button" to the right */
+.next {
+  right: 0;
+  border-radius: 3px 0 0 3px;
+}
+
+/* On hover, add a black background color with a little bit see-through */
+.prev:hover, .next:hover {
+  background-color: rgba(0,0,0,0.8);
+}
+
+/* Caption text */
+.text {
+  color: #f2f2f2;
+  font-size: 15px;
+  padding: 8px 12px;
+  position: absolute;
+  bottom: 8px;
+  width: 100%;
+  text-align: center;
+}
+
+/* Number text (1/3 etc) */
+.numbertext {
+  color: #f2f2f2;
+  font-size: 12px;
+  padding: 8px 12px;
+  position: absolute;
+  top: 0;
+}
+
+/* The dots/bullets/indicators */
+.dot {
+  cursor: pointer;
+  height: 15px;
+  width: 15px;
+  margin: 0 2px;
+  background-color: #bbb;
+  border-radius: 50%;
+  display: inline-block;
+  transition: background-color 0.6s ease;
+}
+
+

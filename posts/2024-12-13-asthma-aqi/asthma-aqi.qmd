@@ -27,6 +27,9 @@ execute:
   message: false
 editor_options: 
   chunk_output_type: console
+website: 
+  navbar:
+    foreground: $navyblue
 ---
 
 **The full code for this analysis can be accessed at [this repository](https://github.com/haylee360/eds222-final-project)**

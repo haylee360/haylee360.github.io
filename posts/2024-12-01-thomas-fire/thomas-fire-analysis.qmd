@@ -23,6 +23,9 @@ jupyter: python3
 execute:
   warning: false
   message: false
+website: 
+  navbar:
+    foreground: $navyblue
 ---
 
 # Exploring the 2017 Thomas Fire's Environmental and Health Impacts
