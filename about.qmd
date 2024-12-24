@@ -1,15 +1,36 @@
 ---
-title: "About"
-title-block-banner: images/lizards_mouth.jpeg
-include-in-header:
-  - text: |
-      <style>
-      .quarto-title-block .quarto-title-banner {
-        background-position-y: center;
-        height: 220px;
-        opacity: 0.9;
-      }
-      </style>
+# title-block-banner: images/lizards_mouth.jpeg
+# include-in-header:
+#   - text: |
+#       <style>
+#       .quarto-title-block .quarto-title-banner {
+#         background-position-y: center;
+#         height: 220px;
+#         opacity: 0.9;
+#       }
+#       </style>
+about:
+  id: hero-heading
+  template: trestles
+  image: images/echo_headshot_square.jpeg
+  # image-shape: round
+  # image-width: 20em
+  links:
+    - text: LinkedIn
+      icon: linkedin
+      href: https://www.linkedin.com/in/haylee-oyler-788b7619a/
+      target: _blank
+    - text: GitHub
+      icon: github
+      href: https://github.com/haylee360
+      target: _blank
+    - text: Email
+      icon: envelope
+      href: mailto:hoyler@bren.ucsb.edu
+toc: false
+# website:
+#   navbar:
+#     title: "Haylee Oyler"
 ---
 
 ```{r}
@@ -48,14 +69,28 @@ include-in-header:
       </style>
 ```
 
-![](images/cr/snorkel.jpeg)
+::: {#hero-heading}
+## About
+
+Haylee Oyler has always been interested in studying the intersection of people and nature. She graduated with honors from the University of California, Berkeley in 2021 with a degree in Environmental Science. There, she worked on multiple research projects about human-environment interactions. Haylee’s first introduction to working with large data was her senior thesis. She used open-access data from the platform eBird to analyze trends in citizen science participation during the COVID-19 pandemic. She was captivated by the power and scope of community-centered data and became even more intrigued by questions of access, equity, and representation in who contributes to the data. 
+
+Now, Haylee is a Master of Environmental Data Science student at the University of California Santa Barbara. She is excited to apply data science tools to study human-environment interactions, specifically issues of environmental justice, equitable climate change transitions, and community-based conservation. Her ethos for approaching environmental problems centers first and foremost on people, particularly the participation and experience of marginalized groups. 
 
 
-## What I do for work
+::: 
+
+<img src="images/cr/snorkel.jpeg" style="width:300px; height:200px">
 
 
-## What I do for fun
+## Research
 
+<img src="images/climbing/orange_trees.jpeg" style="width:300px; height:200px">
+
+
+
+## Leisure
+
+In my free time, I enjoy 
 
 
 ::: {.center-text}

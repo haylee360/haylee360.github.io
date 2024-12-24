@@ -5,5 +5,4 @@ listing:
   type: grid
   sort: "date desc"
   categories: true
-  
 ---

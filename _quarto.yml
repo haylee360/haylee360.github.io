@@ -6,23 +6,42 @@ website:
   title: "Haylee Oyler"
   # favicon: images/my-favicon.png, adds logo to website bar thingy
   navbar:
-    # title: false, remove title from navbar
+    background: $skyblue
+    foreground: $whiteblue
+    # title: true
     # logo: images/my-logo.png, adds logo to navbar 
     # logo-alt: "my alt text"
     right:
       # - href: index.qmd
       #   text: Home
-      - about.qmd
+      - href: about.qmd
+        text: About
+      - posts.qmd
       - href: resources.qmd
         text: Resources
-      - posts.qmd
+      - href: photos.qmd
+        text: Photos
+      - test.qmd
       - text: CV
         href: resumes/hoyler-cv.pdf
         target: _blank # Make resume open in new page
   page-footer: 
-    background: "#232f1a"
-    left: Copyright 2024, Haylee Oyler
-    right: This website is built with GitHub {{< fa brands github title="octocat github icon" >}}
+    border: false
+    foreground: $navyblue
+    background: transparent
+    left: "&copy; 2024 Haylee Oyler"
+    right: 
+      - href: mailto:hoyler@bren.ucsb.edu
+        icon: envelope
+      - href: https://www.linkedin.com/in/haylee-oyler-788b7619a/
+        icon: linkedin
+        target: _blank
+      - href: https://github.com/haylee360/haylee360.github.io
+        target: _blank
+        icon: github
+        aria-label: GitHub
+
+    # right: This website is build with GitHub {{< fa brands github title="octocat github icon" >}}
 
 format:
   html:

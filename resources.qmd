@@ -57,7 +57,7 @@ title: "Resources"
     if (slideIndex > slides.length) {slideIndex = 1}
     // Show the current slide
     slides[slideIndex - 1].classList.add("show");
-    setTimeout(showSlides, 3000); // Change image every 4 seconds
+    setTimeout(showSlides, 2000); // Change image every 4 seconds
 
   }
 

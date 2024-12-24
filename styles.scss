@@ -2,9 +2,11 @@
 
 // Import google fonts
 @import url('https://fonts.googleapis.com/css2?family=Figtree:ital,wght@0,300..900;1,300..900&family=Oswald:wght@200..700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Commissioner:wght@100..900&display=swap');
 
 // Create font variables
 $oswald: "Oswald", sans-serif;
+$commissioner: "Commissioner", sans-serif;
 
 // Colors
 $navyblue: #064789;
@@ -16,10 +18,8 @@ $applegreen: #A5BE00;
 
 // Quarto sass variables
 $body-bg: $whiteblue;
-$navbar-bg: $skyblue;
-$navbar-fg: $whiteblue;
 $navbar-hl: $navyblue;
-
+//$navbar-bg: $uclablue;
 
 /*-- scss:rules --*/
 
@@ -48,6 +48,18 @@ h1, h2, h3, h4, h5, h6 {
   width: auto;
 }
 
+.index-title {
+  font-family: $commissioner;
+  font-size: 30px;
+  font-weight: 700;
+}
+
+.index-subtitle {
+  font-family: $commissioner;
+  font-size: 20px;
+  font-weight: 500;
+}
+
 
 /*-- SLIDESHOW STUFF --*/
 
@@ -55,7 +67,7 @@ h1, h2, h3, h4, h5, h6 {
 
 /* Slideshow container */
 .slideshow-container {
-  max-width: 1000px;
+  max-width: 800px;
   position: relative;
   
 }
@@ -65,10 +77,6 @@ h1, h2, h3, h4, h5, h6 {
   display: none;
   position: relative;
   width: 100%;
-  height: auto;
-  z-index: 1; /* Ensure that the active slide is on top */
-  transition: opacity 1s ease-in-out; /* Add smooth fading effect */
-  opacity: 0.5; /* Initially set opacity to 0 */
 }
 
 
@@ -77,6 +85,19 @@ h1, h2, h3, h4, h5, h6 {
   display: block; /* Display the active slide */
   opacity: 1; /* Make the active slide fully visible */
 }
+
+img {
+  width: 100%;
+  height: 100%;
+}
+
+.mySlides img {
+  width: 100%;
+  height: auto;
+  display: block; /* Ensures images are treated as block elements */
+}
+
+
 
 /* Next & previous buttons */
 .prev, .next {
@@ -87,6 +108,7 @@ h1, h2, h3, h4, h5, h6 {
   margin-top: -22px;
   padding: 16px;
   color: white;
+  background-color: rgba(216, 213, 212 ,0.4);
   font-weight: bold;
   font-size: 18px;
   transition: 0.6s ease;
@@ -97,6 +119,12 @@ h1, h2, h3, h4, h5, h6 {
 /* Position the "next button" to the right */
 .next {
   right: 0;
+  border-radius: 3px 0 0 3px;
+}
+
+/* Position the "prev button" to the left */
+.prev {
+  left: 0;
   border-radius: 3px 0 0 3px;
 }
 
@@ -137,15 +165,30 @@ h1, h2, h3, h4, h5, h6 {
   transition: background-color 0.6s ease;
 }
 
-
-
 /* Fading animation */
 .fade {
   animation-name: fade;
-  animation-duration: 1.5s;
+  animation-duration: 0.75s;
 }
 
 @keyframes fade {
-  from {opacity: .4}
+  from {opacity: .6}
   to {opacity: 1}
 }
+
+/* Container holding the image and the text */
+.container {
+  position: relative;
+}
+
+/* Bottom right text */
+.text-block {
+  position: absolute;
+  bottom: 47%;
+  left: 20px;
+  color: white;
+  padding-left: 20px;
+  padding-right: 5px;
+}
+
+
