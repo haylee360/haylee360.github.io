@@ -6,7 +6,7 @@ website:
   title: "Haylee Oyler"
   # favicon: images/my-favicon.png, adds logo to website bar thingy
   navbar:
-    background: $skyblue
+    background: $uclablue
     foreground: $whiteblue
     # title: true
     # logo: images/my-logo.png, adds logo to navbar 
@@ -19,9 +19,6 @@ website:
       - posts.qmd
       - href: resources.qmd
         text: Resources
-      - href: photos.qmd
-        text: Photos
-      - test.qmd
       - text: CV
         href: resumes/hoyler-cv.pdf
         target: _blank # Make resume open in new page
@@ -50,4 +47,6 @@ format:
     # css: styles.css, not using a css file, can even delete from repo
     toc: false
     page-layout: full
+    page-footer:
+      fontsize: 14px
 

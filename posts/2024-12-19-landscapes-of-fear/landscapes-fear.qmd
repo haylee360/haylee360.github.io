@@ -27,9 +27,9 @@ execute:
   message: false
 editor_options: 
   chunk_output_type: console
-website: 
-  navbar:
-    foreground: $navyblue
+# website: 
+#   navbar:
+#     foreground: $whiteblue
 ---
 
 ## Fear. We’ve all felt it. 

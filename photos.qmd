@@ -1,5 +1,7 @@
 ---
 title: "Photos"
+draft: true
+
 ---
 
 <!-- Slideshow container -->

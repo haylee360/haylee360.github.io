@@ -2,31 +2,14 @@
 format: html
 website: 
   page-footer: 
+    left: "&copy; 2024"
     border: false
     background: transparent
     foreground: $whiteblue
   navbar:
-    background: rgba(216, 213, 212 ,0.4)
+    background: rgba(214, 229, 255 ,0.4)
     foreground: $whiteblue
-#title: "Haylee Oyler"
-# image: images/small_headshot.png
-# about:
-#   template: jolla
-#   image-shape: round
-#   image-width: 20em
-#   links:
-#     - text: LinkedIn
-#       icon: linkedin
-#       href: https://www.linkedin.com/in/haylee-oyler-788b7619a/
-#       target: _blank
-#     - text: GitHub
-#       icon: github
-#       href: https://github.com/haylee360
-#       target: _blank
-#     - text: Email
-#       icon: envelope
-#       href: mailto:hoyler@bren.ucsb.edu
-# toc: false
+    title: " " 
 ---
 
 <div class="text-block">
@@ -37,7 +20,7 @@ website:
 
 <style>
   body {
-  background-image: url(images/cr/waterway.jpeg);
+  background-image: url(images/cr/ocean/waterway.jpeg);
   background-size: cover;
   background-position-y: bottom;
   background-repeat: no-repeat;

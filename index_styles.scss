@@ -1,0 +1,150 @@
+/*-- scss:defaults --*/
+
+// Import google fonts
+@import url('https://fonts.googleapis.com/css2?family=Figtree:ital,wght@0,300..900;1,300..900&family=Oswald:wght@200..700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Commissioner:wght@100..900&display=swap');
+
+// Create font variables
+$oswald: "Oswald", sans-serif;
+$commissioner: "Commissioner", sans-serif;
+
+// Colors
+$navyblue: #064789;
+$uclablue: #427AA1;
+$skyblue: #aec9f2;
+$whiteblue: #EBF2FA;
+$midgreen: #679436;
+$applegreen: #A5BE00;
+
+// Quarto sass variables
+$body-bg: $whiteblue;
+$navbar-hl: $navyblue;
+
+// The left hand sidebar
+$grid-sidebar-width: 0px !default;
+
+// The main body
+$grid-body-width: 900px !default;
+
+// The right hand margin bar
+$grid-margin-width: 0px !default;
+
+// The gutter that appears between the above columns
+$grid-column-gutter-width: 1.5rem !default;
+
+
+
+/*-- scss:rules --*/
+
+// Make full screen
+html, body{
+margin: 0px;
+padding: 0px;
+height: 100%;
+width: 100%;
+}
+
+main {
+  margin-top: 0px;
+  margin-bottom: 0px;
+}
+
+.column-page {
+  margin: 0px;
+  padding: 0px;
+}
+
+.content {
+  margin: 0px;
+  padding: 0px;
+}
+
+#quarto-html-after-body {
+  margin: 0px;
+  padding: 0px;
+}
+
+#quarto-content>* {
+    padding-top: 0px;
+}
+
+#title-block-header {
+    margin-block-end: 0px; 
+    position: relative;
+    margin-top: -1px
+}
+
+
+/* Container holding the image and the text */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    overflow-y: scroll;
+    scroll-snap-type: y mandatory;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    max-width: 100vw;
+}
+
+.slides-image{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 50px; // 50 pixel space between image and text
+    color: white;
+    scroll-snap-align: start; // makes it scroll 100% to next slide
+    background-image: url("images/cr/ocean/waterway.jpeg");
+    background-position: center;
+    background-repeat: no-repeat;
+    // background: linear-gradient(); to add a color gradient to
+}
+
+.slides-text{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    // gap: 50px; // 50 pixel space between image and text
+    color: white;
+    scroll-snap-align: start; // makes it scroll 100% to next slide
+    background: $whiteblue;
+}
+
+.ary-full{
+  vertical-align: bottom;
+  background-image: url("images/cr/ocean/waterway.jpeg"); 
+  background-repeat: no-repeat;
+  background-position: 50% 50%;
+  background-color: transparent;
+  background-size: cover;
+  background-attachment: fixed;
+  height: auto !important;
+  width: 100%;
+  position: relative;
+  box-sizing: border-box;
+  text-align: center;
+  display: block;
+  unicode-bidi: isolate;
+  table-layout: fixed;
+}
+
+
+.wsite-section {
+  height: auto !important;
+}
+
+// .slides img{
+//     width: 350px;
+// }

@@ -10,8 +10,8 @@ $commissioner: "Commissioner", sans-serif;
 
 // Colors
 $navyblue: #064789;
-$uclablue: #427AA1;
-$skyblue: #aec9f2;
+$uclablue: #4c8cba;
+$skyblue: #a3c7f1;
 $whiteblue: #EBF2FA;
 $midgreen: #679436;
 $applegreen: #A5BE00;
@@ -23,21 +23,71 @@ $navbar-hl: $navyblue;
 
 /*-- scss:rules --*/
 
+p {
+  font-size: 18px;
+}
+
 h1, h2 {
   font-weight: 700;
 }
 
-.title {
-  color: $navyblue;
+/* Target only text (p and a) in the footer */
+footer p, footer a {
+  font-size: 16px;  /* Adjust to your desired font size */
+}
+
+/* Optional: If you want to ensure icons stay the same size, you can specifically target the icons */
+footer i, footer svg {
+  font-size: initial;  /* Keeps icon size unchanged */
 }
 
 .center-text {
   text-align: center;
 }
 
-.midgreen-text {
-  color: $midgreen;
+
+.left-text {
+  width: 40%;
+  float: left;
+  vertical-align: top;
+  display: inline-block;
 }
+
+.right-picture{
+  float: right;
+  width: 60%;
+  padding-left: 18px;
+  vertical-align: top;
+  display: inline-block;
+}
+.right-picture img{
+  max-width: 100%;
+  border-radius: 20px;
+  width: auto;
+  height: auto;
+}
+.main-topic {
+  display: block;
+}
+.right-text {
+  width: 50%;
+  float: right;
+  display: inline-block;
+}
+.left-picture {
+  float: left;
+  width: 50%;
+  padding-right: 4px;
+  display: inline-block;
+}
+.left-picture img {
+  max-width: 100%;
+  border-radius: 20px;
+}
+.container-about {
+  overflow: hidden;
+}
+
 
 h1, h2, h3, h4, h5, h6 {
   font-family: $oswald;
@@ -50,15 +100,27 @@ h1, h2, h3, h4, h5, h6 {
 
 .index-title {
   font-family: $commissioner;
-  font-size: 30px;
+  font-size: 36px;
   font-weight: 700;
 }
 
 .index-subtitle {
   font-family: $commissioner;
-  font-size: 20px;
+  font-size: 24px;
   font-weight: 500;
 }
+
+/*-- FULL PAGE BACKGROUND IMAGE --*/
+
+.bg-image {
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+/*-- cover images --*/
+.img1 { background-image: url("images/cr/ocean/waterway.jpeg");}
+
 
 
 /*-- SLIDESHOW STUFF --*/
@@ -86,15 +148,16 @@ h1, h2, h3, h4, h5, h6 {
   opacity: 1; /* Make the active slide fully visible */
 }
 
-img {
-  width: 100%;
-  height: 100%;
-}
+//img {
+//  width: 100%;
+//  height: 100%;
+//}
 
 .mySlides img {
   width: 100%;
   height: auto;
   display: block; /* Ensures images are treated as block elements */
+  border-radius: 20px;
 }
 
 
@@ -177,9 +240,49 @@ img {
 }
 
 /* Container holding the image and the text */
-.container {
-  position: relative;
+
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
+
+//.container {
+//  position: relative;
+//  width: 100%;
+//  height: 100vh;
+//  overflow-y: scroll;
+//  scroll-snap-type: y mandatory;
+//  margin: 0;
+//  padding: 0;
+//  box-sizing: border-box;
+//}
+
+.slides {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 50px; // 50 pixel space between image and text
+  color: white;
+  scroll-snap-align: start; // makes it scroll 100% to next slide
+  // background: linear-gradient(); to add a color gradient to
+}
+
+.slides img{
+  width: 350px;
+}
+
+.slides h2 {
+  font-size: 70px;
+  font-weight: 600;
+  max-width: 650px;
+}
+
+//.slide1{
+  // background: linear-gradient(); to add a color gradient to
+//}
 
 /* Bottom right text */
 .text-block {
@@ -190,5 +293,4 @@ img {
   padding-left: 20px;
   padding-right: 5px;
 }
-
 
