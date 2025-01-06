@@ -8,17 +8,18 @@ website:
   navbar:
     background: $uclablue
     foreground: $whiteblue
+    highlight: $navyblue
     # title: true
     # logo: images/my-logo.png, adds logo to navbar 
     # logo-alt: "my alt text"
     right:
-      # - href: index.qmd
-      #   text: Home
       - href: about.qmd
         text: About
       - posts.qmd
       - href: resources.qmd
         text: Resources
+      - href: test.qmd
+        text: Photos
       - text: CV
         href: resumes/hoyler-cv.pdf
         target: _blank # Make resume open in new page

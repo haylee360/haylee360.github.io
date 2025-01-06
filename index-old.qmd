@@ -1,0 +1,32 @@
+---
+format: html
+website:
+  navbar:
+    background: rgba(214, 229, 255 ,0.4)
+    foreground: $whiteblue
+    title: " " 
+  page-footer: 
+    left: "&copy; 2024"
+    border: false
+    background: transparent
+    foreground: $whiteblue
+
+---
+
+<div class="text-block">
+  <p class="index-title">Haylee Oyler</p>
+  <p class="index-subtitle">Interdisciplinary Environmental Data Scientist</p>
+</div>
+
+
+<style>
+  body {
+  background-image: url(images/cr/ocean/waterway.jpeg);
+  background-size: cover;
+  background-position-y: bottom;
+  background-repeat: no-repeat;
+}
+  
+</style>
+
+

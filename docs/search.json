@@ -7,11 +7,18 @@
     "text": "Costa Rica study abroad\n\n\n\n\n\n1 / 3\n\n\n\nPuntarenas, Costa Rica\n\n\n\n\n2 / 3\n\n\n\nIslas Murcielagos, Costa Rica\n\n\n\n\n3 / 3\n\n\n\nCuajiniquil, Costa Rica\n\n\n\n❮ ❯\n\n\n\n  \n\n\n\nMore coming soon!"
   },
   {
+    "objectID": "photos.html",
+    "href": "photos.html",
+    "title": "Resources",
+    "section": "",
+    "text": "Here is a collection of various resources I enjoy.\n\n\n\n\n\n\n\n1 / 3\n\n\n\nMonteverde\n\n\n\n\n2 / 3\n\n\n\nIslas Murcielagos\n\n\n\n\n3 / 3\n\n\n\nCuajiniquil\n\n\n\n❮ ❯\n\n\n\n\n  \n\nNow I am going to add some text here\n\n\n\n\n\n\n\n1 / 3\n\n\n\nBlack phoebe\n\n\n\n\n2 / 3\n\n\n\nWhite egret\n\n\n\n\n3 / 3\n\n\n\nDark-eyed junco\n\n\n\n❮ ❯"
+  },
+  {
     "objectID": "about.html",
     "href": "about.html",
     "title": "Haylee Oyler",
     "section": "",
-    "text": "LinkedIn\n  \n  \n    \n     GitHub\n  \n  \n    \n     Email\n  \n\n  \n  \n\n\nI’ve always been interested in understanding the intersection of people and nature. For me, the most conspicuous path into this nexus was a degree in environmental science. My time at UC Berkeley gave me experience studying human-environment interactions. It also introduced me to working with data. My senior thesis used large datasets from the birdwatching platform eBird to document how community science participation changed during the 2020 pandemic. I found the power and scope of community-centered data captivating and wanted to dive deeper into questions of access, equity, and representation in data collection.\nNow, I am a Master of Environmental Data Science student at UC Santa Barbara. I’m excited about continuing to apply data science tools to study issues of environmental justice and community-based conservation. My approach to solving environmental problems centers first and foremost on people, particularly the participation and experience of historically marginalized groups."
+    "text": "I’ve always been interested in understanding the intersection of people and nature. For me, the most conspicuous path into this nexus was a degree in environmental science. My time at UC Berkeley gave me experience studying human-environment interactions. It also introduced me to working with data. My senior thesis used large datasets from the birdwatching platform eBird to document how community science participation changed during the 2020 pandemic. I found the power and scope of community-centered data captivating and wanted to dive deeper into questions of access, equity, and representation in data collection.\nNow, I am a Master of Environmental Data Science student at UC Santa Barbara. I’m excited about continuing to apply data science tools to study issues of environmental justice and community-based conservation. My approach to solving environmental problems centers first and foremost on people, particularly the participation and experience of historically marginalized groups."
   },
   {
     "objectID": "about.html#about",
@@ -175,6 +182,13 @@
     "text": "Map the Thomas Fire scar and boundary\n\n\nReproject CRS\n# Reproject data to match the CRS between our two datasets\nthomas_boundary= thomas_boundary.to_crs(\"EPSG:4326\")\nlandsat = landsat.rio.reproject(\"EPSG:4326\")\n\n# Confirm that the CRS of our data match\nassert landsat.rio.crs == thomas_boundary.crs\n\n\n\n\nMap the Thomas Fire\n# Initialize figure\nfig, ax = plt.subplots()\n\n# Plot the Landsat data\nlandsat[['swir22', 'nir08', 'red']].to_array().plot.imshow(ax = ax, \n                                                        robust = True)\n\n# Plot the fire perimeter\nthomas_boundary.boundary.plot(ax=ax, \n                            edgecolor='#f83c36', \n                            linewidth=2, \n                            label='Thomas Fire Boundary')\n\n# Create a legend for the false color bands and boundary\nlegend_swir = mpatches.Patch(color = \"#eb6a4b\", label = 'SWIR\\n- Burned Area')\nlegend_nir = mpatches.Patch(color = \"#a1fc81\", label = 'NIR\\n- Vegetation')\nlegend_bound = mpatches.Patch(color = \"#f83c36\", label = 'Thomas Fire\\nBoundary')\n\n# Plot legend\nax.legend(handles = [legend_swir, legend_nir, legend_bound], bbox_to_anchor=(1.38,1), fontsize = 10)\n\n# Set title and axes labels\nax.set_title('False Color Map of the 2017 Thomas Fire in California\\nwith the Fire Perimeter',\n            fontsize=14)\nax.set_xlabel('Longitude (degrees)')\nax.set_ylabel('Latitude (degrees)')\n\nplt.show()\n\n\n\n\n\n\n\n\n\nFigure Description\nThis map shows a false color image of the Thomas Fire in Santa Barbara and Ventura Counties. The fire boundary is outlined in red. Satellite data works with wavelengths of light beyond what the human eye can see. False color imagery is the process of assigning colors to these wavelengths (i.e. near-infrared and short-wave infrared). In our map, we’ve chosen to visualize short-wave infrared as red, near-infrared as green, and red wavelengths as blue. This lets us produce an image that highlights exactly where the fire scar is, as opposed to the true color image where it is much harder to distinguish. A true color image assigns the red, green, and blue wavelengths of light to the correct corresponding colors.\n\nReferences\n\nAir Quality Index (AQI) from US Environmental Protection Agency.\n\nUS Environmental Protection Agency. Air Quality System Data Mart AirNow available via https://www.epa.gov/outdoor-air-quality-data. Accessed October 17 2024.\n\nLandsat Data from Microsoft’s Planetary Computer Data Catalogue.\n\nEarth Resources Observation and Science (EROS) Center. (2020). Landsat 4-5 Thematic Mapper Level-2, Collection 2. U.S. Geological Survey. https://doi.org/10.5066/P9IAXOVV\nEarth Resources Observation and Science (EROS) Center. (2020). Landsat 7 Enhanced Thematic Mapper Plus Level-2, Collection 2. U.S. Geological Survey. https://doi.org/10.5066/P9C7I13B\nEarth Resources Observation and Science (EROS) Center. (2020). Landsat 8-9 Operational Land Imager / Thermal Infrared Sensor Level-2, Collection 2. U.S. Geological Survey. https://doi.org/10.5066/P9OGBGM6\n\nCalFire Fire Perimeter Data\n\nCalifornia Department of Forestry and Fire Protection (CAL FIRE), [calfire_all.gdb], [2024-11-17], retrieved from CAL FIRE data portal.\n\n\n\n\nAcknowledgements\nThis code is based on exercises from Carmen Galaz-Garcia for EDS-220: Working with Environmental Data."
   },
   {
+    "objectID": "index-old.html",
+    "href": "index-old.html",
+    "title": "Haylee Oyler",
+    "section": "",
+    "text": "Haylee Oyler\n\n\nInterdisciplinary Environmental Data Scientist"
+  },
+  {
     "objectID": "posts/2024-12-19-landscapes-of-fear/landscapes-fear.html",
     "href": "posts/2024-12-19-landscapes-of-fear/landscapes-fear.html",
     "title": "What You Don’t Know You’re Afraid Of",
@@ -214,7 +228,7 @@
     "href": "index.html",
     "title": "Haylee Oyler",
     "section": "",
-    "text": "Haylee Oyler\n\n\nInterdisciplinary Environmental Data Scientist"
+    "text": "Haylee Oyler\n\n\nInterdisciplinary Environmental Data Scientist\n\n\n\n\n\n  \n    \n\n    \n  \n    \n     LinkedIn\n  \n  \n    \n     GitHub\n  \n  \n    \n     Email\n  \n\n  \n  \n\nMy name is Haylee Oyler (she/they) and I am an interdisciplinary environmental data scientist. In other words, I am interested in understanding environmental problems using approaches, frameworks, and methods across different fields of study. I’ve always been interested in understanding the intersection of people and nature. For me, the most conspicuous path into this nexus was a degree in environmental science from UC Berkeley. I gained experience studying human-environment interactions and it also introduced me to working with data.\n\n\nNow, I am a Master of Environmental Data Science student at UC Santa Barbara. I’m excited about continuing to apply data science tools to study issues of environmental justice and community-based conservation. My approach to solving environmental problems centers first and foremost on people, particularly the participation and experience of historically marginalized groups."
   },
   {
     "objectID": "posts.html",
@@ -226,8 +240,36 @@
   {
     "objectID": "test.html",
     "href": "test.html",
-    "title": "Test",
+    "title": "Photo Gallery",
     "section": "",
-    "text": "“Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.”\nSection 1.10.32 of “de Finibus Bonorum et Malorum”, written by Cicero in 45 BC “Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur?”"
+    "text": "Here is a collection of photos of some of my favorite things. Work, school, fun, it’s all here!"
+  },
+  {
+    "objectID": "test.html#sedgwick-uc-reserve",
+    "href": "test.html#sedgwick-uc-reserve",
+    "title": "Photo Gallery",
+    "section": "Sedgwick UC Reserve",
+    "text": "Sedgwick UC Reserve\nMy previous job was with Dr. Nathan Kraft’s plant ecology lab at UCLA. A large component of the job was field work at the Sedgwick UC Reserve in the Santa Ynez Valley. Here, the lab has an experimental plot in which they conduct research related to competition and coexistence with a variety of native and invasive California annual plants. You can see some photos of the plot being prepared for each year’s experimental design below.\n\n\n\n\n\n\n\n\n1 / 5\n\n\n\nLaying down the matting\n\n\n\n\n\n2 / 5\n\n\nPreparing the plot\n\n\n\n\n\n3 / 5\n\n\n\n\n\n\n\n\n4 / 5\n\n\n\n\n\n\n\n\n5 / 5\n\n\nAcmispon wrangelianus and Salvia columbariae\n\n\n\n\n\n❮\n\n\n❯"
+  },
+  {
+    "objectID": "test.html#hopland-research-and-extension-center",
+    "href": "test.html#hopland-research-and-extension-center",
+    "title": "Photo Gallery",
+    "section": "Hopland Research and Extension Center",
+    "text": "Hopland Research and Extension Center\nI spent some time working at the Hopland Research and Extension Center with Dr. Kendall Calhoun from UC Berkeley. We were studying wildlife response to wildfire in the area. Our main data collection came from camera traps and audio monitors we placed across the reserve. Most of our fieldwork involved setting and collecting the traps every few days.\n\n\n\n\n\n\n\n\n\n1 / 5\n\n\n\n\n\n\n\n\n2 / 5\n\n\n\n\n\n\n\n\n3 / 5\n\n\n\n\n\n\n\n\n4 / 5\n\n\n\n\n\n\n\n\n5 / 5\n\n\n\n\n\n\n\n\n❮\n\n\n❯"
+  },
+  {
+    "objectID": "test.html#climbing-adventures",
+    "href": "test.html#climbing-adventures",
+    "title": "Photo Gallery",
+    "section": "Climbing Adventures",
+    "text": "Climbing Adventures\n\n\n\n\n\n\n\n\n\n1 / 5\n\n\nJoshua Tree National Park\n\n\n\n\n\n2 / 5\n\n\n\n\n\n\n\n\n3 / 5\n\n\n\n\n\n\n\n\n4 / 5\n\n\nEcho Cliffs, Santa Monica Mountains\n\n\n\n\n\n5 / 5\n\n\n\n\n\n\n\n\n❮\n\n\n❯"
+  },
+  {
+    "objectID": "test.html#birds",
+    "href": "test.html#birds",
+    "title": "Photo Gallery",
+    "section": "Birds!",
+    "text": "Birds!\n\n\n\n\n\n\n\n\n\n1 / 5\n\n\nBlack Phoebe\n\n\n\n\n\n2 / 5\n\n\nAllen’s Hummingbird\n\n\n\n\n\n3 / 5\n\n\nDark-eyed Junco\n\n\n\n\n\n4 / 5\n\n\nGreat Egret\n\n\n\n\n\n5 / 5\n\n\nRed-shouldered Blackbird\n\n\n\n\n\n❮\n\n\n❯"
   }
 ]

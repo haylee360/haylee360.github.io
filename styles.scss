@@ -18,7 +18,7 @@ $applegreen: #A5BE00;
 
 // Quarto sass variables
 $body-bg: $whiteblue;
-$navbar-hl: $navyblue;
+//$navbar-hl: $navyblue;
 //$navbar-bg: $uclablue;
 
 /*-- scss:rules --*/
@@ -41,10 +41,9 @@ footer i, footer svg {
   font-size: initial;  /* Keeps icon size unchanged */
 }
 
-.center-text {
-  text-align: center;
-}
 
+
+/* FOR ABOUT PAGE CONTAINERS*/
 
 .left-text {
   width: 40%;
@@ -56,7 +55,7 @@ footer i, footer svg {
 .right-picture{
   float: right;
   width: 60%;
-  padding-left: 18px;
+  padding-left: 20px;
   vertical-align: top;
   display: inline-block;
 }
@@ -70,19 +69,23 @@ footer i, footer svg {
   display: block;
 }
 .right-text {
-  width: 50%;
+  width: 40%;
   float: right;
+  vertical-align: top;
   display: inline-block;
 }
 .left-picture {
   float: left;
-  width: 50%;
-  padding-right: 4px;
+  width: 60%;
+  padding-right: 20px;
+  vertical-align: top;
   display: inline-block;
 }
 .left-picture img {
   max-width: 100%;
   border-radius: 20px;
+  width: auto;
+  height: auto;
 }
 .container-about {
   overflow: hidden;
@@ -98,17 +101,6 @@ h1, h2, h3, h4, h5, h6 {
   width: auto;
 }
 
-.index-title {
-  font-family: $commissioner;
-  font-size: 36px;
-  font-weight: 700;
-}
-
-.index-subtitle {
-  font-family: $commissioner;
-  font-size: 24px;
-  font-weight: 500;
-}
 
 /*-- FULL PAGE BACKGROUND IMAGE --*/
 
@@ -129,9 +121,14 @@ h1, h2, h3, h4, h5, h6 {
 
 /* Slideshow container */
 .slideshow-container {
-  max-width: 800px;
   position: relative;
-  
+  display: block;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  max-width: 70%;
+  width: 60%;
+  padding-bottom: 10px;
 }
 
 /* Hide the images by default */
@@ -168,7 +165,7 @@ h1, h2, h3, h4, h5, h6 {
   position: absolute;
   top: 50%;
   width: auto;
-  margin-top: -22px;
+  margin-top: -40px;
   padding: 16px;
   color: white;
   background-color: rgba(216, 213, 212 ,0.4);
@@ -284,7 +281,7 @@ h1, h2, h3, h4, h5, h6 {
   // background: linear-gradient(); to add a color gradient to
 //}
 
-/* Bottom right text */
+/* FOR INDEX TEXT */
 .text-block {
   position: absolute;
   bottom: 47%;
@@ -294,3 +291,14 @@ h1, h2, h3, h4, h5, h6 {
   padding-right: 5px;
 }
 
+.index-title {
+  font-family: $commissioner;
+  font-size: 36px;
+  font-weight: 700;
+}
+
+.index-subtitle {
+  font-family: $commissioner;
+  font-size: 24px;
+  font-weight: 500;
+}

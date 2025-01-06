@@ -12,21 +12,21 @@
 about:
   id: hero-heading
   template: trestles
-  image: images/echo_headshot_square.jpeg
+  image: images/ny_headshot_long.jpeg
   # image-shape: round
   # image-width: 20em
-  links:
-    - text: LinkedIn
-      icon: linkedin
-      href: https://www.linkedin.com/in/haylee-oyler-788b7619a/
-      target: _blank
-    - text: GitHub
-      icon: github
-      href: https://github.com/haylee360
-      target: _blank
-    - text: Email
-      icon: envelope
-      href: mailto:hoyler@bren.ucsb.edu
+  # links:
+  #   - text: LinkedIn
+  #     icon: linkedin
+  #     href: https://www.linkedin.com/in/haylee-oyler-788b7619a/
+  #     target: _blank
+  #   - text: GitHub
+  #     icon: github
+  #     href: https://github.com/haylee360
+  #     target: _blank
+  #   - text: Email
+  #     icon: envelope
+  #     href: mailto:hoyler@bren.ucsb.edu
 toc: false
 # website:
 #   navbar:
@@ -36,7 +36,6 @@ toc: false
 
 ::: {#hero-heading}
 ## About
-
 I’ve always been interested in understanding the intersection of people and nature. For me, the most conspicuous path into this nexus was a degree in environmental science. My time at UC Berkeley gave me experience studying human-environment interactions. It also introduced me to working with data. My senior thesis used large datasets from the birdwatching platform eBird to document how community science participation changed during the 2020 pandemic. I found the power and scope of community-centered data captivating and wanted to dive deeper into questions of access, equity, and representation in data collection.
 
 Now, I am a Master of Environmental Data Science student at UC Santa Barbara. I’m excited about continuing to apply data science tools to study issues of environmental justice and community-based conservation. My approach to solving environmental problems centers first and foremost on people, particularly the participation and experience of historically marginalized groups. 
@@ -45,15 +44,18 @@ Now, I am a Master of Environmental Data Science student at UC Santa Barbara. I�
 
 ## Background
 <div class="container-about">
+
 <div class="left-text">
 <p> Growing up in California’s Central Valley, I saw the extremes of environmental health. I was fortunate enough to have access to natural wonders like Yosemite Valley, Monterey Bay, and the Mojave Desert. And yet, my city has some of the poorest air quality in the nation due, in part, to the prolific extractive petroleum industry in the region. These formative years meant I came to appreciate the beauty and wonder of nature while also realizing how human activity was creating unprecedented environmental change.</p>
 
 <p>I brought this foundation with me to my studies at UC Berkeley. Studying at the Rausser College of Natural Resources gave me the breadth and depth of knowledge to contextualize these experiences. The interdisciplinary nature of the degree also allowed me the freedom to explore what I was most interested in.</p>
+
 </div>
 
 <div class="right-picture">
 <img src="images/hopland/valley.jpeg">
 </div>
+
 </div>
 
 
@@ -61,15 +63,17 @@ Now, I am a Master of Environmental Data Science student at UC Santa Barbara. I�
 ## Research
 
 <div class="container-about">
-<div class="left-text">
+
+<div class="right-text">
 <p>I’ve been fortunate enough to conduct research across a variety of environmental topics–everything from microplastics to wildfire to plant competition. My path through science hasn’t been linear, but this nonlinearity has helped me realize that the work I am most passionate about is interdisciplinary. The one through-line across my studies has been people.</p> 
 
 <p>When I learned about science growing up, I learned that science is objective, that it is a method of knowing that yields truth. When I started to do science, however, I quickly realized that was not the case. Systems are messy and multifaceted and the ways we have to quantify them are imperfect. As I grew, I couldn’t help but situate the lens of my environmental studies from the perspective of the people most impacted by my question. I want to understand the effectiveness of a marine protected area because I want to know if it will improve the water quality and catch for the fishing village. I want to understand patterns in bird diversity observations because I want to know who chooses to participate in community science and why.</p>
 
 <p>Now, I broadly define my research interests around [socio-ecological systems](https://www.nature.com/articles/s42949-020-00008-4), or systems that include the social aspects of human culture, politics, economy, and technology and how they interact with natural ecosystems. As I grew into myself and learned from wonderful mentors, I decided to lean into the fuzziness around the edges of real science. Truth often resists simplicity. My ethos for research centers around leaning into that complexity. This means incorporating methods across disciplines such as sociology, public health, and critical studies to examine questions of environmental science.</p>
+
 </div>
 
-<div class="right-picture">
+<div class="left-picture">
 <img src="images/cr/ocean/cuan_people.jpeg">
 
 
@@ -82,6 +86,7 @@ Now, I am a Master of Environmental Data Science student at UC Santa Barbara. I�
 
 ## Leisure
 <div class="container-about">
+
 <div class="left-text">
 In my spare time, I enjoy rock climbing. Indoor, outdoor, bouldering, sport climbing–I love it all. I’m always looking for more cool places to climb and cool people to climb with. The last few spots I’ve been to are Santa Barbara’s [The Brickyard](https://www.mountainproject.com/area/105885226/the-brickyard), Joshua Tree’s [Jumbo Rocks](https://www.mountainproject.com/area/105720585/jumbo-rock-area), and Bishop’s [Owen’s River Gorge](https://www.mountainproject.com/area/105843226/owens-river-gorge). Check out photos from some of my rocky adventures under the resources tab.
 
@@ -93,5 +98,6 @@ And lastly, I appreciate a good bird! You can find a selection of some of the fe
 <div class="right-picture">
 <img src="images/climbing/crash_pads.jpeg">
 </div>
+
 </div>
 

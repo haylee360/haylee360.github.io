@@ -1,31 +1,62 @@
 ---
-format: html
+format: 
+  html:
+    css: index_styles.scss
 website: 
+  navbar:
+    background: rgba(214, 229, 255 ,0.4)
+    foreground: $whiteblue
+    highlight: $navyblue
+    title: " "
   page-footer: 
     left: "&copy; 2024"
     border: false
     background: transparent
-    foreground: $whiteblue
-  navbar:
-    background: rgba(214, 229, 255 ,0.4)
-    foreground: $whiteblue
-    title: " " 
+    foreground: $navyblue
+about:
+  id: hero-heading
+  template: trestles
+  image: images/echo_headshot_square.jpeg
+  # image-shape: round
+  # image-width: 20em
+  links:
+    - text: LinkedIn
+      icon: linkedin
+      href: https://www.linkedin.com/in/haylee-oyler-788b7619a/
+      target: _blank
+    - text: GitHub
+      icon: github
+      href: https://github.com/haylee360
+      target: _blank
+    - text: Email
+      icon: envelope
+      href: mailto:hoyler@bren.ucsb.edu
+# header height: 60.5px
 ---
 
+<div class="container">
+
+<div class="slides slide1">
+
 <div class="text-block">
-  <p class="index-title">Haylee Oyler</p>
-  <p class="index-subtitle">Interdisciplinary Environmental Data Scientist</p>
+
+<div class="index-title">Haylee Oyler</div>
+<div class="index-subtitle">Interdisciplinary Environmental Data Scientist</div>
+
 </div>
 
+</div>
 
-<style>
-  body {
-  background-image: url(images/cr/ocean/waterway.jpeg);
-  background-size: cover;
-  background-position-y: bottom;
-  background-repeat: no-repeat;
-}
-  
-</style>
+ 
+<div class="slides slide2">
+<div id="hero-heading">
+<p>My name is Haylee Oyler (she/they) and I am an interdisciplinary environmental data scientist. In other words, I am interested in understanding environmental problems using approaches, frameworks, and methods across different fields of study. I’ve always been interested in understanding the intersection of people and nature. For me, the most conspicuous path into this nexus was a degree in environmental science from UC Berkeley. I gained experience studying human-environment interactions and it also introduced me to working with data.</p>
 
+<p>Now, I am a Master of Environmental Data Science student at UC Santa Barbara. I’m excited about continuing to apply data science tools to study issues of environmental justice and community-based conservation. My approach to solving environmental problems centers first and foremost on people, particularly the participation and experience of historically marginalized groups.</p>
+</div>
 
+</div>
+
+</div>
+
+</div>
