@@ -1,7 +1,7 @@
 ---
 format: 
   html:
-    css: index_styles.scss
+    css: index_styles.css
 website: 
   navbar:
     background: rgba(214, 229, 255 ,0.4)

@@ -1,39 +1,6 @@
 /*-- scss:defaults --*/
 
-// Import google fonts
-@import url('https://fonts.googleapis.com/css2?family=Figtree:ital,wght@0,300..900;1,300..900&family=Oswald:wght@200..700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Commissioner:wght@100..900&display=swap');
-
-// Create font variables
-$oswald: "Oswald", sans-serif;
-$commissioner: "Commissioner", sans-serif;
-
-// Colors
-$navyblue: #064789;
-$uclablue: #427AA1;
-$skyblue: #aec9f2;
-$whiteblue: #EBF2FA;
-$midgreen: #679436;
-$applegreen: #A5BE00;
-
-// Quarto sass variables
-$body-bg: $whiteblue;
-$navbar-hl: $whiteblue;
-
-// The left hand sidebar
-$grid-sidebar-width: 0px !default;
-
-// The main body
-$grid-body-width: 900px !default;
-
-// The right hand margin bar
-$grid-margin-width: 0px !default;
-
-// The gutter that appears between the above columns
-$grid-column-gutter-width: 1.5rem !default;
-
-
-// Get rid of extra padding from quarto formatting
+/*-- Get rid of extra padding from quarto formatting --*/
 body .page-columns {
   display: block !important;
 }
@@ -42,22 +9,23 @@ body .page-columns {
   display: block !important;
 }
 
-// To keep the page column padding from showing up when screen is small
+/*-- To keep the page column padding from showing up when screen is small --*/
 @media (min-width: 992px){
   body .page-columns {
   display: block !important;
   }
 }
 
-//@media (max-width: 992px) {
-//  body .page-columns {
-//  display: block !important; }}
+@media (max-width: 992px) {
+  body .page-columns {
+  display: block !important; 
+  }
+}
 
 
 
 /*-- scss:rules --*/
 
-// Make full screen
 html, body{
 margin: 0px;
 padding: 0px;
@@ -95,7 +63,7 @@ main {
     margin-top: -1px
 }
 
-// Make body sit under transparent header 
+/*-- Make body sit under transparent header --*/
 body.nav-fixed {
     padding-top: 0px;
 }
@@ -191,7 +159,7 @@ div.quarto-about-trestles .about-contents {
   color: black;
 }
 
-// Trying to fix theme box overflow issues
+/*-- Trying to fix theme box overflow issues --*/
 @media (max-width: 991.98px) {
   div.quarto-about-trestles {
     flex-direction: column;

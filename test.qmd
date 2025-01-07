@@ -2,7 +2,7 @@
 title: "Photo Gallery"
 format: 
   html:
-    css: test_style.scss
+    css: test_style.css
 ---
 Here is a collection of photos of some of my favorite things. Work, school, fun, it's all here!
 

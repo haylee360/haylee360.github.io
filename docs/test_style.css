@@ -1,0 +1,103 @@
+* {box-sizing:border-box}
+
+/* Slideshow container */
+.outer-slideshow-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+
+
+/* Slideshow container */
+.slideshow-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  max-width: 70%;
+  width: 60%;
+  padding-bottom: 10px;
+}
+
+.slideshow {
+  display: flex;
+}
+
+.slideshow img{
+  border-radius: 15px;
+}
+
+.slide {
+  display: none;
+  position: relative;
+  width: 100%;
+}
+
+.slide img {
+  max-width: 100%;
+  height: auto;
+  display: block; /* Ensures images are treated as block elements */
+  border-radius: 20px;
+}
+
+button {
+  position: absolute;
+  top: 50%;
+  padding: 10px;
+  color: white;
+  background-color: rgba(0, 0, 0, 0.5);
+  border: none;
+  cursor: pointer;
+  transform: translateY(-50%);
+}
+
+button.prev {
+  left: 0;
+}
+
+button.next {
+  right: 0;
+}
+
+/* Caption text */
+.text {
+  color: #f2f2f2;
+  font-size: 15px;
+  padding: 8px 12px;
+  position: absolute;
+  bottom: 8px;
+  width: 100%;
+  text-align: center;
+}
+
+/* Number text (1/3 etc) */
+.numbertext {
+  color: #f2f2f2;
+  font-size: 12px;
+  padding: 8px 12px;
+  position: absolute;
+  top: 0;
+}
+
+/* Dark versions */
+.text-dark {
+  color: #1c1c1c;
+  font-size: 15px;
+  padding: 8px 12px;
+  position: absolute;
+  bottom: 8px;
+  width: 100%;
+  text-align: center;
+}
+
+/* Number text (1/3 etc) */
+.numbertext-dark {
+  color: #1c1c1c;
+  font-size: 12px;
+  padding: 8px 12px;
+  position: absolute;
+  top: 0;
+}
