@@ -16,10 +16,10 @@ website:
       - href: about.qmd
         text: About
       - posts.qmd
+      - href: photos.qmd
+        text: Photos
       - href: resources.qmd
         text: Resources
-      - href: test.qmd
-        text: Photos
       - text: CV
         href: resumes/hoyler-cv.pdf
         target: _blank # Make resume open in new page
@@ -43,7 +43,7 @@ website:
 
 format:
   html:
-    theme: styles.scss
+    theme: styles/styles.scss
     mainfont: Figtree
     # css: styles.css, not using a css file, can even delete from repo
     toc: false

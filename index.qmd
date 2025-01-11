@@ -1,7 +1,7 @@
 ---
 format: 
   html:
-    css: index_styles.css
+    css: styles/index_styles.css
 website: 
   navbar:
     background: rgba(214, 229, 255 ,0.4)
@@ -17,8 +17,6 @@ about:
   id: hero-heading
   template: trestles
   image: images/echo_headshot_square.jpeg
-  # image-shape: round
-  # image-width: 20em
   links:
     - text: LinkedIn
       icon: linkedin

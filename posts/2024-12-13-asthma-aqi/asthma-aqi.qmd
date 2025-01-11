@@ -126,7 +126,6 @@ asthma_hosp_table <- tab_model(asthma_mod,
 
 asthma_hosp_table
 ```
-*Note to Max: these results vary so drastically from what I presented because I had simply forgot to add year into my model. Sorry about that!*
 
 The results of the linear model show that median AQI and all years of interest had significant coefficients at the 0.05 significance level. Additionally, the adjusted R<sup>2</sup> of 0.586 tells us that ~58.6% of the variability in hospitalizations can be explained by median aqi and year. However, if we examine the R<sup>2</sup> values from my earlier preliminary models, we can see roughly what the breakdown of this multiple linear regression is. 
 

@@ -1,6 +1,6 @@
 ---
 title: Thomas Fire AQI and Burn Scar
-description: Exploring the environmental and health effects of the 2017 Thomas Fire
+description: Exploring the Environmental and Health Effects of the 2017 Thomas Fire
 author:
   - name: Haylee Oyler
     url: https://haylee360.github.io/
