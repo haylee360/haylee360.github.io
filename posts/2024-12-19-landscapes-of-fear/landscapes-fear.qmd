@@ -4,7 +4,7 @@ description: "How Landscapes of Fear Drive Environmental Research"
 author:
   - name: Haylee Oyler
     url: https://haylee360.github.io/
-    # orcid: 0009-0008-2133-3708
+    orcid: 0009-0008-2133-3708
     affiliation: MEDS
     affiliation-url: https://bren.ucsb.edu/masters-programs/master-environmental-data-science
 date: '2024-12-19'
