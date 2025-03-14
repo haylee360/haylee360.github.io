@@ -48,7 +48,7 @@ Specifically, I wanted to answer the questions:
 
 The data used in this infographic can be found [here](https://elsevier.digitalcommonsdata.com/datasets/ww6g4t2r32/2). Additionally, this data was part of a [larger report](https://www.elsevier.com/insights/gender-and-diversity-in-research/researcher-journey-2020) by Elsevier. The goal of this infographic was to communicate clearly and effectively the state of the gender gap in published research articles. Additionally, I hope to raise awareness about continued inequity in academia. I do this by employing a number of strategies that I discuss below. 
 
-<img src="images/hw4-eds240-horiz.png" title="Gender and Academic Publishing" style="max-width:100%;" alt="An infographic displaying the gender bias in academic publishing. The first visualization shows a map of the gender ratio of authors by country. The second visualizations shows the change in gender makeup of academic authors over time. The last vizualizations shows the gender gap across different acacdemic disciplines.">
+<img src="images/hw4-eds240-sam-edits.png" title="Gender and Academic Publishing" style="max-width:100%;" alt="An infographic displaying the gender bias in academic publishing. The first visualization shows a map of the gender ratio of authors by country. The second visualizations shows the change in gender makeup of academic authors over time. The last vizualizations shows the gender gap across different acacdemic disciplines.">
 
 
 
