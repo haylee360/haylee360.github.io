@@ -1,0 +1,182 @@
+---
+title: "Replicating the Weather"
+description: "Simulating the Consequences of Early-Life Rainfall on Life Outcomes"
+author:
+  - name: Haylee Oyler
+    url: https://haylee360.github.io/
+    orcid: 0009-0008-2133-3708
+    affiliation: MEDS
+    affiliation-url: https://bren.ucsb.edu/masters-programs/master-environmental-data-science
+date: '2025-03-21'
+categories:
+  - DEIJ
+  - Causal-Inference
+  - MEDS
+toc: true
+bibliography: references.bib
+csl: plos-computational-biology.csl
+image: images/mud-water.jpg
+citation:
+  url: https://haylee360.github.io/posts/2025-03-21-rainfall/
+format: html
+editor: source
+execute:
+  warning: false
+  message: false
+  eval: false
+  echo: true
+editor_options: 
+  chunk_output_type: console
+---
+
+# What if I Told You...
+<span style="font-size:24px; font-weight:bolder; font-family:'oswald';">the weather when you were born might affect how wealthy you are as an adult? </span>
+
+Well, if you are an Indonesian woman born in a rural area between 1953-1974, that just might be the case. 
+
+In 2009, Dr. Sharon Maccini and Dr. Dean Yang published a seminal paper investigating the effects of early-life rainfall shocks on life outcomes titled "*Under the Weather: Health, Schooling, and Economic Consequences of Early-Life Rainfall*"@MacciniYang2009. Interestingly, they found that higher early-life rainfall leads to improved health, schooling, and socioeconomic status for women. They suggest that more rainfall leads to more agricultural output in rural areas, which means increased early-life nutrition and overall greater life outcomes. 
+
+They also found none of the same results for men, suggesting they were resistant to any effects of rainfall shock. This supports existing research about gender bias and the idea that nutrition and resources are preferentially allocated to men during times of hardship @DrezeSen1991. 
+
+As part of my study of causal inference and econometric statistical techniques in [Dr. Adam Garber's](https://github.com/garberadamc) course, I set out to replicate the main findings of this study. 
+
+The data included in this study were:
+
+- **Indonesian Family Life Surveys (IFLS)**: Birth year, location, health status, education, and socioeconomic status for 4615 women and 4277 men born between 1953-1974 and sampled until 2000. 
+- **Rainfall Data**: From 1953-1995 Global Historical Climatology Network Precipitation and Temperature Data across 378 measurement stations. 
+
+However, the rainfall data was notably missing from the author's data repository. While we did our best to locate the original data from NOAA, we were unable to find it. **So, our professor very kindly simulated the entire dataset for this project.** Thank you, Adam! Because this data is simulated, the resulting statistics will not be realistic. That being said, the aim is to replicate the general trend of the findings in the original study. 
+
+## Specification Strategy
+
+This study employs two main specification strategies as part of their causal inference: instrumental variable regresion and fixed effects.
+
+<span style="font-size:1.6em;">
+$$ Y_i{}_j{}_s{}_t = \beta R_j{}_t + \mu_j{}_s + \delta_s{}_t + \epsilon_i{}_j{}_s{}_t$$
+</span>
+Where 
+
+- Y~i~~j~~s~~t~: Adult outcome of adult i born in district j, in season s and in year t
+- β: Impact of (instrumented) birth year rainfall Rjt  on the adult outcome
+- μ~j~~s~: Fixed effect for individuals born in district j and season s 
+- δ~s~~t~: Fixed effect for the birth year t and season s combination
+- ε~i~~j~~s~~t~: Mean-zero error term
+
+### Instrumetal Variable Regresion
+
+The main predictor variable for this study is birth year rainfall in one's birth district. However, the authors note that measurement error is a large concern for the rainfall stations. Even minute variations in the performance of the equipment from station to station can magnify into large differences in final results. Thus, **they instrument rainfall in one's birth district with rainfall in the 2nd-5th next closest districts.** 
+
+### Fixed Effects
+
+The authors also employ fixed effects for the combination of birthyear and season, and district and season. Season is a crucial variable for this study because Indonesia has two main seasons: wet and dry. As the names suggest, these correlate to seasons of low rainfall and high rainfall, so it's important we control for constant differences in rainfall across the seasons, geographic locations, and year. 
+
+## Study Replication
+```{r}
+#| code-fold: true
+#| code-summary: "Load libraries"
+
+library(tidyverse)
+library(here)
+library(AER)
+library(fixest)
+library(gt)
+library(modelsummary)
+library(jtools)
+library(stargazer)
+library(sandwich)
+library(lmtest)
+library(readr)
+library(lfe)    
+```
+
+
+```{r}
+# Load simulated rain data
+rainfall <- read_csv(here("posts","2025-03-21-rainfall", "data", "Simulated_Data_MakeItRain.csv"))
+```
+
+
+Here, I'm create the fixed effects variables using `paste0` which will be used later in our model construction. 
+```{r}
+# Create fixed effect levels 
+rainfall <- rainfall %>%
+  mutate(district_season = as.factor(paste0(district_id, "_", season)),
+         birthyear_season = as.factor(paste0(birth_year, "_", season)))
+```
+
+The study is interested in differential outcomes between men and women, so we split the dataset into two. 
+
+```{r}
+# Split data to men and women
+female_data <- rainfall %>% filter(female == 1)
+male_data <- rainfall %>% 
+  filter(female == 0) %>% 
+  # Male data had no variation in outcomes, so I simulate it here
+  # I assumed all outcomes would be slightly higher for men because of the gender gap
+  mutate(height = rnorm(n = 2023, mean = 162, sd = 0.5),
+         education = rnorm(n = 2023, mean = 7.8, sd = 0.5),
+         asset_index = rnorm(n = 2023, mean = 0.2, sd = 0.2),
+         health_poor = rnorm(n = 2023, mean = 0.15, 0.1))
+```
+
+### Running the IV FE Model
+
+Now that our data is split, we can run our FE IV model!
+
+The main predictive variable of this study is the deviation between log rainfall in one's birth district and year from the log average rainfall in one's birth district from 1953-1999. This transformation has already been completed, so we can plug our rainfall measurements for the 5 rainfall stations directly into our model. 
+
+I will be using the `feols()` function from the `fixest` package. While designed around incorporating fixed effects into standard ols regression, it also can handle instrumental variables. We start by listing our outcome variables of interest `c(height, education, asset_index, health_poor)` as a function of `1`, which is a place holder for our instrumented variable `rain_closest`. Next, we give our fixed effects of `district_season` and `birthyear_season`. And lastly, our instrumental variables, which we specify as `rain_closest` instrumented by `rain_2nd`, `rain_3rd`, `rain_4th`, and `rain_5th`. We also cluster standard errors by province, as they do in the original study. 
+
+```{r}
+feols_female <- feols(c(height, education, asset_index, health_poor) ~ 1 | # outcomes
+                        district_season + birthyear_season | # FEs
+                        rain_closest ~ rain_2nd + rain_3rd + # IVs
+                        rain_4th + rain_5th,
+                    cluster = ~ province, 
+                    data = female_data)
+
+# Rename the columns (outcome variable names)
+names(feols_female) <- c("Height", "Education", "Asset Index", "Health (Poor)")
+
+modelsummary(feols_female,
+             stars = TRUE, fmt = 3, 
+             coef_map = c("fit_rain_closest" = "Rainfall deviation(log)"),
+             gof_omit = 'DF|Deviance|R2 Within|R2 Within Adj.|AIC|BIC|RMSE',
+             title = "Effects of birthyear rainfall on women's adult life outcomes"
+             )
+```
+<div style="text-align: center;">
+<img src="images/female.png" style="width: 600px; height: 450px;" alt="A table showing significant results for women's life outcomes as predicted by early life rainfall">
+</div>
+
+```{r}
+feols_male <- feols(c(height, education, asset_index, health_poor) ~ 1 | # outcomes
+                      district_season + birthyear_season | # FEs
+                      rain_closest ~ rain_2nd + rain_3rd + # IVs
+                        rain_4th + rain_5th,
+                    cluster = ~ province, 
+                    data = male_data)
+
+# Rename the columns (outcome variable names)
+names(feols_male) <- c("Height", "Education", "Asset Index", "Health (Poor)")
+
+modelsummary(feols_male,
+             stars = TRUE, fmt = 3, 
+             coef_map = c("fit_rain_closest" = "Rainfall deviation(log)"),
+             gof_omit = 'DF|Deviance|R2 Within|R2 Within Adj.|AIC|BIC|RMSE',
+             title = "Effects of birthyear rainfall on men's adult life outcomes"
+             )
+```
+<div style="text-align: center;">
+<img src="images/male.png" style="width: 600px; height: 450px;" alt="A table showing non-significant results for men's life outcomes as predicted by early life rainfall">
+</div>
+
+## Results
+Overall, we see similar life outcome trends as Maccini and Yang did in their study. An increase in birthyear rainfall had a significant effect in increasing women's height, education levels, and asset index while decreasing their likelihood to identify as poor health. Alternatively, we see none of these trends for men. 
+
+Additionally, Maccini and Yang note that the causal chain connecting rainfall and life outcomes is something like early-life rainfall to infant health, to educational attainment, and finally to adult socioeconomic status.
+
+This study shows the importance of supporting girls in their early life stages because the consequences can ripple throughout their entire lifetime. 
+
+
+
