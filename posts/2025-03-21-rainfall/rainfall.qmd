@@ -80,7 +80,6 @@ library(here)
 library(AER)
 library(fixest)
 library(gt)
-library(modelsummary)
 library(jtools)
 library(stargazer)
 library(sandwich)
@@ -127,6 +126,7 @@ The main predictive variable of this study is the deviation between log rainfall
 
 I will be using the `feols()` function from the `fixest` package. While designed around incorporating fixed effects into standard ols regression, it also can handle instrumental variables. We start by listing our outcome variables of interest `c(height, education, asset_index, health_poor)` as a function of `1`, which is a place holder for our instrumented variable `rain_closest`. Next, we give our fixed effects of `district_season` and `birthyear_season`. And lastly, our instrumental variables, which we specify as `rain_closest` instrumented by `rain_2nd`, `rain_3rd`, `rain_4th`, and `rain_5th`. We also cluster standard errors by province, as they do in the original study. 
 
+
 ```{r}
 feols_female <- feols(c(height, education, asset_index, health_poor) ~ 1 | # outcomes
                         district_season + birthyear_season | # FEs
@@ -134,20 +134,12 @@ feols_female <- feols(c(height, education, asset_index, health_poor) ~ 1 | # out
                         rain_4th + rain_5th,
                     cluster = ~ province, 
                     data = female_data)
-
-# Rename the columns (outcome variable names)
-names(feols_female) <- c("Height", "Education", "Asset Index", "Health (Poor)")
-
-modelsummary(feols_female,
-             stars = TRUE, fmt = 3, 
-             coef_map = c("fit_rain_closest" = "Rainfall deviation(log)"),
-             gof_omit = 'DF|Deviance|R2 Within|R2 Within Adj.|AIC|BIC|RMSE',
-             title = "Effects of birthyear rainfall on women's adult life outcomes"
-             )
 ```
+
 <div style="text-align: center;">
 <img src="images/female.png" style="width: 600px; height: 450px;" alt="A table showing significant results for women's life outcomes as predicted by early life rainfall">
 </div>
+
 
 ```{r}
 feols_male <- feols(c(height, education, asset_index, health_poor) ~ 1 | # outcomes
@@ -156,17 +148,8 @@ feols_male <- feols(c(height, education, asset_index, health_poor) ~ 1 | # outco
                         rain_4th + rain_5th,
                     cluster = ~ province, 
                     data = male_data)
-
-# Rename the columns (outcome variable names)
-names(feols_male) <- c("Height", "Education", "Asset Index", "Health (Poor)")
-
-modelsummary(feols_male,
-             stars = TRUE, fmt = 3, 
-             coef_map = c("fit_rain_closest" = "Rainfall deviation(log)"),
-             gof_omit = 'DF|Deviance|R2 Within|R2 Within Adj.|AIC|BIC|RMSE',
-             title = "Effects of birthyear rainfall on men's adult life outcomes"
-             )
 ```
+
 <div style="text-align: center;">
 <img src="images/male.png" style="width: 600px; height: 450px;" alt="A table showing non-significant results for men's life outcomes as predicted by early life rainfall">
 </div>
