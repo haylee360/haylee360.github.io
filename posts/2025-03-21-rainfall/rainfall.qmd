@@ -10,27 +10,29 @@ author:
 date: '2025-03-21'
 categories:
   - DEIJ
-  - Causal-Inference
+  - Statistics
+  - R
   - MEDS
 toc: true
 bibliography: references.bib
 csl: plos-computational-biology.csl
 image: images/mud-water.jpg
 citation:
-  url: https://haylee360.github.io/posts/2025-03-21-rainfall/
+  url: https://haylee360.github.io/posts/2025-03-21-rainfall/rainfall.html
 format: html
+  # html:
+  #   theme: posts-styles.scss
 editor: source
 execute:
   warning: false
   message: false
-  eval: false
-  echo: true
 editor_options: 
   chunk_output_type: console
 ---
 
+
 # What if I Told You...
-<span style="font-size:24px; font-weight:bolder; font-family:'oswald';">the weather when you were born might affect how wealthy you are as an adult? </span>
+<span style="font-size:24px; font-weight:bolder; font-family:'oswald';">the Weather When You Were Born Might Affect How Wealthy You Are as an Adult? </span>
 
 Well, if you are an Indonesian woman born in a rural area between 1953-1974, that just might be the case. 
 
@@ -40,7 +42,7 @@ They also found none of the same results for men, suggesting they were resistant
 
 As part of my study of causal inference and econometric statistical techniques in [Dr. Adam Garber's](https://github.com/garberadamc) course, I set out to replicate the main findings of this study. 
 
-The data included in this study were:
+The data included were:
 
 - **Indonesian Family Life Surveys (IFLS)**: Birth year, location, health status, education, and socioeconomic status for 4615 women and 4277 men born between 1953-1974 and sampled until 2000. 
 - **Rainfall Data**: From 1953-1995 Global Historical Climatology Network Precipitation and Temperature Data across 378 measurement stations. 
@@ -49,7 +51,7 @@ However, the rainfall data was notably missing from the author's data repository
 
 ## Specification Strategy
 
-This study employs two main specification strategies as part of their causal inference: instrumental variable regresion and fixed effects.
+This study employs two main specification strategies as part of their causal inference: instrumental variable regression and fixed effects.
 
 <span style="font-size:1.6em;">
 $$ Y_i{}_j{}_s{}_t = \beta R_j{}_t + \mu_j{}_s + \delta_s{}_t + \epsilon_i{}_j{}_s{}_t$$
@@ -66,9 +68,13 @@ Where
 
 The main predictor variable for this study is birth year rainfall in one's birth district. However, the authors note that measurement error is a large concern for the rainfall stations. Even minute variations in the performance of the equipment from station to station can magnify into large differences in final results. Thus, **they instrument rainfall in one's birth district with rainfall in the 2nd-5th next closest districts.** 
 
+Instrumental variables are useful when one of the predictor variables is [endogenous](https://www.statisticshowto.com/endogenous-variable/), or correlated with the error term of the model. While this is often the case when a study has [omitted variable bias](https://www.econometrics-with-r.org/6.1-omitted-variable-bias.html) or [simultaneity](https://www.statisticshowto.com/simultaneity-bias/), it can also be caused by measurement error. While this last option is not the most ubiquitous use of instrumental variables, it is still a novel and effective way to account for endogenous predictors. 
+
 ### Fixed Effects
 
-The authors also employ fixed effects for the combination of birthyear and season, and district and season. Season is a crucial variable for this study because Indonesia has two main seasons: wet and dry. As the names suggest, these correlate to seasons of low rainfall and high rainfall, so it's important we control for constant differences in rainfall across the seasons, geographic locations, and year. 
+The authors also employ fixed effects for the combination of birthyear and season, and district and season. Fixed effects are a way to account for fixed differences between groups or strata of your data that you don't want to bias your final causal results. For example, if the topography of district A means farming is more challenging there than in district B, you don't want that district-specific difference to influence any conclusions you might draw about life oucomes for individuals in district A compared to district B. This helps us create a more valid [counterfactual](https://www.inference.vc/causal-inference-3-counterfactuals/) and isolate only the effect of rainfall shock on life outcomes. 
+
+Season is a crucial variable for this study because Indonesia has two main seasons: wet and dry. As the names suggest, these correlate to seasons of low rainfall and high rainfall, so it's important we control for constant differences in rainfall across seasons. The authors look at the interaction of season with both district and year to account for the semi-constant spatial and temporal variation across their study area. 
 
 ## Study Replication
 ```{r}
@@ -78,9 +84,11 @@ The authors also employ fixed effects for the combination of birthyear and seaso
 library(tidyverse)
 library(here)
 library(AER)
+library(kableExtra)
 library(fixest)
 library(gt)
 library(jtools)
+library(modelsummary)
 library(stargazer)
 library(sandwich)
 library(lmtest)
@@ -124,10 +132,11 @@ Now that our data is split, we can run our FE IV model!
 
 The main predictive variable of this study is the deviation between log rainfall in one's birth district and year from the log average rainfall in one's birth district from 1953-1999. This transformation has already been completed, so we can plug our rainfall measurements for the 5 rainfall stations directly into our model. 
 
-I will be using the `feols()` function from the `fixest` package. While designed around incorporating fixed effects into standard ols regression, it also can handle instrumental variables. We start by listing our outcome variables of interest `c(height, education, asset_index, health_poor)` as a function of `1`, which is a place holder for our instrumented variable `rain_closest`. Next, we give our fixed effects of `district_season` and `birthyear_season`. And lastly, our instrumental variables, which we specify as `rain_closest` instrumented by `rain_2nd`, `rain_3rd`, `rain_4th`, and `rain_5th`. We also cluster standard errors by province, as they do in the original study. 
+I will be using the `feols()` function from the `fixest` package. While this function is primarily designed around incorporating fixed effects into standard ols regression, it can also handle instrumental variables. We start by listing our outcome variables of interest `c(height, education, asset_index, health_poor)` as a function of `1`, which is a place holder for our instrumented variable `rain_closest`. Next, we give our fixed effects of `district_season` and `birthyear_season`. And lastly, our instrumental variables, which we specify as `rain_closest` instrumented by `rain_2nd`, `rain_3rd`, `rain_4th`, and `rain_5th`. We also cluster standard errors by province, as they do in the original study. 
 
 
 ```{r}
+# Regression analysis for women
 feols_female <- feols(c(height, education, asset_index, health_poor) ~ 1 | # outcomes
                         district_season + birthyear_season | # FEs
                         rain_closest ~ rain_2nd + rain_3rd + # IVs
@@ -136,12 +145,35 @@ feols_female <- feols(c(height, education, asset_index, health_poor) ~ 1 | # out
                     data = female_data)
 ```
 
-<div style="text-align: center;">
-<img src="images/female.png" style="width: 600px; height: 450px;" alt="A table showing significant results for women's life outcomes as predicted by early life rainfall">
-</div>
+```{r}
+#| code-fold: true
+#| code-summary: "Reveal code"
+
+
+# Create table output as a kable object
+table_female <- modelsummary(
+  feols_female,
+  stars = TRUE, fmt = 3, 
+  coef_map = c("fit_rain_closest" = "Rainfall deviation(log)"),
+  gof_omit = 'DF|Deviance|R2 Within|R2 Within Adj.|AIC|BIC|RMSE',
+  title = "Effects of birthyear rainfall on women's adult life outcomes",
+  col.names = NULL, # Column names weren't formatting correctly
+  output = "kableExtra"
+)
+
+# Manually rename the column headers
+table_female <- table_female %>%
+  kableExtra::add_header_above(
+    c(" " = 1, "Height" = 1, "Education" = 1, "Asset Index" = 1, "Health (Poor)" = 1)
+  ) %>% 
+  kable_styling(font_size = 18)
+
+table_female
+```
 
 
 ```{r}
+# Regression analysis for men
 feols_male <- feols(c(height, education, asset_index, health_poor) ~ 1 | # outcomes
                       district_season + birthyear_season | # FEs
                       rain_closest ~ rain_2nd + rain_3rd + # IVs
@@ -150,9 +182,33 @@ feols_male <- feols(c(height, education, asset_index, health_poor) ~ 1 | # outco
                     data = male_data)
 ```
 
-<div style="text-align: center;">
-<img src="images/male.png" style="width: 600px; height: 450px;" alt="A table showing non-significant results for men's life outcomes as predicted by early life rainfall">
-</div>
+
+```{r}
+#| code-fold: true
+#| code-summary: "Reveal code"
+
+# Create table output as a kable object
+table_male <- modelsummary(
+  feols_male,
+  stars = TRUE, fmt = 3, 
+  coef_map = c("fit_rain_closest" = "Rainfall deviation(log)"),
+  gof_omit = 'DF|Deviance|R2 Within|R2 Within Adj.|AIC|BIC|RMSE',
+  title = "Effects of birthyear rainfall on men's adult life outcomes",
+  col.names = NULL, # Column names weren't formatting correctly
+  output = "kableExtra"
+)
+
+# Manually rename the column headers
+table_male <- table_male %>%
+  kableExtra::add_header_above(
+    c(" " = 1, "Height" = 1, "Education" = 1, "Asset Index" = 1, "Health (Poor)" = 1)
+  ) %>% 
+  kable_styling(font_size = 18)
+
+table_male
+```
+
+
 
 ## Results
 Overall, we see similar life outcome trends as Maccini and Yang did in their study. An increase in birthyear rainfall had a significant effect in increasing women's height, education levels, and asset index while decreasing their likelihood to identify as poor health. Alternatively, we see none of these trends for men. 

@@ -1,0 +1,74 @@
+/*-- scss:defaults --*/
+
+// Import google fonts
+@import url('https://fonts.googleapis.com/css2?family=Figtree:ital,wght@0,300..900;1,300..900&family=Oswald:wght@200..700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Commissioner:wght@100..900&display=swap');
+
+// Create font variables
+$oswald: "Oswald", sans-serif;
+$commissioner: "Commissioner", sans-serif;
+
+// Colors
+$navyblue: #064789;
+$uclablue: #427AA1;
+$skyblue: #aec9f2;
+$whiteblue: #EBF2FA;
+$midgreen: #679436;
+$applegreen: #A5BE00;
+
+// Quarto sass variables
+$body-bg: $whiteblue;
+$navbar-hl: $whiteblue;
+
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: $oswald;
+}
+
+
+
+/*-- scss:rules --*/
+
+.navbar {
+  background-color: #2a2821;
+}
+
+/* Add image to title block */ 
+#title-block-header {
+  background-image: url(posts/2025-03-21-rainfall/images/rainfall.jpg);
+  background-position-y: 80%;
+  background-size: 100%;
+}
+
+.quarto-title-banner {
+  background: transparent;
+  margin-bottom: 0;
+}
+
+.quarto-title-block .quarto-title-banner .quarto-title h1 {
+  color: #fff;
+}
+
+.quarto-title-meta-author .quarto-title-meta-heading{
+  color: #fff;
+}
+
+.quarto-title-meta .quarto-title-meta-heading {
+  color: #fff;
+}
+
+.quarto-title-meta .quarto-title-meta-contents {
+  color: #fff;
+  opacity: 0.8;
+  margin-bottom: 15px;
+}
+
+.quarto-categories .quarto-category {
+  color: #ebf2fa;
+}
+
+/* change how much space between author and affiliation in title block */
+#title-block-header.quarto-title-block.default .quarto-title-meta-author {
+  grid-template-columns: auto minmax(0, 1fr);
+  grid-column-gap: 1.5em;
+}
