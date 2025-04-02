@@ -1,0 +1,219 @@
+---
+title: So You Want to Win a Kaggle Competition?
+description: Building an Extreme Gradient Boosted Model to Predict Dissolved Inorganic Carbon in Seawater
+author:
+  - name: Haylee Oyler
+    url: https://haylee360.github.io/
+    orcid: 0009-0008-2133-3708
+    affiliation: MEDS
+    affiliation-url: https://bren.ucsb.edu/masters-programs/master-environmental-data-science
+date: '2025-03-30'
+categories:
+  - Machine-Learning
+  - Python
+  - MEDS
+toc: true
+draft: true
+draft-mode: visible
+bibliography: references.bib
+csl: plos-computational-biology.csl
+image: images/sample.jpg
+citation:
+  url: https://haylee360.github.io/posts/2025-03-30-kaggle/
+jupyter: python3
+execute:
+  warning: false
+  message: false
+---
+
+```{python}
+# Load basic libraries
+import pandas as pd
+import seaborn as sns
+import numpy as np
+import matplotlib.pyplot as plt
+import statistics as stats
+import time
+
+# XGB libraries
+from sklearn.model_selection import train_test_split,RandomizedSearchCV, cross_val_score, KFold
+import xgboost as xgb
+from hyperopt import hp, fmin, tpe, Trials, STATUS_OK
+from xgboost import XGBRegressor
+from sklearn.metrics import mean_squared_error
+from scipy.stats import uniform, randint
+from sklearn.preprocessing import StandardScaler
+```
+
+```{python}
+# Import data
+train_df = pd.read_csv("~/MEDS/website/haylee360.github.io/posts/2025-03-30-kaggle/data/train.csv")
+test_df = pd.read_csv("~/MEDS/website/haylee360.github.io/posts/2025-03-30-kaggle/data/test.csv")
+
+# Fix column name error
+test_df = test_df.rename(columns={'TA1':'TA1.x'})
+
+# Remove NA column from training data
+train_df = train_df.drop(columns='Unnamed: 12')
+```
+
+```{python}
+# Get a feel for feature summary stats
+train_df.describe()
+```
+
+```{python}
+# Check NAs
+train_df.isna().sum()
+```
+
+```{python}
+# Visualize feature relationships
+sns.pairplot(train_df, y_vars=['DIC'], x_vars= train_df.columns[1:-1], diag_kind='kde')
+```
+
+## Model Selection: XGB with Hyperoptimization 
+The relationships look mostly linear, but we're working with a lot of features. I figured gradient boosting would be a good first approach.
+
+I'm also hyperopt as an alternative way to perform the search for the best hyperparameters. This method uses Bayesian Optimization as a "probabilistic model-based technique used to find minimum of any function". The source can be found [here](https://www.kaggle.com/code/prashant111/bayesian-optimization-using-hyperopt).
+
+```{python}
+#| eval: false
+#| echo: true
+
+# Assign features
+X = train_df.drop(columns=['id', 'DIC'], axis=1)
+y = train_df['DIC']
+X_test = test_df.drop(columns=['id'], axis=1) 
+
+# Scale the data
+scaler = StandardScaler()
+X_scaled = pd.DataFrame(scaler.fit_transform(X), columns=X.columns)
+# For predictions later on...
+X_test_scaled = pd.DataFrame(scaler.transform(X_test), columns=X_test.columns)
+```
+
+```{python}
+#| eval: false
+#| echo: true
+
+# Set up kfold cross validation
+kf = KFold(n_splits=5, shuffle=True, random_state=808)
+
+# Define objective function to minimize
+def objective(params):
+    model = XGBRegressor(
+        n_estimators=int(params["n_estimators"]),
+        learning_rate=params["learning_rate"],
+        max_depth=int(params["max_depth"]),
+        min_child_weight=params["min_child_weight"],
+        subsample=params["subsample"],
+        colsample_bytree=params["colsample_bytree"],
+        gamma=params["gamma"],
+        reg_alpha=params["reg_alpha"],
+        reg_lambda=params["reg_lambda"],
+        random_state=808
+    )
+    
+    # Perform cross-validation
+    scores = -cross_val_score(model, X_scaled, y, cv=kf, scoring='neg_root_mean_squared_error', n_jobs=-1)
+
+    # Average RMSE across folds
+    rmse = np.mean(scores)
+
+    return {'loss': rmse, 'status': STATUS_OK}
+
+# Create hyperparameter space
+space = {
+    "n_estimators": hp.quniform("n_estimators", 100, 1200, 10),
+    "learning_rate": hp.uniform("learning_rate", 0.005, 0.3),
+    "max_depth": hp.quniform("max_depth", 3, 20, 1),
+    "min_child_weight": hp.uniform("min_child_weight", 1, 10),
+    "subsample": hp.uniform("subsample", 0.5, 1.0),
+    "colsample_bytree": hp.uniform("colsample_bytree", 0.5, 1.0),
+    "gamma": hp.uniform("gamma", 0, 10),  
+    "reg_alpha": hp.uniform("reg_alpha", 0, 1),  
+    "reg_lambda": hp.uniform("reg_lambda", 0, 1),  
+}
+
+# Run hyperopt
+trials = Trials()
+best_params = fmin(
+    fn=objective, 
+    space=space,      
+    algo=tpe.suggest,   
+    max_evals=50, # keeping max_evals low here for time purposes
+    # The winning model had a max_evals of 200
+    trials=trials,       
+    rstate=np.random.default_rng(808)  
+)
+
+# Print results
+print("Best Hyperparameters:", best_params)
+```
+
+```{python}
+#| eval: false
+#| echo: true
+
+# Convert int hyperparameters to fix type error
+best_params["n_estimators"] = int(best_params["n_estimators"])
+best_params["max_depth"] = int(best_params["max_depth"])
+
+# Initialize best hyperopt model
+xgb_hyper = XGBRegressor(**best_params, eval_metric='rmse', random_state=808)
+
+# Fit model
+xgb_hyper.fit(X_scaled, y)
+
+# Predict on test data
+y_pred_hyper = xgb_hyper.predict(X_test_scaled)
+```
+
+```{python}
+#| eval: false
+#| echo: true
+
+# Get feature importance
+feat_imp_hyper = pd.DataFrame({'Feature': X_scaled.columns, 'Importance': xgb_hyper.feature_importances_})
+
+# Sort by importance
+feat_imp_hyper = feat_imp_hyper.sort_values(by="Importance", ascending=False)
+feat_imp_hyper
+```
+
+```{python}
+#| eval: true
+#| echo: false
+
+feat_imp_hyper = pd.read_csv("~/MEDS/website/haylee360.github.io/posts/2025-03-30-kaggle/feat_imp_hyper.csv")
+feat_imp_hyper.style.hide()
+
+```
+
+
+```{python}
+#| eval: false
+#| echo: true
+
+# Add DIC to test dataset
+test_df['DIC'] = y_pred_hyper
+submission = test_df[['id', 'DIC']]
+submission.head()
+```
+```{python}
+#| eval: true
+#| echo: false
+
+submission = pd.read_csv("~/MEDS/website/haylee360.github.io/posts/2025-03-30-kaggle/submission.csv")
+submission.head()
+```
+
+```{python}
+#| eval: false
+#| echo: true
+
+# Export for submission
+submission.to_csv('submission.csv', index=False)
+```
+
