@@ -36,15 +36,18 @@ As part of a final project in [Dr. Matteo Robbin's](https://bren.ucsb.edu/people
 I will walk through my winning model for this competition: an extreme gradient boosted model (XGB) with bayesian hyperoptimization of parameters.
 
 ## The Model Breakdown
-Let's go word by word through an extreme gradient boosting model and explain each piece.
+
+### eXtreme Gradient Boosting
+Let's go word by word through an extreme gradient boosted model and explain each piece.
 
 - **Boosted**: Boosting is an [ensemble method](https://www.ibm.com/think/topics/ensemble-learning) in which multiple weak [decision trees](https://scikit-learn.org/stable/modules/tree.html) are trained sequentially. In simpler terms, you train many "short" decision trees on top of each other and you use the residual error from the previous tree to train the following tree. This allows the model to iteratively optimize performance without a tendency to overfit. 
 
 - **Gradient**: Gradient refers to the idea of [gradient descent](https://developers.google.com/machine-learning/crash-course/linear-regression/gradient-descent), which is the optimization technique used to minimize the loss function. This starts to get into the math weeds, so I'll link some resources for those who'd like more detail @Kwiatkowski2023 @Google2024. But at it's most conceptual, let's imagine our parameter space as standing on top of a hill. If we look down, there are numerous different slopes and valleys that mark the terrain between the peak and the bottom of the hill. This "terrain variation" can be thought of as the unique parameter space of our model. Now, imagine I were to drop 100 ping pong balls from the top of this hill and I want to know which ball reached the bottom the fastest. The fastest ping pong boll can be thought of as akin to the gradient of our loss function. That is, gradient descent finds the direction of steepest increase to minimize the loss function.
 
-- **Extreme**: Now that we have a conceptual understanding of gradient descent, there are many different ways you can set up your gradient model. The term "extreme" comes from the popular [xgboost](https://xgboost.readthedocs.io/en/release_3.0.0/) library that is designed to be especially efficient and flexible. There are other types of gradient descent, like batch gradient descent or stochastic gradient descent @IBM2025, but XGB is a very common method due to its high performance, built-in [regularization](https://www.ibm.com/think/topics/regularization#:~:text=Regularization%20is%20a%20set%20of,overfitting%20in%20machine%20learning%20models.), and [parallel computing](https://www.ibm.com/think/topics/parallel-computing) capabilities.
+- **Extreme**: Now that we have a conceptual understanding of gradient descent, there are many different ways you can set up your how your model finds the most optimum gradient. The term "extreme" comes from the popular [xgboost](https://xgboost.readthedocs.io/en/release_3.0.0/) library that is designed to be especially efficient and flexible. There are other types of gradient descent, like batch gradient descent or stochastic gradient descent @IBM2025, but XGB is a very common method due to its high performance, built-in [regularization](https://www.ibm.com/think/topics/regularization#:~:text=Regularization%20is%20a%20set%20of,overfitting%20in%20machine%20learning%20models.), and [parallel computing](https://www.ibm.com/think/topics/parallel-computing) capabilities.
 
-Now that we have our model itself established. Let's talk a little bit about how I decided to select parameters for the model with [hyperopt](https://hyperopt.github.io/hyperopt/). hyperopt is a python library that uses bayesian optimization to find the best parameters. It has three main parts: an objective function, a domain space, and a search algorithm @Banerjee2020. 
+### `hyperopt`: Bayesian Hyperoptimization
+Now that we have our model itself established, let's talk about how I decided to select parameters for the model with [hyperopt](https://hyperopt.github.io/hyperopt/). hyperopt is a python library that uses bayesian optimization to find the best parameters. It has three main parts: an objective function, a domain space, and a search algorithm @Banerjee2020. 
 
 - **Bayesian optimization**: This is another area that gets into the weeds @Noguiera2014, but it can be thought of as a probabilistic, model-based technique to minimize a function. It's quicker than a random search of parameters because it uses the [posterior distribution](https://www.statisticshowto.com/posterior-distribution-probability/) to establish which parameter spaces are most worth exploring. In this way, the future parameter combinations are informed by the previous ones. 
   - **Objective function**: This is the function we want our bayesian model to minimize. This function will take our input domain space and output the validation metric (in our case, [RMSE](https://statisticsbyjim.com/regression/root-mean-square-error-rmse/)). The objective function for this model is the XGB model discussed above. We want to minimize our error given that exact model construction, so naturally, we optimize our hyperparameters based on that model. 
@@ -215,7 +218,7 @@ best_params = fmin(
 )
 ```
 
-### Train XGB Model on the Best Parameters
+### Train the Model on the Best Parameters
  
 Now that we've optimized all of our relevant parameters, we can train our XGB model. We use `**best_params` to unpack the best parameters from before and initialize an `XGBRegressor` model. 
 
