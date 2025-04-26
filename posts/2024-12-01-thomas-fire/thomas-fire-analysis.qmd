@@ -29,6 +29,8 @@ execute:
 #     foreground: $navyblue
 ---
 
+
+
 # Exploring the 2017 Thomas Fire's Environmental and Health Impacts
 
 <img src="https://www.dailynews.com/wp-content/uploads/2017/12/1208_nws_ldn-l-thomas-fire-from-space11.jpg?w=1310" style="width:600px;"/>
@@ -127,7 +129,7 @@ NOTE: When we concatenate data frames without any extra parameters specified in 
 ```{python}
 # Bind 2017 and 2018 AQI data together
 aqi = pd.concat([aqi_17, aqi_18])
-aqi
+aqi.head(3)
 ```
 
 Notice that our data frame dimensions of 654344 rows by 10 columns do not match the last row index of 327542. To address our confusing index, we will change the index of our data frame to the date column.
@@ -260,6 +262,7 @@ The Thomas Fire perimeter data comes from CalFire's data portal. CalFire is the 
 landsat = rioxr.open_rasterio(os.path.join('data',
                                     'landsat8-2018-01-26-sb-simplified.nc')
                                     )
+landsat = landsat.rio.write_crs("EPSG:4326")
 
 # Import fire perimeter data
 thomas_boundary = gpd.read_file(os.path.join('data',
@@ -319,15 +322,22 @@ print(landsat.sizes)
 ## Visualize the Thomas Fire with true color imagery
 
 ```{python}
+#| eval: false
+#| echo: true
 # First attempt to visualize the Landsat data 
 landsat[['red', 'green', 'blue']].to_array().plot.imshow()
 ```
+![](images/map1.png){width=80%}
+
 Our first attempt to map the data didn't go quite as planned. Let's try adjusting the `robust` parameter of `.imshow()` and see what happens
 
 ```{python}
+#| eval: false
+#| echo: true
 # Visualize the Landsat data using true color imagery
 landsat[['red', 'green', 'blue']].to_array().plot.imshow(robust=True)
 ```
+![](images/map2.png){width=80%}
 
 After we adjusted the scale for plotting the bands, we got a much more comprehensible image. The clouds were throwing off the scale for plotting. The `robust=True` argument allows us to infer a different set vmin and vmax values to properly color the image. It takes out the 2nd and 98th percentile, removing outliers which makes it easier to visualize.
 
@@ -337,15 +347,20 @@ Next, we will use false color imagery to view the fire...
 To make the Thomas Fire burn scar more visible, we will use false color imagery by assigning short-wave infrared radiation to red, near infrared to green, and red to blue.
 
 ```{python}
+#| eval: false
+#| echo: true
 # Visualize the Landsat data using false color imagery
 landsat[['swir22', 'nir08', 'red']].to_array().plot.imshow(robust=True)
 ```
+![](images/map3.png){width=80%}
 
 ## Map the Thomas Fire scar and boundary
 
 ```{python}
 #| code-fold: true
 #| code-summary: "Reproject CRS"
+#| eval: false
+#| echo: true
 
 # Reproject data to match the CRS between our two datasets
 thomas_boundary= thomas_boundary.to_crs("EPSG:4326")
@@ -358,6 +373,8 @@ assert landsat.rio.crs == thomas_boundary.crs
 ```{python}
 #| code-fold: true
 #| code-summary: "Map the Thomas Fire"
+#| eval: false
+#| echo: true
 
 # Initialize figure
 fig, ax = plt.subplots()
@@ -388,6 +405,7 @@ ax.set_ylabel('Latitude (degrees)')
 
 plt.show()
 ```
+![](images/map4.png)
 
 **Figure Description**
 

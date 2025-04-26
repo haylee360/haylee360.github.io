@@ -1,6 +1,6 @@
 ---
 title: So You Want to Win a Kaggle Competition?
-description: Building an Extreme Gradient Boosted Model to Predict Dissolved Inorganic Carbon in Seawater
+description: Building an Extreme Gradient Boosted Model to Predict Seawater Chemistry
 author:
   - name: Haylee Oyler
     url: https://haylee360.github.io/
@@ -13,8 +13,6 @@ categories:
   - Python
   - MEDS
 toc: true
-draft: true
-draft-mode: visible
 bibliography: references.bib
 csl: plos-computational-biology.csl
 image: images/sample.jpg
@@ -25,6 +23,59 @@ execute:
   warning: false
   message: false
 ---
+
+
+# Machine Learning Models
+
+Are growing in prevalence and efficacy in environmental science. What began in 1949 as an attempt to write a computer program that could play checkers @Widerhold1992 has grown into one of the fastest developing fields today. Machine learning is used to across multiple disciplines—from image recognition models designed to improve the speed of medical diagnoses @PintoCoehlo2023 to the program that filters your spam from your normal inbox @Dada2019—machine learning's reach has spread far and wide. The study of our natural world and its processes is no exception. 
+
+Machine learning has allowed major advances in the environmental field as well. As data collection techniques only become more refined, frequent, and numerous, we need processing techniques that can match the scale of this data. 
+
+As part of a final project in [Dr. Matteo Robbin's](https://bren.ucsb.edu/people/mateo-robbins) [Machine Learning in Environmental Science](https://bren.ucsb.edu/courses/eds-232), we were tasked with optimizing a machine learning model that would predict dissolved inorganic carbon content (DIC) in a sample of seawater based on a number of other associated characteristics. This was held as part of a [kaggle competiton](https://www.kaggle.com/competitions/eds-232-cal-cofi-ocean-chemistry-prediction-2025/overview) where our evaluation metric was root mean squared error (rmse). The winner was determined based on which model had the smallest rmse on the private leaderboard. Overall, this assesses how accurate each model is at predicting DIC when generalizing to unseen data. 
+
+I will walk through my winning model for this competition: an extreme gradient boosted model (XGB) with bayesian hyperoptimization of parameters.
+
+## The Model Breakdown
+Let's go word by word through an extreme gradient boosting model and explain each piece.
+
+- **Boosted**: Boosting is an [ensemble method](https://www.ibm.com/think/topics/ensemble-learning) in which multiple weak [decision trees](https://scikit-learn.org/stable/modules/tree.html) are trained sequentially. In simpler terms, you train many "short" decision trees on top of each other and you use the residual error from the previous tree to train the following tree. This allows the model to iteratively optimize performance without a tendency to overfit. 
+
+- **Gradient**: Gradient refers to the idea of [gradient descent](https://developers.google.com/machine-learning/crash-course/linear-regression/gradient-descent), which is the optimization technique used to minimize the loss function. This starts to get into the math weeds, so I'll link some resources for those who'd like more detail @Kwiatkowski2023 @Google2024. But at it's most conceptual, let's imagine our parameter space as standing on top of a hill. If we look down, there are numerous different slopes and valleys that mark the terrain between the peak and the bottom of the hill. This "terrain variation" can be thought of as the unique parameter space of our model. Now, imagine I were to drop 100 ping pong balls from the top of this hill and I want to know which ball reached the bottom the fastest. The fastest ping pong boll can be thought of as akin to the gradient of our loss function. That is, gradient descent finds the direction of steepest increase to minimize the loss function.
+
+- **Extreme**: Now that we have a conceptual understanding of gradient descent, there are many different ways you can set up your gradient model. The term "extreme" comes from the popular [xgboost](https://xgboost.readthedocs.io/en/release_3.0.0/) library that is designed to be especially efficient and flexible. There are other types of gradient descent, like batch gradient descent or stochastic gradient descent @IBM2025, but XGB is a very common method due to its high performance, built-in [regularization](https://www.ibm.com/think/topics/regularization#:~:text=Regularization%20is%20a%20set%20of,overfitting%20in%20machine%20learning%20models.), and [parallel computing](https://www.ibm.com/think/topics/parallel-computing) capabilities.
+
+Now that we have our model itself established. Let's talk a little bit about how I decided to select parameters for the model with [hyperopt](https://hyperopt.github.io/hyperopt/). hyperopt is a python library that uses bayesian optimization to find the best parameters. It has three main parts: an objective function, a domain space, and a search algorithm @Banerjee2020. 
+
+- **Bayesian optimization**: This is another area that gets into the weeds @Noguiera2014, but it can be thought of as a probabilistic, model-based technique to minimize a function. It's quicker than a random search of parameters because it uses the [posterior distribution](https://www.statisticshowto.com/posterior-distribution-probability/) to establish which parameter spaces are most worth exploring. In this way, the future parameter combinations are informed by the previous ones. 
+  - **Objective function**: This is the function we want our bayesian model to minimize. This function will take our input domain space and output the validation metric (in our case, [RMSE](https://statisticsbyjim.com/regression/root-mean-square-error-rmse/)). The objective function for this model is the XGB model discussed above. We want to minimize our error given that exact model construction, so naturally, we optimize our hyperparameters based on that model. 
+  - **Domain space**: The set of hyperparameters and their input values over which we want to search. 
+  - **Optimization algorithm**: The optimization algorithm used in this model is [Tree of Parzen Estimators (TPE)](https://towardsdatascience.com/building-a-tree-structured-parzen-estimator-from-scratch-kind-of-20ed31770478/). This is where the Bayesian optimization discussed above actually happens. 
+  
+At the end of the hyperopt process, we have a set of parameters that returns the smallest RMSE. Then, we can train our model on the best parameters. 
+
+### Data 
+The data used in this model comes courtesy of [Dr. Erin Satterthwaite](https://scripps.ucsd.edu/profiles/esatterthwaite) at the [California Cooperative Oceanic Fisheries Investigations(CalCOFI)](https://calcofi.org/)
+
+#### Metadata
+- `Lat_Dec`: Observed Latitude in decimal degrees
+- `Lon_Dec`: Observed Longitude in decimal degrees
+- `NO2uM`: Micromoles Nitrite per liter of seawater
+- `NO3uM`: Micromoles Nitrate per liter of seawater
+- `NH3uM`: Micromoles Ammonia per liter of seawater
+- `R_TEMP`: Reported (Potential) Temperature in degrees Celsius
+- `R_Depth`: Reported Depth (from pressure) in meters
+- `R_Sal`: Reported Salinity (from Specific Volume Anomoly, M³/Kg)
+- `R_DYNHT`: Reported Dynamic Height in units of dynamic meters (work per unit mass)
+- `R_Nuts`: Reported Ammonium concentration
+- `R_Oxy_micromol.Kg`: Reported Oxygen micromoles/kilogram
+- `PO4uM`: Micromoles Phosphate per liter of seawater
+- `SiO3uM`: Micromoles Silicate per liter of seawater
+- `TA1.x`: Total Alkalinity micromoles per kilogram solution
+- `Salinity1`: Salinity (Practical Salinity Scale 1978)
+- `Temperature_degC`: Water temperature in degrees Celsius
+- `DIC`: Dissolved Inorganic Carbon micromoles per kilogram solution
+
+## The Coding Breakdown
 
 ```{python}
 # Load basic libraries
@@ -44,6 +95,9 @@ from sklearn.metrics import mean_squared_error
 from scipy.stats import uniform, randint
 from sklearn.preprocessing import StandardScaler
 ```
+
+
+### Import Data and Explore
 
 ```{python}
 # Import data
@@ -72,10 +126,8 @@ train_df.isna().sum()
 sns.pairplot(train_df, y_vars=['DIC'], x_vars= train_df.columns[1:-1], diag_kind='kde')
 ```
 
-## Model Selection: XGB with Hyperoptimization 
-The relationships look mostly linear, but we're working with a lot of features. I figured gradient boosting would be a good first approach.
-
-I'm also hyperopt as an alternative way to perform the search for the best hyperparameters. This method uses Bayesian Optimization as a "probabilistic model-based technique used to find minimum of any function". The source can be found [here](https://www.kaggle.com/code/prashant111/bayesian-optimization-using-hyperopt).
+### Model Selection: XGB with Hyperoptimization 
+The relationships look mostly linear, but we're working with a lot of features. I figured gradient boosting would be a good approach.
 
 ```{python}
 #| eval: false
@@ -92,6 +144,8 @@ X_scaled = pd.DataFrame(scaler.fit_transform(X), columns=X.columns)
 # For predictions later on...
 X_test_scaled = pd.DataFrame(scaler.transform(X_test), columns=X_test.columns)
 ```
+
+### Define Objective Function
 
 ```{python}
 #| eval: false
@@ -122,6 +176,13 @@ def objective(params):
     rmse = np.mean(scores)
 
     return {'loss': rmse, 'status': STATUS_OK}
+```
+
+### Create Domain space
+
+```{python}
+#| eval: false
+#| echo: true
 
 # Create hyperparameter space
 space = {
@@ -135,22 +196,28 @@ space = {
     "reg_alpha": hp.uniform("reg_alpha", 0, 1),  
     "reg_lambda": hp.uniform("reg_lambda", 0, 1),  
 }
+```
 
+### Run Optimization Algorithm
+
+```{python}
+#| eval: false
+#| echo: true
 # Run hyperopt
 trials = Trials()
 best_params = fmin(
     fn=objective, 
     space=space,      
-    algo=tpe.suggest,   
-    max_evals=50, # keeping max_evals low here for time purposes
-    # The winning model had a max_evals of 200
+    algo=tpe.suggest, 
+    max_evals=200,
     trials=trials,       
     rstate=np.random.default_rng(808)  
 )
-
-# Print results
-print("Best Hyperparameters:", best_params)
 ```
+
+### Train XGB Model on the Best Parameters
+ 
+Now that we've optimized all of our relevant parameters, we can train our XGB model. We use `**best_params` to unpack the best parameters from before and initialize an `XGBRegressor` model. 
 
 ```{python}
 #| eval: false
@@ -170,6 +237,7 @@ xgb_hyper.fit(X_scaled, y)
 y_pred_hyper = xgb_hyper.predict(X_test_scaled)
 ```
 
+
 ```{python}
 #| eval: false
 #| echo: true
@@ -188,9 +256,9 @@ feat_imp_hyper
 
 feat_imp_hyper = pd.read_csv("~/MEDS/website/haylee360.github.io/posts/2025-03-30-kaggle/feat_imp_hyper.csv")
 feat_imp_hyper.style.hide()
-
 ```
 
+Now that we've generated our predictions on the test data, all we need to do is add those to their associated ID's in the `test_df` and export to csv for submission to the competition. 
 
 ```{python}
 #| eval: false
@@ -217,3 +285,4 @@ submission.head()
 submission.to_csv('submission.csv', index=False)
 ```
 
+And just like that, you can have a competition-winning machine learning model! A very big thanks to Professor Robbins for his guidance in this course, Dr. Satterthwaite for her wonderful guest lecture, and [Annie Adams](https://github.com/annieradams) for her assistance all quarter. 

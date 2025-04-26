@@ -50,4 +50,7 @@ format:
     page-layout: full
     page-footer:
       fontsize: 14px
+      
+execute:
+  python: /Users/hayleeoyler/miniforge3/envs/eds-220-env-arm64/bin/python
 

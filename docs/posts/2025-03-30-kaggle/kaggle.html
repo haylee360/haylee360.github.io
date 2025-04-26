@@ -8,7 +8,7 @@
 
 <meta name="author" content="Haylee Oyler">
 <meta name="dcterms.date" content="2025-03-30">
-<meta name="description" content="Building an Extreme Gradient Boosted Model to Predict Dissolved Inorganic Carbon in Seawater">
+<meta name="description" content="Building an Extreme Gradient Boosted Model to Predict Seawater Chemistry">
 
 <title>So You Want to Win a Kaggle Competition? – Haylee Oyler</title>
 <style>
@@ -57,7 +57,26 @@ div.sourceCode
 @media screen {
 pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
-</style>
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
 
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script><script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
@@ -106,7 +125,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous"></script>
 
 <script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
-<meta name="quarto:status" content="draft">
 
 
 </head>
@@ -114,7 +132,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <body class="nav-fixed">
 
 <div id="quarto-search-results"></div>
-  <header id="quarto-header" class="headroom fixed-top quarto-banner"><div id="quarto-draft-alert" class="alert alert-warning"><i class="bi bi-pencil-square"></i>Draft</div>
+  <header id="quarto-header" class="headroom fixed-top quarto-banner">
     <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
@@ -162,7 +180,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <h1 class="title">So You Want to Win a Kaggle Competition?</h1>
                   <div>
         <div class="description">
-          Building an Extreme Gradient Boosted Model to Predict Dissolved Inorganic Carbon in Seawater
+          Building an Extreme Gradient Boosted Model to Predict Seawater Chemistry
         </div>
       </div>
                           <div class="quarto-categories">
@@ -211,7 +229,22 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#model-selection-xgb-with-hyperoptimization" id="toc-model-selection-xgb-with-hyperoptimization" class="nav-link active" data-scroll-target="#model-selection-xgb-with-hyperoptimization">Model Selection: XGB with Hyperoptimization</a></li>
+  <li><a href="#machine-learning-models" id="toc-machine-learning-models" class="nav-link active" data-scroll-target="#machine-learning-models">Machine Learning Models</a>
+  <ul class="collapse">
+  <li><a href="#the-model-breakdown" id="toc-the-model-breakdown" class="nav-link" data-scroll-target="#the-model-breakdown">The Model Breakdown</a>
+  <ul class="collapse">
+  <li><a href="#data" id="toc-data" class="nav-link" data-scroll-target="#data">Data</a></li>
+  </ul></li>
+  <li><a href="#the-coding-breakdown" id="toc-the-coding-breakdown" class="nav-link" data-scroll-target="#the-coding-breakdown">The Coding Breakdown</a>
+  <ul class="collapse">
+  <li><a href="#import-data-and-explore" id="toc-import-data-and-explore" class="nav-link" data-scroll-target="#import-data-and-explore">Import Data and Explore</a></li>
+  <li><a href="#model-selection-xgb-with-hyperoptimization" id="toc-model-selection-xgb-with-hyperoptimization" class="nav-link" data-scroll-target="#model-selection-xgb-with-hyperoptimization">Model Selection: XGB with Hyperoptimization</a></li>
+  <li><a href="#define-objective-function" id="toc-define-objective-function" class="nav-link" data-scroll-target="#define-objective-function">Define Objective Function</a></li>
+  <li><a href="#create-domain-space" id="toc-create-domain-space" class="nav-link" data-scroll-target="#create-domain-space">Create Domain space</a></li>
+  <li><a href="#run-optimization-algorithm" id="toc-run-optimization-algorithm" class="nav-link" data-scroll-target="#run-optimization-algorithm">Run Optimization Algorithm</a></li>
+  <li><a href="#train-xgb-model-on-the-best-parameters" id="toc-train-xgb-model-on-the-best-parameters" class="nav-link" data-scroll-target="#train-xgb-model-on-the-best-parameters">Train XGB Model on the Best Parameters</a></li>
+  </ul></li>
+  </ul></li>
   </ul>
 </nav>
     </div>
@@ -222,7 +255,60 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 
-<div id="b0896550" class="cell" data-execution_count="1">
+<section id="machine-learning-models" class="level1">
+<h1>Machine Learning Models</h1>
+<p>Are growing in prevalence and efficacy in environmental science. What began in 1949 as an attempt to write a computer program that could play checkers <span class="citation" data-cites="Widerhold1992">[<a href="#ref-Widerhold1992" role="doc-biblioref">1</a>]</span> has grown into one of the fastest developing fields today. Machine learning is used to across multiple disciplines—from image recognition models designed to improve the speed of medical diagnoses <span class="citation" data-cites="PintoCoehlo2023">[<a href="#ref-PintoCoehlo2023" role="doc-biblioref">2</a>]</span> to the program that filters your spam from your normal inbox <span class="citation" data-cites="Dada2019">[<a href="#ref-Dada2019" role="doc-biblioref">3</a>]</span>—machine learning’s reach has spread far and wide. The study of our natural world and its processes is no exception.</p>
+<p>Machine learning has allowed major advances in the environmental field as well. As data collection techniques only become more refined, frequent, and numerous, we need processing techniques that can match the scale of this data.</p>
+<p>As part of a final project in <a href="https://bren.ucsb.edu/people/mateo-robbins">Dr.&nbsp;Matteo Robbin’s</a> <a href="https://bren.ucsb.edu/courses/eds-232">Machine Learning in Environmental Science</a>, we were tasked with optimizing a machine learning model that would predict dissolved inorganic carbon content (DIC) in a sample of seawater based on a number of other associated characteristics. This was held as part of a <a href="https://www.kaggle.com/competitions/eds-232-cal-cofi-ocean-chemistry-prediction-2025/overview">kaggle competiton</a> where our evaluation metric was root mean squared error (rmse). The winner was determined based on which model had the smallest rmse on the private leaderboard. Overall, this assesses how accurate each model is at predicting DIC when generalizing to unseen data.</p>
+<p>I will walk through my winning model for this competition: an extreme gradient boosted model (XGB) with bayesian hyperoptimization of parameters.</p>
+<section id="the-model-breakdown" class="level2">
+<h2 class="anchored" data-anchor-id="the-model-breakdown">The Model Breakdown</h2>
+<p>Let’s go word by word through an extreme gradient boosting model and explain each piece.</p>
+<ul>
+<li><p><strong>Boosted</strong>: Boosting is an <a href="https://www.ibm.com/think/topics/ensemble-learning">ensemble method</a> in which multiple weak <a href="https://scikit-learn.org/stable/modules/tree.html">decision trees</a> are trained sequentially. In simpler terms, you train many “short” decision trees on top of each other and you use the residual error from the previous tree to train the following tree. This allows the model to iteratively optimize performance without a tendency to overfit.</p></li>
+<li><p><strong>Gradient</strong>: Gradient refers to the idea of <a href="https://developers.google.com/machine-learning/crash-course/linear-regression/gradient-descent">gradient descent</a>, which is the optimization technique used to minimize the loss function. This starts to get into the math weeds, so I’ll link some resources for those who’d like more detail <span class="citation" data-cites="Kwiatkowski2023">[<a href="#ref-Kwiatkowski2023" role="doc-biblioref">4</a>]</span> <span class="citation" data-cites="Google2024">[<a href="#ref-Google2024" role="doc-biblioref">5</a>]</span>. But at it’s most conceptual, let’s imagine our parameter space as standing on top of a hill. If we look down, there are numerous different slopes and valleys that mark the terrain between the peak and the bottom of the hill. This “terrain variation” can be thought of as the unique parameter space of our model. Now, imagine I were to drop 100 ping pong balls from the top of this hill and I want to know which ball reached the bottom the fastest. The fastest ping pong boll can be thought of as akin to the gradient of our loss function. That is, gradient descent finds the direction of steepest increase to minimize the loss function.</p></li>
+<li><p><strong>Extreme</strong>: Now that we have a conceptual understanding of gradient descent, there are many different ways you can set up your gradient model. The term “extreme” comes from the popular <a href="https://xgboost.readthedocs.io/en/release_3.0.0/">xgboost</a> library that is designed to be especially efficient and flexible. There are other types of gradient descent, like batch gradient descent or stochastic gradient descent <span class="citation" data-cites="IBM2025">[<a href="#ref-IBM2025" role="doc-biblioref">6</a>]</span>, but XGB is a very common method due to its high performance, built-in <a href="https://www.ibm.com/think/topics/regularization#:~:text=Regularization%20is%20a%20set%20of,overfitting%20in%20machine%20learning%20models.">regularization</a>, and <a href="https://www.ibm.com/think/topics/parallel-computing">parallel computing</a> capabilities.</p></li>
+</ul>
+<p>Now that we have our model itself established. Let’s talk a little bit about how I decided to select parameters for the model with <a href="https://hyperopt.github.io/hyperopt/">hyperopt</a>. hyperopt is a python library that uses bayesian optimization to find the best parameters. It has three main parts: an objective function, a domain space, and a search algorithm <span class="citation" data-cites="Banerjee2020">[<a href="#ref-Banerjee2020" role="doc-biblioref">7</a>]</span>.</p>
+<ul>
+<li><strong>Bayesian optimization</strong>: This is another area that gets into the weeds <span class="citation" data-cites="Noguiera2014">[<a href="#ref-Noguiera2014" role="doc-biblioref">8</a>]</span>, but it can be thought of as a probabilistic, model-based technique to minimize a function. It’s quicker than a random search of parameters because it uses the <a href="https://www.statisticshowto.com/posterior-distribution-probability/">posterior distribution</a> to establish which parameter spaces are most worth exploring. In this way, the future parameter combinations are informed by the previous ones.
+<ul>
+<li><strong>Objective function</strong>: This is the function we want our bayesian model to minimize. This function will take our input domain space and output the validation metric (in our case, <a href="https://statisticsbyjim.com/regression/root-mean-square-error-rmse/">RMSE</a>). The objective function for this model is the XGB model discussed above. We want to minimize our error given that exact model construction, so naturally, we optimize our hyperparameters based on that model.</li>
+<li><strong>Domain space</strong>: The set of hyperparameters and their input values over which we want to search.</li>
+<li><strong>Optimization algorithm</strong>: The optimization algorithm used in this model is <a href="https://towardsdatascience.com/building-a-tree-structured-parzen-estimator-from-scratch-kind-of-20ed31770478/">Tree of Parzen Estimators (TPE)</a>. This is where the Bayesian optimization discussed above actually happens.</li>
+</ul></li>
+</ul>
+<p>At the end of the hyperopt process, we have a set of parameters that returns the smallest RMSE. Then, we can train our model on the best parameters.</p>
+<section id="data" class="level3">
+<h3 class="anchored" data-anchor-id="data">Data</h3>
+<p>The data used in this model comes courtesy of <a href="https://scripps.ucsd.edu/profiles/esatterthwaite">Dr.&nbsp;Erin Satterthwaite</a> at the <a href="https://calcofi.org/">California Cooperative Oceanic Fisheries Investigations(CalCOFI)</a></p>
+<section id="metadata" class="level4">
+<h4 class="anchored" data-anchor-id="metadata">Metadata</h4>
+<ul>
+<li><code>Lat_Dec</code>: Observed Latitude in decimal degrees</li>
+<li><code>Lon_Dec</code>: Observed Longitude in decimal degrees</li>
+<li><code>NO2uM</code>: Micromoles Nitrite per liter of seawater</li>
+<li><code>NO3uM</code>: Micromoles Nitrate per liter of seawater</li>
+<li><code>NH3uM</code>: Micromoles Ammonia per liter of seawater</li>
+<li><code>R_TEMP</code>: Reported (Potential) Temperature in degrees Celsius</li>
+<li><code>R_Depth</code>: Reported Depth (from pressure) in meters</li>
+<li><code>R_Sal</code>: Reported Salinity (from Specific Volume Anomoly, M³/Kg)</li>
+<li><code>R_DYNHT</code>: Reported Dynamic Height in units of dynamic meters (work per unit mass)</li>
+<li><code>R_Nuts</code>: Reported Ammonium concentration</li>
+<li><code>R_Oxy_micromol.Kg</code>: Reported Oxygen micromoles/kilogram</li>
+<li><code>PO4uM</code>: Micromoles Phosphate per liter of seawater</li>
+<li><code>SiO3uM</code>: Micromoles Silicate per liter of seawater</li>
+<li><code>TA1.x</code>: Total Alkalinity micromoles per kilogram solution</li>
+<li><code>Salinity1</code>: Salinity (Practical Salinity Scale 1978)</li>
+<li><code>Temperature_degC</code>: Water temperature in degrees Celsius</li>
+<li><code>DIC</code>: Dissolved Inorganic Carbon micromoles per kilogram solution</li>
+</ul>
+</section>
+</section>
+</section>
+<section id="the-coding-breakdown" class="level2">
+<h2 class="anchored" data-anchor-id="the-coding-breakdown">The Coding Breakdown</h2>
+<div id="98a60f70" class="cell" data-execution_count="1">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load basic libraries</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> seaborn <span class="im">as</span> sns</span>
@@ -240,7 +326,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy.stats <span class="im">import</span> uniform, randint</span>
 <span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.preprocessing <span class="im">import</span> StandardScaler</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="848d1bf6" class="cell" data-execution_count="2">
+<section id="import-data-and-explore" class="level3">
+<h3 class="anchored" data-anchor-id="import-data-and-explore">Import Data and Explore</h3>
+<div id="d0ec4fc2" class="cell" data-execution_count="2">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Import data</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>train_df <span class="op">=</span> pd.read_csv(<span class="st">"~/MEDS/website/haylee360.github.io/posts/2025-03-30-kaggle/data/train.csv"</span>)</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>test_df <span class="op">=</span> pd.read_csv(<span class="st">"~/MEDS/website/haylee360.github.io/posts/2025-03-30-kaggle/data/test.csv"</span>)</span>
@@ -251,7 +339,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Remove NA column from training data</span></span>
 <span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>train_df <span class="op">=</span> train_df.drop(columns<span class="op">=</span><span class="st">'Unnamed: 12'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="5e7ad7ff" class="cell" data-execution_count="3">
+<div id="2f0c5f27" class="cell" data-execution_count="3">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Get a feel for feature summary stats</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>train_df.describe()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="3">
@@ -457,7 +545,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
-<div id="7e139111" class="cell" data-execution_count="4">
+<div id="3b9f8586" class="cell" data-execution_count="4">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Check NAs</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>train_df.isna().<span class="bu">sum</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="4">
@@ -482,22 +570,22 @@ DIC                  0
 dtype: int64</code></pre>
 </div>
 </div>
-<div id="25bdccec" class="cell" data-execution_count="5">
+<div id="412a6ca2" class="cell" data-execution_count="5">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Visualize feature relationships</span></span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>sns.pairplot(train_df, y_vars<span class="op">=</span>[<span class="st">'DIC'</span>], x_vars<span class="op">=</span> train_df.columns[<span class="dv">1</span>:<span class="op">-</span><span class="dv">1</span>], diag_kind<span class="op">=</span><span class="st">'kde'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="kaggle_files/figure-html/cell-6-output-1.png" width="3768" height="239" class="figure-img"></p>
+<p><img src="kaggle_files/figure-html/cell-6-output-1.png" class="img-fluid figure-img"></p>
 </figure>
 </div>
 </div>
 </div>
-<section id="model-selection-xgb-with-hyperoptimization" class="level2">
-<h2 class="anchored" data-anchor-id="model-selection-xgb-with-hyperoptimization">Model Selection: XGB with Hyperoptimization</h2>
-<p>The relationships look mostly linear, but we’re working with a lot of features. I figured gradient boosting would be a good first approach.</p>
-<p>I’m also hyperopt as an alternative way to perform the search for the best hyperparameters. This method uses Bayesian Optimization as a “probabilistic model-based technique used to find minimum of any function”. The source can be found <a href="https://www.kaggle.com/code/prashant111/bayesian-optimization-using-hyperopt">here</a>.</p>
-<div id="d12e349f" class="cell" data-execution_count="6">
+</section>
+<section id="model-selection-xgb-with-hyperoptimization" class="level3">
+<h3 class="anchored" data-anchor-id="model-selection-xgb-with-hyperoptimization">Model Selection: XGB with Hyperoptimization</h3>
+<p>The relationships look mostly linear, but we’re working with a lot of features. I figured gradient boosting would be a good approach.</p>
+<div id="f139cc15" class="cell" data-execution_count="6">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Assign features</span></span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> train_df.drop(columns<span class="op">=</span>[<span class="st">'id'</span>, <span class="st">'DIC'</span>], axis<span class="op">=</span><span class="dv">1</span>)</span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> train_df[<span class="st">'DIC'</span>]</span>
@@ -509,7 +597,10 @@ dtype: int64</code></pre>
 <span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a><span class="co"># For predictions later on...</span></span>
 <span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>X_test_scaled <span class="op">=</span> pd.DataFrame(scaler.transform(X_test), columns<span class="op">=</span>X_test.columns)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="96bdbd91" class="cell" data-execution_count="7">
+</section>
+<section id="define-objective-function" class="level3">
+<h3 class="anchored" data-anchor-id="define-objective-function">Define Objective Function</h3>
+<div id="e9e94104" class="cell" data-execution_count="7">
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Set up kfold cross validation</span></span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>kf <span class="op">=</span> KFold(n_splits<span class="op">=</span><span class="dv">5</span>, shuffle<span class="op">=</span><span class="va">True</span>, random_state<span class="op">=</span><span class="dv">808</span>)</span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -534,146 +625,155 @@ dtype: int64</code></pre>
 <span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Average RMSE across folds</span></span>
 <span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a>    rmse <span class="op">=</span> np.mean(scores)</span>
 <span id="cb8-24"><a href="#cb8-24" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-25"><a href="#cb8-25" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> {<span class="st">'loss'</span>: rmse, <span class="st">'status'</span>: STATUS_OK}</span>
-<span id="cb8-26"><a href="#cb8-26" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-27"><a href="#cb8-27" aria-hidden="true" tabindex="-1"></a><span class="co"># Create hyperparameter space</span></span>
-<span id="cb8-28"><a href="#cb8-28" aria-hidden="true" tabindex="-1"></a>space <span class="op">=</span> {</span>
-<span id="cb8-29"><a href="#cb8-29" aria-hidden="true" tabindex="-1"></a>    <span class="st">"n_estimators"</span>: hp.quniform(<span class="st">"n_estimators"</span>, <span class="dv">100</span>, <span class="dv">1200</span>, <span class="dv">10</span>),</span>
-<span id="cb8-30"><a href="#cb8-30" aria-hidden="true" tabindex="-1"></a>    <span class="st">"learning_rate"</span>: hp.uniform(<span class="st">"learning_rate"</span>, <span class="fl">0.005</span>, <span class="fl">0.3</span>),</span>
-<span id="cb8-31"><a href="#cb8-31" aria-hidden="true" tabindex="-1"></a>    <span class="st">"max_depth"</span>: hp.quniform(<span class="st">"max_depth"</span>, <span class="dv">3</span>, <span class="dv">20</span>, <span class="dv">1</span>),</span>
-<span id="cb8-32"><a href="#cb8-32" aria-hidden="true" tabindex="-1"></a>    <span class="st">"min_child_weight"</span>: hp.uniform(<span class="st">"min_child_weight"</span>, <span class="dv">1</span>, <span class="dv">10</span>),</span>
-<span id="cb8-33"><a href="#cb8-33" aria-hidden="true" tabindex="-1"></a>    <span class="st">"subsample"</span>: hp.uniform(<span class="st">"subsample"</span>, <span class="fl">0.5</span>, <span class="fl">1.0</span>),</span>
-<span id="cb8-34"><a href="#cb8-34" aria-hidden="true" tabindex="-1"></a>    <span class="st">"colsample_bytree"</span>: hp.uniform(<span class="st">"colsample_bytree"</span>, <span class="fl">0.5</span>, <span class="fl">1.0</span>),</span>
-<span id="cb8-35"><a href="#cb8-35" aria-hidden="true" tabindex="-1"></a>    <span class="st">"gamma"</span>: hp.uniform(<span class="st">"gamma"</span>, <span class="dv">0</span>, <span class="dv">10</span>),  </span>
-<span id="cb8-36"><a href="#cb8-36" aria-hidden="true" tabindex="-1"></a>    <span class="st">"reg_alpha"</span>: hp.uniform(<span class="st">"reg_alpha"</span>, <span class="dv">0</span>, <span class="dv">1</span>),  </span>
-<span id="cb8-37"><a href="#cb8-37" aria-hidden="true" tabindex="-1"></a>    <span class="st">"reg_lambda"</span>: hp.uniform(<span class="st">"reg_lambda"</span>, <span class="dv">0</span>, <span class="dv">1</span>),  </span>
-<span id="cb8-38"><a href="#cb8-38" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb8-39"><a href="#cb8-39" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-40"><a href="#cb8-40" aria-hidden="true" tabindex="-1"></a><span class="co"># Run hyperopt</span></span>
-<span id="cb8-41"><a href="#cb8-41" aria-hidden="true" tabindex="-1"></a>trials <span class="op">=</span> Trials()</span>
-<span id="cb8-42"><a href="#cb8-42" aria-hidden="true" tabindex="-1"></a>best_params <span class="op">=</span> fmin(</span>
-<span id="cb8-43"><a href="#cb8-43" aria-hidden="true" tabindex="-1"></a>    fn<span class="op">=</span>objective, </span>
-<span id="cb8-44"><a href="#cb8-44" aria-hidden="true" tabindex="-1"></a>    space<span class="op">=</span>space,      </span>
-<span id="cb8-45"><a href="#cb8-45" aria-hidden="true" tabindex="-1"></a>    algo<span class="op">=</span>tpe.suggest,   </span>
-<span id="cb8-46"><a href="#cb8-46" aria-hidden="true" tabindex="-1"></a>    max_evals<span class="op">=</span><span class="dv">50</span>, <span class="co"># keeping max_evals low here for time purposes</span></span>
-<span id="cb8-47"><a href="#cb8-47" aria-hidden="true" tabindex="-1"></a>    <span class="co"># The winning model had a max_evals of 200</span></span>
-<span id="cb8-48"><a href="#cb8-48" aria-hidden="true" tabindex="-1"></a>    trials<span class="op">=</span>trials,       </span>
-<span id="cb8-49"><a href="#cb8-49" aria-hidden="true" tabindex="-1"></a>    rstate<span class="op">=</span>np.random.default_rng(<span class="dv">808</span>)  </span>
-<span id="cb8-50"><a href="#cb8-50" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb8-51"><a href="#cb8-51" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-52"><a href="#cb8-52" aria-hidden="true" tabindex="-1"></a><span class="co"># Print results</span></span>
-<span id="cb8-53"><a href="#cb8-53" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Best Hyperparameters:"</span>, best_params)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb8-25"><a href="#cb8-25" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> {<span class="st">'loss'</span>: rmse, <span class="st">'status'</span>: STATUS_OK}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="2f3a41c6" class="cell" data-execution_count="8">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Convert int hyperparameters to fix type error</span></span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>best_params[<span class="st">"n_estimators"</span>] <span class="op">=</span> <span class="bu">int</span>(best_params[<span class="st">"n_estimators"</span>])</span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>best_params[<span class="st">"max_depth"</span>] <span class="op">=</span> <span class="bu">int</span>(best_params[<span class="st">"max_depth"</span>])</span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Initialize best hyperopt model</span></span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>xgb_hyper <span class="op">=</span> XGBRegressor(<span class="op">**</span>best_params, eval_metric<span class="op">=</span><span class="st">'rmse'</span>, random_state<span class="op">=</span><span class="dv">808</span>)</span>
-<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Fit model</span></span>
-<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>xgb_hyper.fit(X_scaled, y)</span>
-<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Predict on test data</span></span>
-<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>y_pred_hyper <span class="op">=</span> xgb_hyper.predict(X_test_scaled)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="create-domain-space" class="level3">
+<h3 class="anchored" data-anchor-id="create-domain-space">Create Domain space</h3>
+<div id="b791903f" class="cell" data-execution_count="8">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create hyperparameter space</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>space <span class="op">=</span> {</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"n_estimators"</span>: hp.quniform(<span class="st">"n_estimators"</span>, <span class="dv">100</span>, <span class="dv">1200</span>, <span class="dv">10</span>),</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">"learning_rate"</span>: hp.uniform(<span class="st">"learning_rate"</span>, <span class="fl">0.005</span>, <span class="fl">0.3</span>),</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">"max_depth"</span>: hp.quniform(<span class="st">"max_depth"</span>, <span class="dv">3</span>, <span class="dv">20</span>, <span class="dv">1</span>),</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">"min_child_weight"</span>: hp.uniform(<span class="st">"min_child_weight"</span>, <span class="dv">1</span>, <span class="dv">10</span>),</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">"subsample"</span>: hp.uniform(<span class="st">"subsample"</span>, <span class="fl">0.5</span>, <span class="fl">1.0</span>),</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>    <span class="st">"colsample_bytree"</span>: hp.uniform(<span class="st">"colsample_bytree"</span>, <span class="fl">0.5</span>, <span class="fl">1.0</span>),</span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>    <span class="st">"gamma"</span>: hp.uniform(<span class="st">"gamma"</span>, <span class="dv">0</span>, <span class="dv">10</span>),  </span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>    <span class="st">"reg_alpha"</span>: hp.uniform(<span class="st">"reg_alpha"</span>, <span class="dv">0</span>, <span class="dv">1</span>),  </span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>    <span class="st">"reg_lambda"</span>: hp.uniform(<span class="st">"reg_lambda"</span>, <span class="dv">0</span>, <span class="dv">1</span>),  </span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="0ed12f7f" class="cell" data-execution_count="9">
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Get feature importance</span></span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>feat_imp_hyper <span class="op">=</span> pd.DataFrame({<span class="st">'Feature'</span>: X_scaled.columns, <span class="st">'Importance'</span>: xgb_hyper.feature_importances_})</span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Sort by importance</span></span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>feat_imp_hyper <span class="op">=</span> feat_imp_hyper.sort_values(by<span class="op">=</span><span class="st">"Importance"</span>, ascending<span class="op">=</span><span class="va">False</span>)</span>
-<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>feat_imp_hyper</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="run-optimization-algorithm" class="level3">
+<h3 class="anchored" data-anchor-id="run-optimization-algorithm">Run Optimization Algorithm</h3>
+<div id="e7506b02" class="cell" data-execution_count="9">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Run hyperopt</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>trials <span class="op">=</span> Trials()</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>best_params <span class="op">=</span> fmin(</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>    fn<span class="op">=</span>objective, </span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>    space<span class="op">=</span>space,      </span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>    algo<span class="op">=</span>tpe.suggest, </span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>    max_evals<span class="op">=</span><span class="dv">200</span>,</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>    trials<span class="op">=</span>trials,       </span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>    rstate<span class="op">=</span>np.random.default_rng(<span class="dv">808</span>)  </span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="f08809fc" class="cell" data-execution_count="10">
+</section>
+<section id="train-xgb-model-on-the-best-parameters" class="level3">
+<h3 class="anchored" data-anchor-id="train-xgb-model-on-the-best-parameters">Train XGB Model on the Best Parameters</h3>
+<p>Now that we’ve optimized all of our relevant parameters, we can train our XGB model. We use <code>**best_params</code> to unpack the best parameters from before and initialize an <code>XGBRegressor</code> model.</p>
+<div id="a6f3dca2" class="cell" data-execution_count="10">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Convert int hyperparameters to fix type error</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>best_params[<span class="st">"n_estimators"</span>] <span class="op">=</span> <span class="bu">int</span>(best_params[<span class="st">"n_estimators"</span>])</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>best_params[<span class="st">"max_depth"</span>] <span class="op">=</span> <span class="bu">int</span>(best_params[<span class="st">"max_depth"</span>])</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Initialize best hyperopt model</span></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>xgb_hyper <span class="op">=</span> XGBRegressor(<span class="op">**</span>best_params, eval_metric<span class="op">=</span><span class="st">'rmse'</span>, random_state<span class="op">=</span><span class="dv">808</span>)</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Fit model</span></span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>xgb_hyper.fit(X_scaled, y)</span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Predict on test data</span></span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>y_pred_hyper <span class="op">=</span> xgb_hyper.predict(X_test_scaled)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="9a0cb03e" class="cell" data-execution_count="11">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Get feature importance</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>feat_imp_hyper <span class="op">=</span> pd.DataFrame({<span class="st">'Feature'</span>: X_scaled.columns, <span class="st">'Importance'</span>: xgb_hyper.feature_importances_})</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Sort by importance</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>feat_imp_hyper <span class="op">=</span> feat_imp_hyper.sort_values(by<span class="op">=</span><span class="st">"Importance"</span>, ascending<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>feat_imp_hyper</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="56be23a5" class="cell" data-execution_count="12">
 <div class="cell-output cell-output-display" data-execution_count="6">
 <style type="text/css">
 </style>
 
-<table id="T_b418d" class="caption-top table table-sm table-striped small" data-quarto-postprocess="true">
+<table id="T_1c03c" class="caption-top table table-sm table-striped small" data-quarto-postprocess="true">
 <thead>
 <tr class="header">
-<th id="T_b418d_level0_col0" class="col_heading level0 col0" data-quarto-table-cell-role="th">Feature</th>
-<th id="T_b418d_level0_col1" class="col_heading level0 col1" data-quarto-table-cell-role="th">Importance</th>
+<th id="T_1c03c_level0_col0" class="col_heading level0 col0" data-quarto-table-cell-role="th">Feature</th>
+<th id="T_1c03c_level0_col1" class="col_heading level0 col1" data-quarto-table-cell-role="th">Importance</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td id="T_b418d_row0_col0" class="data row0 col0">SiO3uM</td>
-<td id="T_b418d_row0_col1" class="data row0 col1">0.439688</td>
+<td id="T_1c03c_row0_col0" class="data row0 col0">SiO3uM</td>
+<td id="T_1c03c_row0_col1" class="data row0 col1">0.439688</td>
 </tr>
 <tr class="even">
-<td id="T_b418d_row1_col0" class="data row1 col0">PO4uM</td>
-<td id="T_b418d_row1_col1" class="data row1 col1">0.375247</td>
+<td id="T_1c03c_row1_col0" class="data row1 col0">PO4uM</td>
+<td id="T_1c03c_row1_col1" class="data row1 col1">0.375247</td>
 </tr>
 <tr class="odd">
-<td id="T_b418d_row2_col0" class="data row2 col0">R_Oxy_micromol.Kg</td>
-<td id="T_b418d_row2_col1" class="data row2 col1">0.099113</td>
+<td id="T_1c03c_row2_col0" class="data row2 col0">R_Oxy_micromol.Kg</td>
+<td id="T_1c03c_row2_col1" class="data row2 col1">0.099113</td>
 </tr>
 <tr class="even">
-<td id="T_b418d_row3_col0" class="data row3 col0">R_Sal</td>
-<td id="T_b418d_row3_col1" class="data row3 col1">0.032475</td>
+<td id="T_1c03c_row3_col0" class="data row3 col0">R_Sal</td>
+<td id="T_1c03c_row3_col1" class="data row3 col1">0.032475</td>
 </tr>
 <tr class="odd">
-<td id="T_b418d_row4_col0" class="data row4 col0">NO3uM</td>
-<td id="T_b418d_row4_col1" class="data row4 col1">0.017117</td>
+<td id="T_1c03c_row4_col0" class="data row4 col0">NO3uM</td>
+<td id="T_1c03c_row4_col1" class="data row4 col1">0.017117</td>
 </tr>
 <tr class="even">
-<td id="T_b418d_row5_col0" class="data row5 col0">TA1.x</td>
-<td id="T_b418d_row5_col1" class="data row5 col1">0.015256</td>
+<td id="T_1c03c_row5_col0" class="data row5 col0">TA1.x</td>
+<td id="T_1c03c_row5_col1" class="data row5 col1">0.015256</td>
 </tr>
 <tr class="odd">
-<td id="T_b418d_row6_col0" class="data row6 col0">Salinity1</td>
-<td id="T_b418d_row6_col1" class="data row6 col1">0.012926</td>
+<td id="T_1c03c_row6_col0" class="data row6 col0">Salinity1</td>
+<td id="T_1c03c_row6_col1" class="data row6 col1">0.012926</td>
 </tr>
 <tr class="even">
-<td id="T_b418d_row7_col0" class="data row7 col0">R_Depth</td>
-<td id="T_b418d_row7_col1" class="data row7 col1">0.004667</td>
+<td id="T_1c03c_row7_col0" class="data row7 col0">R_Depth</td>
+<td id="T_1c03c_row7_col1" class="data row7 col1">0.004667</td>
 </tr>
 <tr class="odd">
-<td id="T_b418d_row8_col0" class="data row8 col0">NO2uM</td>
-<td id="T_b418d_row8_col1" class="data row8 col1">0.000781</td>
+<td id="T_1c03c_row8_col0" class="data row8 col0">NO2uM</td>
+<td id="T_1c03c_row8_col1" class="data row8 col1">0.000781</td>
 </tr>
 <tr class="even">
-<td id="T_b418d_row9_col0" class="data row9 col0">Temperature_degC</td>
-<td id="T_b418d_row9_col1" class="data row9 col1">0.000693</td>
+<td id="T_1c03c_row9_col0" class="data row9 col0">Temperature_degC</td>
+<td id="T_1c03c_row9_col1" class="data row9 col1">0.000693</td>
 </tr>
 <tr class="odd">
-<td id="T_b418d_row10_col0" class="data row10 col0">R_TEMP</td>
-<td id="T_b418d_row10_col1" class="data row10 col1">0.000607</td>
+<td id="T_1c03c_row10_col0" class="data row10 col0">R_TEMP</td>
+<td id="T_1c03c_row10_col1" class="data row10 col1">0.000607</td>
 </tr>
 <tr class="even">
-<td id="T_b418d_row11_col0" class="data row11 col0">R_DYNHT</td>
-<td id="T_b418d_row11_col1" class="data row11 col1">0.000389</td>
+<td id="T_1c03c_row11_col0" class="data row11 col0">R_DYNHT</td>
+<td id="T_1c03c_row11_col1" class="data row11 col1">0.000389</td>
 </tr>
 <tr class="odd">
-<td id="T_b418d_row12_col0" class="data row12 col0">NH3uM</td>
-<td id="T_b418d_row12_col1" class="data row12 col1">0.000282</td>
+<td id="T_1c03c_row12_col0" class="data row12 col0">NH3uM</td>
+<td id="T_1c03c_row12_col1" class="data row12 col1">0.000282</td>
 </tr>
 <tr class="even">
-<td id="T_b418d_row13_col0" class="data row13 col0">Lat_Dec</td>
-<td id="T_b418d_row13_col1" class="data row13 col1">0.000281</td>
+<td id="T_1c03c_row13_col0" class="data row13 col0">Lat_Dec</td>
+<td id="T_1c03c_row13_col1" class="data row13 col1">0.000281</td>
 </tr>
 <tr class="odd">
-<td id="T_b418d_row14_col0" class="data row14 col0">Lon_Dec</td>
-<td id="T_b418d_row14_col1" class="data row14 col1">0.000257</td>
+<td id="T_1c03c_row14_col0" class="data row14 col0">Lon_Dec</td>
+<td id="T_1c03c_row14_col1" class="data row14 col1">0.000257</td>
 </tr>
 <tr class="even">
-<td id="T_b418d_row15_col0" class="data row15 col0">R_Nuts</td>
-<td id="T_b418d_row15_col1" class="data row15 col1">0.000222</td>
+<td id="T_1c03c_row15_col0" class="data row15 col0">R_Nuts</td>
+<td id="T_1c03c_row15_col1" class="data row15 col1">0.000222</td>
 </tr>
 </tbody>
 </table>
 </div>
 </div>
-<div id="7c518bfd" class="cell" data-execution_count="11">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Add DIC to test dataset</span></span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>test_df[<span class="st">'DIC'</span>] <span class="op">=</span> y_pred_hyper</span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>submission <span class="op">=</span> test_df[[<span class="st">'id'</span>, <span class="st">'DIC'</span>]]</span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>submission.head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Now that we’ve generated our predictions on the test data, all we need to do is add those to their associated ID’s in the <code>test_df</code> and export to csv for submission to the competition.</p>
+<div id="a1a38e39" class="cell" data-execution_count="13">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Add DIC to test dataset</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>test_df[<span class="st">'DIC'</span>] <span class="op">=</span> y_pred_hyper</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>submission <span class="op">=</span> test_df[[<span class="st">'id'</span>, <span class="st">'DIC'</span>]]</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>submission.head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="1307a91b" class="cell" data-execution_count="12">
+<div id="03d099a7" class="cell" data-execution_count="14">
 <div class="cell-output cell-output-display" data-execution_count="7">
 <div>
 
@@ -718,15 +818,44 @@ dtype: int64</code></pre>
 </div>
 </div>
 </div>
-<div id="029a6c2e" class="cell" data-execution_count="13">
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Export for submission</span></span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>submission.to_csv(<span class="st">'submission.csv'</span>, index<span class="op">=</span><span class="va">False</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="4d885b4c" class="cell" data-execution_count="15">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Export for submission</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>submission.to_csv(<span class="st">'submission.csv'</span>, index<span class="op">=</span><span class="va">False</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
+<p>And just like that, you can have a competition-winning machine learning model! A very big thanks to Professor Robbins for his guidance in this course, Dr.&nbsp;Satterthwaite for her wonderful guest lecture, and <a href="https://github.com/annieradams">Annie Adams</a> for her assistance all quarter.</p>
+
 
 
 </section>
+</section>
+</section>
 
-<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" id="quarto-citation"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{oyler2025,
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body" role="list">
+<div id="ref-Widerhold1992" class="csl-entry" role="listitem">
+<div class="csl-left-margin">1. </div><div class="csl-right-inline">Wiederhold G, McCarthy J. Arthur samuel: Pioneer in machine learning. IBM Journal of Research and Development. 1992;36: 329–331. doi:<a href="https://doi.org/10.1147/rd.363.0329">10.1147/rd.363.0329</a></div>
+</div>
+<div id="ref-PintoCoehlo2023" class="csl-entry" role="listitem">
+<div class="csl-left-margin">2. </div><div class="csl-right-inline">Pinto-Coelho L. How artificial intelligence is shaping medical imaging technology: A survey of innovations and applications. Bioengineering. 2023;10: 1435. doi:<a href="https://doi.org/10.3390/bioengineering10121435">10.3390/bioengineering10121435</a></div>
+</div>
+<div id="ref-Dada2019" class="csl-entry" role="listitem">
+<div class="csl-left-margin">3. </div><div class="csl-right-inline">Dada EG, Bassi JS, Chiroma H, Abdulhamid SM, Adetunmbi AO, Ajibuwa OE. Machine learning for email spam filtering: Review, approaches and open research problems. Heliyon. 2019;5: e01802. doi:<a href="https://doi.org/10.1016/j.heliyon.2019.e01802">https://doi.org/10.1016/j.heliyon.2019.e01802</a></div>
+</div>
+<div id="ref-Kwiatkowski2023" class="csl-entry" role="listitem">
+<div class="csl-left-margin">4. </div><div class="csl-right-inline">Kwiatkowski R. Gradient descent algorithm - a deep dive. Medium. TDS Archive; 2023. Available: <a href="https://medium.com/data-science/gradient-descent-algorithm-a-deep-dive-cf04e8115f21">https://medium.com/data-science/gradient-descent-algorithm-a-deep-dive-cf04e8115f21</a></div>
+</div>
+<div id="ref-Google2024" class="csl-entry" role="listitem">
+<div class="csl-left-margin">5. </div><div class="csl-right-inline">Google; 2024. Available: <a href="https://developers.google.com/machine-learning/crash-course/linear-regression/gradient-descent">https://developers.google.com/machine-learning/crash-course/linear-regression/gradient-descent</a></div>
+</div>
+<div id="ref-IBM2025" class="csl-entry" role="listitem">
+<div class="csl-left-margin">6. </div><div class="csl-right-inline">IBM. What is gradient descent? 2025. Available: <a href="https://www.ibm.com/think/topics/gradient-descent">https://www.ibm.com/think/topics/gradient-descent</a></div>
+</div>
+<div id="ref-Banerjee2020" class="csl-entry" role="listitem">
+<div class="csl-left-margin">7. </div><div class="csl-right-inline">Banerjee P. Bayesian optimization using hyperopt. Kaggle; 2020. Available: <a href="https://www.kaggle.com/code/prashant111/bayesian-optimization-using-hyperopt">https://www.kaggle.com/code/prashant111/bayesian-optimization-using-hyperopt</a></div>
+</div>
+<div id="ref-Noguiera2014" class="csl-entry" role="listitem">
+<div class="csl-left-margin">8. </div><div class="csl-right-inline">Nogueira F. <span>Bayesian Optimization</span>: Open source constrained global optimization tool for <span>Python</span>. 2014--. Available:<a href=" https://github.com/bayesian-optimization/BayesianOptimization"> https://github.com/bayesian-optimization/BayesianOptimization</a></div>
+</div>
+</div></section><section class="quarto-appendix-contents" id="quarto-citation"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{oyler2025,
   author = {Oyler, Haylee},
   title = {So {You} {Want} to {Win} a {Kaggle} {Competition?}},
   date = {2025-03-30},
