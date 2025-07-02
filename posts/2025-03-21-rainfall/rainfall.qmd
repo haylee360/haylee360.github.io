@@ -1,5 +1,5 @@
 ---
-title: "Replicating the Weather"
+title: "Reproducing the Weather"
 description: "Simulating the Consequences of Early-Life Rainfall on Life Outcomes"
 author:
   - name: Haylee Oyler

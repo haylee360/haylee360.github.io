@@ -48,7 +48,7 @@ about:
  
 <div class="slides slide2">
 <div id="hero-heading">
-<p>My name is Haylee Oyler (she/they) and I am an interdisciplinary environmental data scientist. In other words, I am interested in understanding environmental problems using approaches, frameworks, and methods across different fields of study. I’ve always been interested in understanding the intersection of people and nature. For me, the most conspicuous path into this nexus was a degree in environmental science from UC Berkeley. I gained experience studying human-environment interactions and it also introduced me to working with data.</p>
+<p>My name is Haylee Oyler (she/they) and I am an interdisciplinary environmental data scientist. In other words, I want to understand environmental problems using approaches, frameworks, and methods across different fields of study. I’ve always been interested in understanding the intersection of people and nature. For me, the most conspicuous path into this nexus was a degree in environmental science from UC Berkeley. I gained experience studying human-environment interactions and it also introduced me to working with data.</p>
 
 <p>Now, I am a Master of Environmental Data Science student at UC Santa Barbara. I’m excited about continuing to apply data science tools to study issues of environmental justice and community-based conservation. My approach to solving environmental problems centers first and foremost on people, particularly the participation and experience of historically marginalized groups.</p>
 </div>

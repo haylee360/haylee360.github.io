@@ -1,0 +1,106 @@
+---
+title: MEDS Capstone Project
+description: Identifying Disadvantaged Communities Using Cumulative Environmental Burdens
+author:
+  - name: Haylee Oyler
+    url: https://haylee360.github.io/
+    orcid: 0009-0008-2133-3708
+    affiliation: MEDS
+    affiliation-url: https://bren.ucsb.edu/masters-programs/master-environmental-data-science
+date: '2025-06-26'
+categories:
+  - Capstone
+  - JavaScript
+  - Python
+  - Application Development
+  - MEDS
+toc: true
+bibliography: references.bib
+csl: plos-computational-biology.csl
+image: images/j40-circle-logo.svg
+citation:
+  url: https://haylee360.github.io/posts/2025-06-26-capstone/
+jupyter: python3
+execute:
+  warning: false
+  message: false
+---
+
+
+# Master of Environmental Data Science: Capstone Project
+
+The hallmark of the [Master of Environmental Data Science](https://bren.ucsb.edu/masters-programs/master-environmental-data-science) program at the Bren School of Environmental Science and Management is the **capstone project**. This is a 6-month project where groups of 3-4 master's students tackle real-world environmental problems with data-driven solutions. I had the honor of being apart of the **Justice40 team**. This included [Josephine Cardelle](https://jocardelle.github.io/), [Kat Le](https://github.com/katleyq), [Kimberlee Wong](https://kimberleewong.github.io/) and myself, advised by [Dr. Jayajit Chakraborty](https://jayajitc.wixsite.com/jchakrab). 
+
+Our goal? Expand the [Climate and Economic Justice Screening Tool](https://edgi-govdata-archiving.github.io/j40-cejst-2/en/#3/33.47/-97.5) to incorporate data on cumulative environmental burdens. Before I dive into how we accomplished this goal, let's get into some background. 
+
+## The Justice 40 Initiative
+
+[Justice40](https://bidenwhitehouse.archives.gov/environmentaljustice/justice40/) was a federal initiative created by the Biden Administration in early 2021 @Biden2021. It's aim was to direct **40% of funding from climate-related federal investments to disadvantaged communities**. Justice40 was signifcant in its creation because of its whole of government approach. This meant multiple federal agencies working together to fulfill the initiative's goal and was a huge step toward creating an orchestrated federal response to ameliorate environmental harm. 
+
+The creation of Justice40 also meant that the federal government needed a formal definition of what it meant to be disadvantaged and a way to identify where these disadvantaged communities were. This was the purpose of the Climate and Economic Justice Screening Tool (CEJST)
+
+## CEJST
+
+CEJST was created by the White House Council on Environmental Quality as a way to identify communities that were eligible for Justice40 funds. It did this by using data from over 30 different sources to create a broad metric of a communities environmental and economic burden. It looked at various characteristics of a census tract, a small region inside a county, and assigned that tract as disadvantaged (DAC) or non-disadvantaged (non-DAC). 
+
+### Defining Disadvantaged Communities
+
+In the original CEJST framework, DACs were defined by two criteria: a **low-income threshold** and a **high vulnerability threshold**. 
+
+Low-income: 65th national percentile or higher of people in households where the income was less than or equal to twice the federal poverty level.
+
+High vulnerability: Characterized by meeting one of eight burden thresholds shown below. Each threshold has between 2-5 associated indicators that comprise that burden and define how you meet the threshold. 
+
+IMAGE
+
+For example, if your census tract was in the 90th national percentile or higher for asthma rates, then you would meet the health burden threshold. This meant that compared to all other census tracts in the U.S., your communities' asthma rates would be in the top 10%. 
+
+Most of the indicators use a percentile scale, but some are a "yes" or "no" category. For example, historically disadvantaged communities are assigned using redlining data as a "yes" or "no."
+
+Qualifying as low-income in combination with *at least one* burden threshold meant that your community would be defined as disadvantaged in the eyes of Justice40. 
+
+## Expanding Disadvantaged Status
+
+While the CEJST framework was incredibly innovative supported thousands of underserved communities, it also had some drawbacks. One of the largest being that there is **no measure of the cumulative effect of high vulnerability**. This meant that a census tract with only one burden threshold exceeded would be assigned the same status as a census tract that had 6 thresholds exceeded. 
+
+**Our project aims to improve the framework of the CEJST tool to incorporate a more comprehensive understanding of disadvantaged communities**
+
+We did this with two main approaches: a cumulative analysis and a hot spot analysis.
+
+### Cumulative Analysis
+Our cumulative analysis looked at the **total number of thresholds exceeded** by a community. This included burdens exceeded and indicators exceeded (the sub-category of a burden). While this approach has many underlying assumptions, our intent here was not to provide a true... but rather to give a simple, easy to understand perspective and which areas are more highly burdened than others.
+
+This method pulls from established practices for evaluating cumulative impacts in geospatial mapping tools.
+
+Each census tract receives:
+
+- A burden score from 0-8
+
+- An indicator score from 0-31
+
+It is important to note that while there are 31 indicators used in the analysis, no census tract exceeds more than 18 total indicators.
+
+DIAGRAM
+
+### Hot Spot Analysis
+Our hot spot analysis provides a similar examination to our cumulative analysis with more statistical rigor. This analysis uses a spatial statistic called [Getis Ord Gi*](https://pro.arcgis.com/en/pro-app/latest/tool-reference/spatial-statistics/h-how-hot-spot-analysis-getis-ord-gi-spatial-stati.htm)(often called gi-star)
+
+DIAGRAM
+
+This method finds census tracts where the total burdens or indicators are significantly higher ("hot spots") or lower ("cold spots") than the national average.
+
+Key steps include:
+
+Calculating local sums of thresholds exceeded for each census tract and its neighbors
+
+Comparing local sums to the global sum minus the local values. This is done by standardizing the sums to a [z-score](https://pro.arcgis.com/en/pro-app/latest/tool-reference/spatial-statistics/what-is-a-z-score-what-is-a-p-value.htm), also known as the standardized Gi* value.
+
+In addition to the z-score, the calculation generates a [p-value](https://pro.arcgis.com/en/pro-app/latest/tool-reference/spatial-statistics/what-is-a-z-score-what-is-a-p-value.htm) that is interpreted into hot spots or cold spots. The p-values here are slightly different because they are interpreted with a positive or negative sign. The direction is important to note whether an area is significantly hot, or significantly cold.
+
+- High positives: Hot spots
+
+- High negatives: Cold spots
+
+
+
+

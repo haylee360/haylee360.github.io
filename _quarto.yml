@@ -18,8 +18,8 @@ website:
       - posts.qmd
       - href: photos.qmd
         text: Photos
-      - href: resources.qmd
-        text: Resources
+      # - href: resources.qmd
+      #   text: Resources
       - text: CV
         href: resumes/hoyler-cv.pdf
         target: _blank # Make resume open in new page

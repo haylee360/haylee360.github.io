@@ -15,7 +15,7 @@ categories:
 toc: true
 bibliography: references.bib
 csl: plos-computational-biology.csl
-image: images/map.png
+image: images/gender-bias.jpg
 citation:
   url: https://haylee360.github.io/posts/2025-03-11-gender-academia/
 format: html

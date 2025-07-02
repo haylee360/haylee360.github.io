@@ -6,8 +6,11 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="author" content="Haylee Oyler">
+<meta name="dcterms.date" content="2025-06-26">
+<meta name="description" content="Identifying Disadvantaged Communities Using Cumulative Environmental Burdens">
 
-<title>Haylee Oyler</title>
+<title>MEDS Capstone Project – Haylee Oyler</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -20,24 +23,44 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
-</style>
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
 
 
-<script src="site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="site_libs/quarto-nav/headroom.min.js"></script>
-<script src="site_libs/clipboard/clipboard.min.js"></script>
-<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="site_libs/quarto-search/fuse.min.js"></script>
-<script src="site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="./">
-<script src="site_libs/quarto-html/quarto.js"></script>
-<script src="site_libs/quarto-html/popper.min.js"></script>
-<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
-<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-e26003cea8cd680ca0c55a263523d882.css" rel="stylesheet" id="quarto-text-highlighting-styles">
-<script src="site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-45057231b278e38fdb9c699e4e11dbc1.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-e26003cea8cd680ca0c55a263523d882.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-1128e9f8bdbb5fe1bcbfc9eb9f34df91.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -67,17 +90,16 @@ ul.task-list li input[type="checkbox"] {
 }</script>
 
 
-<link rel="stylesheet" href="styles/index_styles.css">
 </head>
 
 <body class="nav-fixed">
 
 <div id="quarto-search-results"></div>
-  <header id="quarto-header" class="headroom fixed-top">
+  <header id="quarto-header" class="headroom fixed-top quarto-banner">
     <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
-    <a class="navbar-brand" href="./index.html">
+    <a class="navbar-brand" href="../../index.html">
     <span class="navbar-title">Haylee Oyler</span>
     </a>
   </div>
@@ -88,19 +110,19 @@ ul.task-list li input[type="checkbox"] {
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
   <li class="nav-item">
-    <a class="nav-link" href="./about.html"> 
+    <a class="nav-link" href="../../about.html"> 
 <span class="menu-text">About</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./posts.html"> 
+    <a class="nav-link" href="../../posts.html"> 
 <span class="menu-text">Blog</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./photos.html"> 
+    <a class="nav-link" href="../../photos.html"> 
 <span class="menu-text">Photos</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./resumes/hoyler-cv.pdf" target="_blank"> 
+    <a class="nav-link" href="../../resumes/hoyler-cv.pdf" target="_blank"> 
 <span class="menu-text">CV</span></a>
   </li>  
 </ul>
@@ -111,66 +133,161 @@ ul.task-list li input[type="checkbox"] {
     </nav>
 </header>
 <!-- content -->
-<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full page-navbar">
+<header id="title-block-header" class="quarto-title-block default page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-page-left">
+      <h1 class="title">MEDS Capstone Project</h1>
+                  <div>
+        <div class="description">
+          Identifying Disadvantaged Communities Using Cumulative Environmental Burdens
+        </div>
+      </div>
+                          <div class="quarto-categories">
+                <div class="quarto-category">Capstone</div>
+                <div class="quarto-category">JavaScript</div>
+                <div class="quarto-category">Python</div>
+                <div class="quarto-category">Application Development</div>
+                <div class="quarto-category">MEDS</div>
+              </div>
+                  </div>
+  </div>
+    
+  <div class="quarto-title-meta-author column-page-left">
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-heading">Affiliation</div>
+    
+      <div class="quarto-title-meta-contents">
+      <p class="author"><a href="https://haylee360.github.io/">Haylee Oyler</a> <a href="https://orcid.org/0009-0008-2133-3708" class="quarto-title-author-orcid"> <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA2ZpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDo1N0NEMjA4MDI1MjA2ODExOTk0QzkzNTEzRjZEQTg1NyIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDozM0NDOEJGNEZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDozM0NDOEJGM0ZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ1M1IE1hY2ludG9zaCI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOkZDN0YxMTc0MDcyMDY4MTE5NUZFRDc5MUM2MUUwNEREIiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOjU3Q0QyMDgwMjUyMDY4MTE5OTRDOTM1MTNGNkRBODU3Ii8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+84NovQAAAR1JREFUeNpiZEADy85ZJgCpeCB2QJM6AMQLo4yOL0AWZETSqACk1gOxAQN+cAGIA4EGPQBxmJA0nwdpjjQ8xqArmczw5tMHXAaALDgP1QMxAGqzAAPxQACqh4ER6uf5MBlkm0X4EGayMfMw/Pr7Bd2gRBZogMFBrv01hisv5jLsv9nLAPIOMnjy8RDDyYctyAbFM2EJbRQw+aAWw/LzVgx7b+cwCHKqMhjJFCBLOzAR6+lXX84xnHjYyqAo5IUizkRCwIENQQckGSDGY4TVgAPEaraQr2a4/24bSuoExcJCfAEJihXkWDj3ZAKy9EJGaEo8T0QSxkjSwORsCAuDQCD+QILmD1A9kECEZgxDaEZhICIzGcIyEyOl2RkgwAAhkmC+eAm0TAAAAABJRU5ErkJggg=="></a></p>
+    </div>
+    <div class="quarto-title-meta-contents">
+          <p class="affiliation">
+              <a href="https://bren.ucsb.edu/masters-programs/master-environmental-data-science">
+              MEDS
+              </a>
+            </p>
+        </div>
+    </div>
+
+  <div class="quarto-title-meta column-page-left">
+
+        
+      <div>
+      <div class="quarto-title-meta-heading">Published</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">June 26, 2025</p>
+      </div>
+    </div>
+    
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#master-of-environmental-data-science-capstone-project" id="toc-master-of-environmental-data-science-capstone-project" class="nav-link active" data-scroll-target="#master-of-environmental-data-science-capstone-project">Master of Environmental Data Science: Capstone Project</a>
+  <ul class="collapse">
+  <li><a href="#the-justice-40-initiative" id="toc-the-justice-40-initiative" class="nav-link" data-scroll-target="#the-justice-40-initiative">The Justice 40 Initiative</a></li>
+  <li><a href="#cejst" id="toc-cejst" class="nav-link" data-scroll-target="#cejst">CEJST</a>
+  <ul class="collapse">
+  <li><a href="#defining-disadvantaged-communities" id="toc-defining-disadvantaged-communities" class="nav-link" data-scroll-target="#defining-disadvantaged-communities">Defining Disadvantaged Communities</a></li>
+  </ul></li>
+  <li><a href="#expanding-disadvantaged-status" id="toc-expanding-disadvantaged-status" class="nav-link" data-scroll-target="#expanding-disadvantaged-status">Expanding Disadvantaged Status</a>
+  <ul class="collapse">
+  <li><a href="#cumulative-analysis" id="toc-cumulative-analysis" class="nav-link" data-scroll-target="#cumulative-analysis">Cumulative Analysis</a></li>
+  <li><a href="#hot-spot-analysis" id="toc-hot-spot-analysis" class="nav-link" data-scroll-target="#hot-spot-analysis">Hot Spot Analysis</a></li>
+  </ul></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
 <!-- main -->
-<main class="content column-page" id="quarto-document-content">
+<main class="content quarto-banner-title-block column-page-left" id="quarto-document-content">
 
 
 
 
-<div class="container">
-<div class="slides slide1">
-<div class="text-block">
-<div class="index-title">
-Haylee Oyler
+
+<section id="master-of-environmental-data-science-capstone-project" class="level1">
+<h1>Master of Environmental Data Science: Capstone Project</h1>
+<p>The hallmark of the <a href="https://bren.ucsb.edu/masters-programs/master-environmental-data-science">Master of Environmental Data Science</a> program at the Bren School of Environmental Science and Management is the <strong>capstone project</strong>. This is a 6-month project where groups of 3-4 master’s students tackle real-world environmental problems with data-driven solutions. I had the honor of being apart of the <strong>Justice40 team</strong>. This included <a href="https://jocardelle.github.io/">Josephine Cardelle</a>, <a href="https://github.com/katleyq">Kat Le</a>, <a href="https://kimberleewong.github.io/">Kimberlee Wong</a> and myself, advised by <a href="https://jayajitc.wixsite.com/jchakrab">Dr.&nbsp;Jayajit Chakraborty</a>.</p>
+<p>Our goal? Expand the <a href="https://edgi-govdata-archiving.github.io/j40-cejst-2/en/#3/33.47/-97.5">Climate and Economic Justice Screening Tool</a> to incorporate data on cumulative environmental burdens. Before I dive into how we accomplished this goal, let’s get into some background.</p>
+<section id="the-justice-40-initiative" class="level2">
+<h2 class="anchored" data-anchor-id="the-justice-40-initiative">The Justice 40 Initiative</h2>
+<p><a href="https://bidenwhitehouse.archives.gov/environmentaljustice/justice40/">Justice40</a> was a federal initiative created by the Biden Administration in early 2021 <span class="citation" data-cites="Biden2021">[<a href="#ref-Biden2021" role="doc-biblioref">1</a>]</span>. It’s aim was to direct <strong>40% of funding from climate-related federal investments to disadvantaged communities</strong>. Justice40 was signifcant in its creation because of its whole of government approach. This meant multiple federal agencies working together to fulfill the initiative’s goal and was a huge step toward creating an orchestrated federal response to ameliorate environmental harm.</p>
+<p>The creation of Justice40 also meant that the federal government needed a formal definition of what it meant to be disadvantaged and a way to identify where these disadvantaged communities were. This was the purpose of the Climate and Economic Justice Screening Tool (CEJST)</p>
+</section>
+<section id="cejst" class="level2">
+<h2 class="anchored" data-anchor-id="cejst">CEJST</h2>
+<p>CEJST was created by the White House Council on Environmental Quality as a way to identify communities that were eligible for Justice40 funds. It did this by using data from over 30 different sources to create a broad metric of a communities environmental and economic burden. It looked at various characteristics of a census tract, a small region inside a county, and assigned that tract as disadvantaged (DAC) or non-disadvantaged (non-DAC).</p>
+<section id="defining-disadvantaged-communities" class="level3">
+<h3 class="anchored" data-anchor-id="defining-disadvantaged-communities">Defining Disadvantaged Communities</h3>
+<p>In the original CEJST framework, DACs were defined by two criteria: a <strong>low-income threshold</strong> and a <strong>high vulnerability threshold</strong>.</p>
+<p>Low-income: 65th national percentile or higher of people in households where the income was less than or equal to twice the federal poverty level.</p>
+<p>High vulnerability: Characterized by meeting one of eight burden thresholds shown below. Each threshold has between 2-5 associated indicators that comprise that burden and define how you meet the threshold.</p>
+<p>IMAGE</p>
+<p>For example, if your census tract was in the 90th national percentile or higher for asthma rates, then you would meet the health burden threshold. This meant that compared to all other census tracts in the U.S., your communities’ asthma rates would be in the top 10%.</p>
+<p>Most of the indicators use a percentile scale, but some are a “yes” or “no” category. For example, historically disadvantaged communities are assigned using redlining data as a “yes” or “no.”</p>
+<p>Qualifying as low-income in combination with <em>at least one</em> burden threshold meant that your community would be defined as disadvantaged in the eyes of Justice40.</p>
+</section>
+</section>
+<section id="expanding-disadvantaged-status" class="level2">
+<h2 class="anchored" data-anchor-id="expanding-disadvantaged-status">Expanding Disadvantaged Status</h2>
+<p>While the CEJST framework was incredibly innovative supported thousands of underserved communities, it also had some drawbacks. One of the largest being that there is <strong>no measure of the cumulative effect of high vulnerability</strong>. This meant that a census tract with only one burden threshold exceeded would be assigned the same status as a census tract that had 6 thresholds exceeded.</p>
+<p><strong>Our project aims to improve the framework of the CEJST tool to incorporate a more comprehensive understanding of disadvantaged communities</strong></p>
+<p>We did this with two main approaches: a cumulative analysis and a hot spot analysis.</p>
+<section id="cumulative-analysis" class="level3">
+<h3 class="anchored" data-anchor-id="cumulative-analysis">Cumulative Analysis</h3>
+<p>Our cumulative analysis looked at the <strong>total number of thresholds exceeded</strong> by a community. This included burdens exceeded and indicators exceeded (the sub-category of a burden). While this approach has many underlying assumptions, our intent here was not to provide a true… but rather to give a simple, easy to understand perspective and which areas are more highly burdened than others.</p>
+<p>This method pulls from established practices for evaluating cumulative impacts in geospatial mapping tools.</p>
+<p>Each census tract receives:</p>
+<ul>
+<li><p>A burden score from 0-8</p></li>
+<li><p>An indicator score from 0-31</p></li>
+</ul>
+<p>It is important to note that while there are 31 indicators used in the analysis, no census tract exceeds more than 18 total indicators.</p>
+<p>DIAGRAM</p>
+</section>
+<section id="hot-spot-analysis" class="level3">
+<h3 class="anchored" data-anchor-id="hot-spot-analysis">Hot Spot Analysis</h3>
+<p>Our hot spot analysis provides a similar examination to our cumulative analysis with more statistical rigor. This analysis uses a spatial statistic called <a href="https://pro.arcgis.com/en/pro-app/latest/tool-reference/spatial-statistics/h-how-hot-spot-analysis-getis-ord-gi-spatial-stati.htm">Getis Ord Gi*</a>(often called gi-star)</p>
+<p>DIAGRAM</p>
+<p>This method finds census tracts where the total burdens or indicators are significantly higher (“hot spots”) or lower (“cold spots”) than the national average.</p>
+<p>Key steps include:</p>
+<p>Calculating local sums of thresholds exceeded for each census tract and its neighbors</p>
+<p>Comparing local sums to the global sum minus the local values. This is done by standardizing the sums to a <a href="https://pro.arcgis.com/en/pro-app/latest/tool-reference/spatial-statistics/what-is-a-z-score-what-is-a-p-value.htm">z-score</a>, also known as the standardized Gi* value.</p>
+<p>In addition to the z-score, the calculation generates a <a href="https://pro.arcgis.com/en/pro-app/latest/tool-reference/spatial-statistics/what-is-a-z-score-what-is-a-p-value.htm">p-value</a> that is interpreted into hot spots or cold spots. The p-values here are slightly different because they are interpreted with a positive or negative sign. The direction is important to note whether an area is significantly hot, or significantly cold.</p>
+<ul>
+<li><p>High positives: Hot spots</p></li>
+<li><p>High negatives: Cold spots</p></li>
+</ul>
+
+
+
+</section>
+</section>
+</section>
+
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body" role="list">
+<div id="ref-Biden2021" class="csl-entry" role="listitem">
+<div class="csl-left-margin">1. </div><div class="csl-right-inline">Executive Order: 14008. Executive Office of the President; 2021. Available: <a href="https://www.federalregister.gov/documents/2021/02/01/2021-02177/tackling-the-climate-crisis-at-home-and-abroad">https://www.federalregister.gov/documents/2021/02/01/2021-02177/tackling-the-climate-crisis-at-home-and-abroad</a></div>
 </div>
-<div class="index-subtitle">
-Interdisciplinary Environmental Data Scientist
-</div>
-</div>
-</div>
-<div class="slides slide2">
-<div class="quarto-about-trestles column-page">
-  <div class="about-entity">
-    <img src="images/echo_headshot_square.jpeg" class="about-image
-  rounded " style="width: 20em;">
-<header id="title-block-header" class="quarto-title-block"></header>
-    <div class="about-links">
-  <a href="https://www.linkedin.com/in/haylee-oyler-788b7619a/" class="about-link" rel="" target="_blank">
-    <i class="bi bi-linkedin"></i>
-     <span class="about-link-text">LinkedIn</span>
-  </a>
-  <a href="https://github.com/haylee360" class="about-link" rel="" target="_blank">
-    <i class="bi bi-github"></i>
-     <span class="about-link-text">GitHub</span>
-  </a>
-  <a href="mailto:hoyler@bren.ucsb.edu" class="about-link" rel="" target="">
-    <i class="bi bi-envelope"></i>
-     <span class="about-link-text">Email</span>
-  </a>
-</div>
-  </div>
-  <div class="about-contents"><div id="hero-heading">
-<p>
-My name is Haylee Oyler (she/they) and I am an interdisciplinary environmental data scientist. In other words, I want to understand environmental problems using approaches, frameworks, and methods across different fields of study. I’ve always been interested in understanding the intersection of people and nature. For me, the most conspicuous path into this nexus was a degree in environmental science from UC Berkeley. I gained experience studying human-environment interactions and it also introduced me to working with data.
-</p>
-<p>
-Now, I am a Master of Environmental Data Science student at UC Santa Barbara. I’m excited about continuing to apply data science tools to study issues of environmental justice and community-based conservation. My approach to solving environmental problems centers first and foremost on people, particularly the participation and experience of historically marginalized groups.
-</p>
-</div></div>
-</div>
-
-</div>
-</div>
-</main></div>
-
-
-
-
- <!-- /main -->
+</div></section><section class="quarto-appendix-contents" id="quarto-citation"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{oyler2025,
+  author = {Oyler, Haylee},
+  title = {MEDS {Capstone} {Project}},
+  date = {2025-06-26},
+  url = {https://haylee360.github.io/posts/2025-06-26-capstone/},
+  langid = {en}
+}
+</code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-oyler2025" class="csl-entry quarto-appendix-citeas" role="listitem">
+<div class="">Oyler H. MEDS Capstone Project. 26 Jun 2025.
+Available: <a href="https://haylee360.github.io/posts/2025-06-26-capstone/">https://haylee360.github.io/posts/2025-06-26-capstone/</a></div>
+</div></div></section></div></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
@@ -191,6 +308,13 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }
   }
   toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
   const isCodeAnnotation = (el) => {
     for (const clz of el.classList) {
       if (clz.startsWith('code-annotation-')) {                     
@@ -581,7 +705,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   }
 });
 </script>
- <!-- /content -->
+</div> <!-- /content -->
 <footer class="footer">
   <div class="nav-footer">
     <div class="nav-footer-left">
