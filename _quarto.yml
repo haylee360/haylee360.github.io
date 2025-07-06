@@ -21,7 +21,7 @@ website:
       # - href: resources.qmd
       #   text: Resources
       - text: CV
-        href: resumes/hoyler-cv.pdf
+        href: resumes/hoyler-cv-font.pdf
         target: _blank # Make resume open in new page
   page-footer: 
     border: false

@@ -1,10 +1,10 @@
 ---
-title: "Photo Gallery"
+title: ""
 format: 
   html:
     css: styles/photos_style.css
 ---
-Here is a collection of photos of some of my favorite things. Work, school, fun, it's all here!
+
 
 <!-- SEDGWICK SLIDESHOW -->
 ## Sedgwick UC Reserve

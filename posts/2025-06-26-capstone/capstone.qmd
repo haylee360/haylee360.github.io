@@ -1,5 +1,5 @@
 ---
-title: MEDS Capstone Project
+title: Justice40 - Reimagined
 description: Identifying Disadvantaged Communities Using Cumulative Environmental Burdens
 author:
   - name: Haylee Oyler
@@ -24,14 +24,14 @@ jupyter: python3
 execute:
   warning: false
   message: false
+draft: true
 ---
-
 
 # Master of Environmental Data Science: Capstone Project
 
 The hallmark of the [Master of Environmental Data Science](https://bren.ucsb.edu/masters-programs/master-environmental-data-science) program at the Bren School of Environmental Science and Management is the **capstone project**. This is a 6-month project where groups of 3-4 master's students tackle real-world environmental problems with data-driven solutions. I had the honor of being apart of the **Justice40 team**. This included [Josephine Cardelle](https://jocardelle.github.io/), [Kat Le](https://github.com/katleyq), [Kimberlee Wong](https://kimberleewong.github.io/) and myself, advised by [Dr. Jayajit Chakraborty](https://jayajitc.wixsite.com/jchakrab). 
 
-Our goal? Expand the [Climate and Economic Justice Screening Tool](https://edgi-govdata-archiving.github.io/j40-cejst-2/en/#3/33.47/-97.5) to incorporate data on cumulative environmental burdens. Before I dive into how we accomplished this goal, let's get into some background. 
+Our goal? **Expand the [Climate and Economic Justice Screening Tool](https://edgi-govdata-archiving.github.io/j40-cejst-2/en/#3/33.47/-97.5) to incorporate data on cumulative environmental burdens**. Before I dive into how we accomplished this goal, let's get into some background. 
 
 ## The Justice 40 Initiative
 
@@ -51,7 +51,7 @@ Low-income: 65th national percentile or higher of people in households where the
 
 High vulnerability: Characterized by meeting one of eight burden thresholds shown below. Each threshold has between 2-5 associated indicators that comprise that burden and define how you meet the threshold. 
 
-IMAGE
+![CEJST's definition of a disadvantaged community](images/disadv-def.png){width=80%}
 
 For example, if your census tract was in the 90th national percentile or higher for asthma rates, then you would meet the health burden threshold. This meant that compared to all other census tracts in the U.S., your communities' asthma rates would be in the top 10%. 
 
@@ -80,27 +80,40 @@ Each census tract receives:
 
 It is important to note that while there are 31 indicators used in the analysis, no census tract exceeds more than 18 total indicators.
 
-DIAGRAM
+![Burden categories are shown in maroon and indicators are listed in salmon](images/burd-inds.png){width=80%}
 
 ### Hot Spot Analysis
 Our hot spot analysis provides a similar examination to our cumulative analysis with more statistical rigor. This analysis uses a spatial statistic called [Getis Ord Gi*](https://pro.arcgis.com/en/pro-app/latest/tool-reference/spatial-statistics/h-how-hot-spot-analysis-getis-ord-gi-spatial-stati.htm)(often called gi-star)
 
-DIAGRAM
-
 This method finds census tracts where the total burdens or indicators are significantly higher ("hot spots") or lower ("cold spots") than the national average.
+
+![Conceptual diagram of the gi* statistic](images/gi-star.png){width=80%}
+
 
 Key steps include:
 
-Calculating local sums of thresholds exceeded for each census tract and its neighbors
+- Calculating local sums of thresholds exceeded for each census tract and its neighbors
 
-Comparing local sums to the global sum minus the local values. This is done by standardizing the sums to a [z-score](https://pro.arcgis.com/en/pro-app/latest/tool-reference/spatial-statistics/what-is-a-z-score-what-is-a-p-value.htm), also known as the standardized Gi* value.
+- Comparing local sums to the global sum minus the local values. This is done by standardizing the sums to a [z-score](https://pro.arcgis.com/en/pro-app/latest/tool-reference/spatial-statistics/what-is-a-z-score-what-is-a-p-value.htm), also known as the standardized Gi* value. 
 
-In addition to the z-score, the calculation generates a [p-value](https://pro.arcgis.com/en/pro-app/latest/tool-reference/spatial-statistics/what-is-a-z-score-what-is-a-p-value.htm) that is interpreted into hot spots or cold spots. The p-values here are slightly different because they are interpreted with a positive or negative sign. The direction is important to note whether an area is significantly hot, or significantly cold.
+In addition to the z-score, the calculation generates a [p-value](https://pro.arcgis.com/en/pro-app/latest/tool-reference/spatial-statistics/what-is-a-z-score-what-is-a-p-value.htm) that is interpreted into hot spots or cold spots. The p-values from gi* are slightly different because they are interpreted with a positive or negative sign. The direction is important to note whether an area is significantly hot, or significantly cold.
 
 - High positives: Hot spots
-
 - High negatives: Cold spots
 
+These two approaches laid the conceptual foundation for our capstone project. However, things went sideways pretty quickly once we began working late January of 2025. 
 
 
+# Federal Uncertainty Under the Trump Administration
 
+Since the inauguration of the Trump administration, **both Justice40 and CEJST no longer exist**. 
+
+While our advisor had warned us this was likely to happen, our team was still shocked by how quickly we lost accesss to the data. And CEJST was just one of many tools lost. Across multiple federal agencies, we have seen a wide-scale purge of data related to climate, justice, gender, public health, and more. 
+
+This challenge was an important reminder and a push to recontextualize our work. Data is a manifestation of power. What data is rendered legible by existing systems determines what things have legitimacy. If you cannot be measured, or your information is deemed illegitimate, irrelevant, or faulty, then you cannot be quantified in a way our society can profit from. 
+
+Additionally, even if your data is measurable and verifiable, there is still power in deciding who has access to that data. Trump seeks to halt the work of important researchers, organizers, and policymakers around the country by taking down these repositories of federal data. 
+
+## A Turning Point
+
+So, where did this leave me and the Justice40 team? While there was nothing we could do to address challenges in federal funding and data access, we remained committed to developing tools that center environmental justice. We all firmly believed that now—more than ever—this work is critical.

@@ -31,9 +31,9 @@ Are growing in prevalence and efficacy in environmental science. What began in 1
 
 Machine learning has allowed major advances in the environmental field as well. As data collection techniques only become more refined, frequent, and numerous, we need processing techniques that can match the scale of this data. 
 
-As part of a final project in [Dr. Matteo Robbin's](https://bren.ucsb.edu/people/mateo-robbins) [Machine Learning in Environmental Science](https://bren.ucsb.edu/courses/eds-232), we were tasked with optimizing a machine learning model that would predict dissolved inorganic carbon content (DIC) in a sample of seawater based on a number of other associated characteristics. This was held as part of a [kaggle competiton](https://www.kaggle.com/competitions/eds-232-cal-cofi-ocean-chemistry-prediction-2025/overview) where our evaluation metric was root mean squared error (rmse). The winner was determined based on which model had the smallest rmse on the private leaderboard. Overall, this assesses how accurate each model is at predicting DIC when generalizing to unseen data. 
+As part of a final project in [Dr. Matteo Robbin's](https://bren.ucsb.edu/people/mateo-robbins) [Machine Learning in Environmental Science](https://bren.ucsb.edu/courses/eds-232), my class was tasked with optimizing a machine learning model that would predict dissolved inorganic carbon content (DIC) in a sample of seawater based on a number of other associated characteristics. This was held as part of a [kaggle competiton](https://www.kaggle.com/competitions/eds-232-cal-cofi-ocean-chemistry-prediction-2025/overview) where the evaluation metric was root mean squared error (rmse). The winner was determined based on which model had the smallest rmse on the private leaderboard. Overall, this assesses how accurate each model is at predicting DIC when generalizing to unseen data. 
 
-I will walk through my winning model for this competition: an extreme gradient boosted model (XGB) with bayesian hyperoptimization of parameters.
+I will walk through my winning model for this competition: **an extreme gradient boosted model (XGB) with bayesian hyperoptimization of parameters**.
 
 ## The Model Breakdown
 
