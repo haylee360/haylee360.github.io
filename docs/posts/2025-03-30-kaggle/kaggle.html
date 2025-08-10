@@ -312,7 +312,7 @@ div.csl-indent {
 </section>
 <section id="the-coding-breakdown" class="level2">
 <h2 class="anchored" data-anchor-id="the-coding-breakdown">The Coding Breakdown</h2>
-<div id="12f45e65" class="cell" data-execution_count="1">
+<div id="41dd82ff" class="cell" data-execution_count="1">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load basic libraries</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> seaborn <span class="im">as</span> sns</span>
@@ -332,7 +332,7 @@ div.csl-indent {
 </div>
 <section id="import-data-and-explore" class="level3">
 <h3 class="anchored" data-anchor-id="import-data-and-explore">Import Data and Explore</h3>
-<div id="c76f470e" class="cell" data-execution_count="2">
+<div id="acc4ba94" class="cell" data-execution_count="2">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Import data</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>train_df <span class="op">=</span> pd.read_csv(<span class="st">"~/MEDS/website/haylee360.github.io/posts/2025-03-30-kaggle/data/train.csv"</span>)</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>test_df <span class="op">=</span> pd.read_csv(<span class="st">"~/MEDS/website/haylee360.github.io/posts/2025-03-30-kaggle/data/test.csv"</span>)</span>
@@ -343,7 +343,7 @@ div.csl-indent {
 <span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Remove NA column from training data</span></span>
 <span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>train_df <span class="op">=</span> train_df.drop(columns<span class="op">=</span><span class="st">'Unnamed: 12'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="cc02aed0" class="cell" data-execution_count="3">
+<div id="743f6124" class="cell" data-execution_count="3">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Get a feel for feature summary stats</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>train_df.describe()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="3">
@@ -549,7 +549,7 @@ div.csl-indent {
 </div>
 </div>
 </div>
-<div id="4467c7cb" class="cell" data-execution_count="4">
+<div id="476e91aa" class="cell" data-execution_count="4">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Check NAs</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>train_df.isna().<span class="bu">sum</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="4">
@@ -574,7 +574,7 @@ DIC                  0
 dtype: int64</code></pre>
 </div>
 </div>
-<div id="a2be3836" class="cell" data-execution_count="5">
+<div id="e5559e85" class="cell" data-execution_count="5">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Visualize feature relationships</span></span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>sns.pairplot(train_df, y_vars<span class="op">=</span>[<span class="st">'DIC'</span>], x_vars<span class="op">=</span> train_df.columns[<span class="dv">1</span>:<span class="op">-</span><span class="dv">1</span>], diag_kind<span class="op">=</span><span class="st">'kde'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
@@ -589,7 +589,7 @@ dtype: int64</code></pre>
 <section id="model-selection-xgb-with-hyperoptimization" class="level3">
 <h3 class="anchored" data-anchor-id="model-selection-xgb-with-hyperoptimization">Model Selection: XGB with Hyperoptimization</h3>
 <p>The relationships look mostly linear, but we’re working with a lot of features. I figured gradient boosting would be a good approach.</p>
-<div id="e05d6639" class="cell" data-execution_count="6">
+<div id="e04abe7e" class="cell" data-execution_count="6">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Assign features</span></span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> train_df.drop(columns<span class="op">=</span>[<span class="st">'id'</span>, <span class="st">'DIC'</span>], axis<span class="op">=</span><span class="dv">1</span>)</span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> train_df[<span class="st">'DIC'</span>]</span>
@@ -604,7 +604,7 @@ dtype: int64</code></pre>
 </section>
 <section id="define-objective-function" class="level3">
 <h3 class="anchored" data-anchor-id="define-objective-function">Define Objective Function</h3>
-<div id="e9af3499" class="cell" data-execution_count="7">
+<div id="9b2b5e76" class="cell" data-execution_count="7">
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Set up kfold cross validation</span></span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>kf <span class="op">=</span> KFold(n_splits<span class="op">=</span><span class="dv">5</span>, shuffle<span class="op">=</span><span class="va">True</span>, random_state<span class="op">=</span><span class="dv">808</span>)</span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -634,7 +634,7 @@ dtype: int64</code></pre>
 </section>
 <section id="create-domain-space" class="level3">
 <h3 class="anchored" data-anchor-id="create-domain-space">Create Domain space</h3>
-<div id="97d4c8ba" class="cell" data-execution_count="8">
+<div id="e0aeb70d" class="cell" data-execution_count="8">
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create hyperparameter space</span></span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>space <span class="op">=</span> {</span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"n_estimators"</span>: hp.quniform(<span class="st">"n_estimators"</span>, <span class="dv">100</span>, <span class="dv">1200</span>, <span class="dv">10</span>),</span>
@@ -651,7 +651,7 @@ dtype: int64</code></pre>
 </section>
 <section id="run-optimization-algorithm" class="level3">
 <h3 class="anchored" data-anchor-id="run-optimization-algorithm">Run Optimization Algorithm</h3>
-<div id="810fa198" class="cell" data-execution_count="9">
+<div id="4f14e211" class="cell" data-execution_count="9">
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Run hyperopt</span></span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>trials <span class="op">=</span> Trials()</span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>best_params <span class="op">=</span> fmin(</span>
@@ -667,7 +667,7 @@ dtype: int64</code></pre>
 <section id="train-the-model-on-the-best-parameters" class="level3">
 <h3 class="anchored" data-anchor-id="train-the-model-on-the-best-parameters">Train the Model on the Best Parameters</h3>
 <p>Now that we’ve optimized all of our relevant parameters, we can train our XGB model. We use <code>**best_params</code> to unpack the best parameters from before and initialize an <code>XGBRegressor</code> model.</p>
-<div id="c65954c4" class="cell" data-execution_count="10">
+<div id="e32db2d4" class="cell" data-execution_count="10">
 <div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Convert int hyperparameters to fix type error</span></span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>best_params[<span class="st">"n_estimators"</span>] <span class="op">=</span> <span class="bu">int</span>(best_params[<span class="st">"n_estimators"</span>])</span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>best_params[<span class="st">"max_depth"</span>] <span class="op">=</span> <span class="bu">int</span>(best_params[<span class="st">"max_depth"</span>])</span>
@@ -681,7 +681,7 @@ dtype: int64</code></pre>
 <span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Predict on test data</span></span>
 <span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>y_pred_hyper <span class="op">=</span> xgb_hyper.predict(X_test_scaled)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="78d9864e" class="cell" data-execution_count="11">
+<div id="d43777b5" class="cell" data-execution_count="11">
 <div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Get feature importance</span></span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>feat_imp_hyper <span class="op">=</span> pd.DataFrame({<span class="st">'Feature'</span>: X_scaled.columns, <span class="st">'Importance'</span>: xgb_hyper.feature_importances_})</span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -689,95 +689,95 @@ dtype: int64</code></pre>
 <span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>feat_imp_hyper <span class="op">=</span> feat_imp_hyper.sort_values(by<span class="op">=</span><span class="st">"Importance"</span>, ascending<span class="op">=</span><span class="va">False</span>)</span>
 <span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>feat_imp_hyper</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="94ea84aa" class="cell" data-execution_count="12">
+<div id="d3a7e9c8" class="cell" data-execution_count="12">
 <div class="cell-output cell-output-display" data-execution_count="6">
 <style type="text/css">
 </style>
 
-<table id="T_e648f" class="caption-top table table-sm table-striped small" data-quarto-postprocess="true">
+<table id="T_a1343" class="caption-top table table-sm table-striped small" data-quarto-postprocess="true">
 <thead>
 <tr class="header">
-<th id="T_e648f_level0_col0" class="col_heading level0 col0" data-quarto-table-cell-role="th">Feature</th>
-<th id="T_e648f_level0_col1" class="col_heading level0 col1" data-quarto-table-cell-role="th">Importance</th>
+<th id="T_a1343_level0_col0" class="col_heading level0 col0" data-quarto-table-cell-role="th">Feature</th>
+<th id="T_a1343_level0_col1" class="col_heading level0 col1" data-quarto-table-cell-role="th">Importance</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td id="T_e648f_row0_col0" class="data row0 col0">SiO3uM</td>
-<td id="T_e648f_row0_col1" class="data row0 col1">0.439688</td>
+<td id="T_a1343_row0_col0" class="data row0 col0">SiO3uM</td>
+<td id="T_a1343_row0_col1" class="data row0 col1">0.439688</td>
 </tr>
 <tr class="even">
-<td id="T_e648f_row1_col0" class="data row1 col0">PO4uM</td>
-<td id="T_e648f_row1_col1" class="data row1 col1">0.375247</td>
+<td id="T_a1343_row1_col0" class="data row1 col0">PO4uM</td>
+<td id="T_a1343_row1_col1" class="data row1 col1">0.375247</td>
 </tr>
 <tr class="odd">
-<td id="T_e648f_row2_col0" class="data row2 col0">R_Oxy_micromol.Kg</td>
-<td id="T_e648f_row2_col1" class="data row2 col1">0.099113</td>
+<td id="T_a1343_row2_col0" class="data row2 col0">R_Oxy_micromol.Kg</td>
+<td id="T_a1343_row2_col1" class="data row2 col1">0.099113</td>
 </tr>
 <tr class="even">
-<td id="T_e648f_row3_col0" class="data row3 col0">R_Sal</td>
-<td id="T_e648f_row3_col1" class="data row3 col1">0.032475</td>
+<td id="T_a1343_row3_col0" class="data row3 col0">R_Sal</td>
+<td id="T_a1343_row3_col1" class="data row3 col1">0.032475</td>
 </tr>
 <tr class="odd">
-<td id="T_e648f_row4_col0" class="data row4 col0">NO3uM</td>
-<td id="T_e648f_row4_col1" class="data row4 col1">0.017117</td>
+<td id="T_a1343_row4_col0" class="data row4 col0">NO3uM</td>
+<td id="T_a1343_row4_col1" class="data row4 col1">0.017117</td>
 </tr>
 <tr class="even">
-<td id="T_e648f_row5_col0" class="data row5 col0">TA1.x</td>
-<td id="T_e648f_row5_col1" class="data row5 col1">0.015256</td>
+<td id="T_a1343_row5_col0" class="data row5 col0">TA1.x</td>
+<td id="T_a1343_row5_col1" class="data row5 col1">0.015256</td>
 </tr>
 <tr class="odd">
-<td id="T_e648f_row6_col0" class="data row6 col0">Salinity1</td>
-<td id="T_e648f_row6_col1" class="data row6 col1">0.012926</td>
+<td id="T_a1343_row6_col0" class="data row6 col0">Salinity1</td>
+<td id="T_a1343_row6_col1" class="data row6 col1">0.012926</td>
 </tr>
 <tr class="even">
-<td id="T_e648f_row7_col0" class="data row7 col0">R_Depth</td>
-<td id="T_e648f_row7_col1" class="data row7 col1">0.004667</td>
+<td id="T_a1343_row7_col0" class="data row7 col0">R_Depth</td>
+<td id="T_a1343_row7_col1" class="data row7 col1">0.004667</td>
 </tr>
 <tr class="odd">
-<td id="T_e648f_row8_col0" class="data row8 col0">NO2uM</td>
-<td id="T_e648f_row8_col1" class="data row8 col1">0.000781</td>
+<td id="T_a1343_row8_col0" class="data row8 col0">NO2uM</td>
+<td id="T_a1343_row8_col1" class="data row8 col1">0.000781</td>
 </tr>
 <tr class="even">
-<td id="T_e648f_row9_col0" class="data row9 col0">Temperature_degC</td>
-<td id="T_e648f_row9_col1" class="data row9 col1">0.000693</td>
+<td id="T_a1343_row9_col0" class="data row9 col0">Temperature_degC</td>
+<td id="T_a1343_row9_col1" class="data row9 col1">0.000693</td>
 </tr>
 <tr class="odd">
-<td id="T_e648f_row10_col0" class="data row10 col0">R_TEMP</td>
-<td id="T_e648f_row10_col1" class="data row10 col1">0.000607</td>
+<td id="T_a1343_row10_col0" class="data row10 col0">R_TEMP</td>
+<td id="T_a1343_row10_col1" class="data row10 col1">0.000607</td>
 </tr>
 <tr class="even">
-<td id="T_e648f_row11_col0" class="data row11 col0">R_DYNHT</td>
-<td id="T_e648f_row11_col1" class="data row11 col1">0.000389</td>
+<td id="T_a1343_row11_col0" class="data row11 col0">R_DYNHT</td>
+<td id="T_a1343_row11_col1" class="data row11 col1">0.000389</td>
 </tr>
 <tr class="odd">
-<td id="T_e648f_row12_col0" class="data row12 col0">NH3uM</td>
-<td id="T_e648f_row12_col1" class="data row12 col1">0.000282</td>
+<td id="T_a1343_row12_col0" class="data row12 col0">NH3uM</td>
+<td id="T_a1343_row12_col1" class="data row12 col1">0.000282</td>
 </tr>
 <tr class="even">
-<td id="T_e648f_row13_col0" class="data row13 col0">Lat_Dec</td>
-<td id="T_e648f_row13_col1" class="data row13 col1">0.000281</td>
+<td id="T_a1343_row13_col0" class="data row13 col0">Lat_Dec</td>
+<td id="T_a1343_row13_col1" class="data row13 col1">0.000281</td>
 </tr>
 <tr class="odd">
-<td id="T_e648f_row14_col0" class="data row14 col0">Lon_Dec</td>
-<td id="T_e648f_row14_col1" class="data row14 col1">0.000257</td>
+<td id="T_a1343_row14_col0" class="data row14 col0">Lon_Dec</td>
+<td id="T_a1343_row14_col1" class="data row14 col1">0.000257</td>
 </tr>
 <tr class="even">
-<td id="T_e648f_row15_col0" class="data row15 col0">R_Nuts</td>
-<td id="T_e648f_row15_col1" class="data row15 col1">0.000222</td>
+<td id="T_a1343_row15_col0" class="data row15 col0">R_Nuts</td>
+<td id="T_a1343_row15_col1" class="data row15 col1">0.000222</td>
 </tr>
 </tbody>
 </table>
 </div>
 </div>
 <p>Now that we’ve generated our predictions on the test data, all we need to do is add those to their associated ID’s in the <code>test_df</code> and export to csv for submission to the competition.</p>
-<div id="6eb1f256" class="cell" data-execution_count="13">
+<div id="e21bb2df" class="cell" data-execution_count="13">
 <div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Add DIC to test dataset</span></span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>test_df[<span class="st">'DIC'</span>] <span class="op">=</span> y_pred_hyper</span>
 <span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>submission <span class="op">=</span> test_df[[<span class="st">'id'</span>, <span class="st">'DIC'</span>]]</span>
 <span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>submission.head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="e70d7b61" class="cell" data-execution_count="14">
+<div id="66b39486" class="cell" data-execution_count="14">
 <div class="cell-output cell-output-display" data-execution_count="7">
 <div>
 
@@ -822,7 +822,7 @@ dtype: int64</code></pre>
 </div>
 </div>
 </div>
-<div id="e8550492" class="cell" data-execution_count="15">
+<div id="3ba040c6" class="cell" data-execution_count="15">
 <div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Export for submission</span></span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>submission.to_csv(<span class="st">'submission.csv'</span>, index<span class="op">=</span><span class="va">False</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>

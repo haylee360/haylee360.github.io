@@ -1,0 +1,586 @@
+class_label,code
+0,0
+South Florida Bayhead Swamp,1
+South Florida Cypress Dome,2
+South Florida Dwarf Cypress Savanna,3
+South Florida Mangrove Swamp,4
+South Florida Hardwood Hammock,5
+Southeast Florida Coastal Strand and Maritime Hammock,6
+Southwest Florida Coastal Strand and Maritime Hammock,7
+South Florida Pine Rockland,8
+Atlantic Coastal Plain Fall-line Sandhills Longleaf Pine Woodland - Open Understory,9
+Atlantic Coastal Plain Fall-line Sandhills Longleaf Pine Woodland - Scrub/Shrub Understory,10
+Atlantic Coastal Plain Upland Longleaf Pine Woodland,11
+Atlantic Coastal Plain Xeric River Dune,12
+East Gulf Coastal Plain Interior Upland Longleaf Pine Woodland - Open Understory Modifier,13
+East Gulf Coastal Plain Interior Upland Longleaf Pine Woodland - Scrub/Shrub Modifier,14
+Florida Longleaf Pine Sandhill - Scrub/Shrub Understory Modifier,15
+Florida Longleaf Pine Sandhill- Open Understory Modifier,16
+West Gulf Coastal Plain Upland Longleaf Pine Forest and Woodland,17
+Atlantic Coastal Plain Central Maritime Forest,18
+Atlantic Coastal Plain Southern Maritime Forest,19
+Central and South Texas Coastal Fringe Forest and Woodland,20
+East Gulf Coastal Plain Limestone Forest,21
+East Gulf Coastal Plain Maritime Forest,22
+East Gulf Coastal Plain Southern Loess Bluff Forest,23
+East Gulf Coastal Plain Southern Mesic Slope Forest,24
+Mississippi Delta Maritime Forest,25
+Southern Coastal Plain Dry Upland Hardwood Forest,26
+Southern Coastal Plain Oak Dome and Hammock,27
+West Gulf Coastal Plain Chenier and Upper Texas Coastal Fringe Forest and Woodland,28
+West Gulf Coastal Plain Mesic Hardwood Forest,29
+East-Central Texas Plains Pine Forest and Woodland,30
+West Gulf Coastal Plain Pine-Hardwood Forest,31
+West Gulf Coastal Plain Sandhill Oak and Shortleaf Pine Forest and Woodland,32
+Atlantic Coastal Plain Fall-Line Sandhills Longleaf Pine Woodland - Loblolly Modifier,33
+Deciduous Plantations,34
+East Gulf Coastal Plain Interior Upland Longleaf Pine Woodland - Loblolly Modifier,35
+East Gulf Coastal Plain Interior Upland Longleaf Pine Woodland - Offsite Hardwood Modifier,36
+East Gulf Coastal Plain Near-Coast Pine Flatwoods - Offsite Hardwood Modifier,37
+Evergreen Plantation or Managed Pine,38
+California Central Valley Mixed Oak Savanna,39
+California Coastal Closed-Cone Conifer Forest and Woodland,40
+California Coastal Live Oak Woodland and Savanna,41
+California Lower Montane Blue Oak-Foothill Pine Woodland and Savanna,42
+Central and Southern California Mixed Evergreen Woodland,43
+Mediterranean California Lower Montane Black Oak-Conifer Forest and Woodland,44
+Southern California Oak Woodland and Savanna,45
+Madrean Encinal,46
+Madrean Pinyon-Juniper Woodland,47
+Madrean Pine-Oak Forest and Woodland,48
+Madrean Upper Montane Conifer-Oak Forest and Woodland,49
+Edwards Plateau Dry-Mesic Slope Forest and Woodland,50
+Edwards Plateau Limestone Savanna and Woodland,51
+Edwards Plateau Mesic Canyon,52
+"Llano Uplift Acidic Forest, Woodland and Glade",53
+East Cascades Oak-Ponderosa Pine Forest and Woodland,54
+Mediterranean California Mixed Evergreen Forest,55
+Mediterranean California Mixed Oak Woodland,56
+North Pacific Dry Douglas-fir-(Madrone) Forest and Woodland,57
+North Pacific Oak Woodland,58
+Edwards Plateau Limestone Shrubland,59
+Allegheny-Cumberland Dry Oak Forest and Woodland - Hardwood,60
+Allegheny-Cumberland Dry Oak Forest and Woodland - Pine Modifier,61
+Central and Southern Appalachian Montane Oak Forest,62
+Central and Southern Appalachian Northern Hardwood Forest,63
+Central Appalachian Oak and Pine Forest,64
+Crosstimbers Oak Forest and Woodland,65
+East Gulf Coastal Plain Black Belt Calcareous Prairie and Woodland - Woodland Modifier,66
+East Gulf Coastal Plain Northern Dry Upland Hardwood Forest,67
+East Gulf Coastal Plain Northern Loess Plain Oak-Hickory Upland - Hardwood Modifier,68
+East Gulf Coastal Plain Northern Loess Plain Oak-Hickory Upland - Juniper Modifier,69
+East-Central Texas Plains Post Oak Savanna and Woodland,70
+Lower Mississippi River Dune Woodland and Forest,71
+Mississippi River Alluvial Plain Dry-Mesic Loess Slope Forest,72
+North-Central Interior Dry Oak Forest and Woodland,73
+North-Central Interior Dry-Mesic Oak Forest and Woodland,74
+Northeastern Interior Dry Oak Forest - Mixed Modifier,75
+Northeastern Interior Dry Oak Forest - Virginia/Pitch Pine Modifier,76
+Northeastern Interior Dry Oak Forest-Hardwood Modifier,77
+Northeastern Interior Dry-Mesic Oak Forest,78
+Northern Atlantic Coastal Plain Dry Hardwood Forest,79
+Crowleys Ridge Sand Forest,80
+Ouachita Montane Oak Forest,81
+Ozark-Ouachita Dry Oak Woodland,82
+Ozark-Ouachita Dry-Mesic Oak Forest,83
+Southern and Central Appalachian Oak Forest,84
+Southern and Central Appalachian Oak Forest - Xeric,85
+Southern Interior Low Plateau Dry-Mesic Oak Forest,86
+Southern Ridge and Valley Dry Calcareous Forest,87
+Southern Ridge and Valley Dry Calcareous Forest - Pine modifier,88
+East Gulf Coastal Plain Northern Dry Upland Hardwood Forest - Offsite Pine Modifier,89
+Managed Tree Plantation,90
+Ruderal forest,91
+Southern Piedmont Dry Oak-(Pine) Forest - Loblolly Pine Modifier,92
+Acadian Low-Elevation Spruce-Fir-Hardwood Forest,93
+Acadian-Appalachian Montane Spruce-Fir Forest,94
+Appalachian Hemlock-Hardwood Forest,95
+Central and Southern Appalachian Spruce-Fir Forest,96
+0,97
+Laurentian-Acadian Northern Hardwoods Forest,98
+Laurentian-Acadian Northern Pine-(Oak) Forest,99
+Laurentian-Acadian Pine-Hemlock-Hardwood Forest,100
+Paleozoic Plateau Bluff and Talus,101
+Southern Appalachian Northern Hardwood Forest,102
+Atlantic Coastal Plain Dry and Dry-Mesic Oak Forest,103
+Atlantic Coastal Plain Fall-line Sandhills Longleaf Pine Woodland - Offsite Hardwood,104
+East Gulf Coastal Plain Interior Shortleaf Pine-Oak Forest - Hardwood Modifier,105
+East Gulf Coastal Plain Interior Shortleaf Pine-Oak Forest - Mixed Modifier,106
+Ozark-Ouachita Shortleaf Pine-Bluestem Woodland,107
+Ozark-Ouachita Shortleaf Pine-Oak Forest and Woodland,108
+Southeastern Interior Longleaf Pine Woodland,109
+Southern Appalachian Low Mountain Pine Forest,110
+Southern Piedmont Dry Oak-(Pine) Forest,111
+Southern Piedmont Dry Oak-(Pine) Forest - Hardwood Modifier,112
+Southern Piedmont Dry Oak-(Pine) Forest - Mixed Modifier,113
+Southern Piedmont Dry Oak-Heath Forest - Mixed Modifier,114
+Eastern Great Plains Tallgrass Aspen Parkland,115
+Northwestern Great Plains Aspen Forest and Parkland,116
+Northwestern Great Plains Shrubland,117
+Western Great Plains Dry Bur Oak Forest and Woodland,118
+Western Great Plains Wooded Draw and Ravine,119
+Southern Atlantic Coastal Plain Mesic Hardwood Forest,120
+East Gulf Coastal Plain Northern Loess Bluff Forest,121
+East Gulf Coastal Plain Northern Mesic Hardwood Forest,122
+North-Central Interior Beech-Maple Forest,123
+North-Central Interior Maple-Basswood Forest,124
+Ozark-Ouachita Mesic Hardwood Forest,125
+South-Central Interior Mesophytic Forest,126
+Southern and Central Appalachian Cove Forest,127
+Crowleys Ridge Mesic Loess Slope Forest,128
+Southern Piedmont Mesic Forest,129
+Appalachian Shale Barrens,130
+Atlantic Coastal Plain Northern Maritime Forest,131
+Laurentian Pine-Oak Barrens,132
+Northeastern Interior Pine Barrens,133
+Northern Atlantic Coastal Plain Pitch Pine Barrens,134
+Southern Appalachian Montane Pine Forest and Woodland,135
+East Cascades Mesic Montane Mixed-Conifer Forest and Woodland,136
+Middle Rocky Mountain Montane Douglas-fir Forest and Woodland,137
+Northern Rocky Mountain Dry-Mesic Montane Mixed Conifer Forest,138
+Northern Rocky Mountain Foothill Conifer Wooded Steppe,139
+Northern Rocky Mountain Mesic Montane Mixed Conifer Forest,140
+Northern Rocky Mountain Ponderosa Pine Woodland and Savanna,141
+Northern Rocky Mountain Western Larch Savanna,142
+Northwestern Great Plains - Black Hills Ponderosa Pine Woodland and Savanna,143
+Rocky Mountain Foothill Limber Pine-Juniper Woodland,144
+Inter-Mountain Basins Aspen-Mixed Conifer Forest and Woodland,145
+Inter-Mountain Basins Subalpine Limber-Bristlecone Pine Woodland,146
+Northern Rocky Mountain Subalpine Woodland and Parkland,147
+Rocky Mountain Aspen Forest and Woodland,148
+Rocky Mountain Lodgepole Pine Forest,149
+Rocky Mountain Poor-Site Lodgepole Pine Forest,150
+Rocky Mountain Subalpine Dry-Mesic Spruce-Fir Forest and Woodland,151
+Rocky Mountain Subalpine Mesic Spruce-Fir Forest and Woodland,152
+Rocky Mountain Subalpine-Montane Limber-Bristlecone Pine Woodland,153
+Rocky Mountain Bigtooth Maple Ravine Woodland,154
+Southern Rocky Mountain Dry-Mesic Montane Mixed Conifer Forest and Woodland,155
+Southern Rocky Mountain Mesic Montane Mixed Conifer Forest and Woodland,156
+Southern Rocky Mountain Ponderosa Pine Savanna,157
+Southern Rocky Mountain Ponderosa Pine Woodland,158
+California Montane Jeffrey Pine-(Ponderosa Pine) Woodland,159
+Klamath-Siskiyou Lower Montane Serpentine Mixed Conifer Woodland,160
+Klamath-Siskiyou Upper Montane Serpentine Mixed Conifer Woodland,161
+Mediterranean California Dry-Mesic Mixed Conifer Forest and Woodland,162
+Mediterranean California Mesic Mixed Conifer Forest and Woodland,163
+Sierran-Intermontane Desert Western White Pine-White Fir Woodland,164
+California Coastal Redwood Forest,165
+North Pacific Broadleaf Landslide Forest and Shrubland,166
+North Pacific Dry-Mesic Silver Fir-Western Hemlock-Douglas-fir Forest,167
+North Pacific Hypermaritime Sitka Spruce Forest,168
+North Pacific Hypermaritime Western Red-cedar-Western Hemlock Forest,169
+North Pacific Lowland Mixed Hardwood-Conifer Forest and Woodland,170
+North Pacific Maritime Dry-Mesic Douglas-fir-Western Hemlock Forest,171
+North Pacific Maritime Mesic-Wet Douglas-fir-Western Hemlock Forest,172
+North Pacific Mesic Western Hemlock-Silver Fir Forest,173
+North Pacific Wooded Volcanic Flowage,174
+Mediterranean California Red Fir Forest,175
+Mediterranean California Subalpine Woodland,176
+North Pacific Maritime Mesic Subalpine Parkland,177
+North Pacific Mountain Hemlock Forest,178
+Northern California Mesic Subalpine Woodland,179
+Northern Pacific Mesic Subalpine Woodland,180
+Sierra Nevada Subalpine Lodgepole Pine Forest and Woodland,181
+Columbia Plateau Western Juniper Woodland and Savanna,182
+Great Basin Pinyon-Juniper Woodland,183
+Inter-Mountain Basins Curl-leaf Mountain Mahogany Woodland and Shrubland,184
+Inter-Mountain Basins Juniper Savanna,185
+Colorado Plateau Pinyon-Juniper Shrubland,186
+Colorado Plateau Pinyon-Juniper Woodland,187
+Southern Rocky Mountain Juniper Woodland and Savanna,188
+Southern Rocky Mountain Pinyon-Juniper Woodland,189
+Northwestern Great Plains Floodplain,190
+Northwestern Great Plains Riparian,191
+Western Great Plains Floodplain,192
+Western Great Plains Floodplain Systems,193
+Western Great Plains Riparian Woodland and Shrubland,194
+Central Appalachian Floodplain - Forest Modifier,195
+Central Appalachian Riparian - Forest Modifier,196
+Central Interior and Appalachian Floodplain Systems,197
+Central Interior and Appalachian Riparian Systems,198
+Laurentian-Acadian Floodplain Systems,199
+Ozark-Ouachita Riparian,200
+South-Central Interior Large Floodplain,201
+South-Central Interior Large Floodplain - Forest Modifier,202
+South-Central Interior Small Stream and Riparian,203
+North-Central Interior and Appalachian Rich Swamp,204
+0,205
+0,206
+Laurentian-Acadian Swamp Systems,207
+North-Central Interior Wet Flatwoods,208
+0,209
+South-Central Interior / Upper Coastal Plain Wet Flatwoods,210
+0,211
+Southern Piedmont/Ridge and Valley Upland Depression Swamp,212
+Atlantic Coastal Plain Blackwater Stream Floodplain Forest - Forest Modifier,213
+Atlantic Coastal Plain Brownwater Stream Floodplain Forest,214
+Atlantic Coastal Plain Northern Tidal Wooded Swamp,215
+Atlantic Coastal Plain Small Blackwater River Floodplain Forest,216
+Atlantic Coastal Plain Small Brownwater River Floodplain Forest,217
+Atlantic Coastal Plain Southern Tidal Wooded Swamp,218
+East Gulf Coastal Plain Large River Floodplain Forest - Forest Modifier,219
+East Gulf Coastal Plain Small Stream and River Floodplain Forest,220
+East Gulf Coastal Plain Tidal Wooded Swamp,221
+0,222
+Southeastern Great Plains Riparian Forest,223
+Southeastern Great Plains Floodplain Forest,224
+Mississippi River Bottomland Depression,225
+Mississippi River Floodplain and Riparian Forest,226
+Mississippi River Low Floodplain (Bottomland) Forest,227
+Mississippi River Riparian Forest,228
+Red River Large Floodplain Forest,229
+Southern Coastal Plain Blackwater River Floodplain Forest,230
+Southern Piedmont Large Floodplain Forest - Forest Modifier,231
+Southern Piedmont Small Floodplain and Riparian Forest,232
+West Gulf Coastal Plain Large River Floodplain Forest,233
+West Gulf Coastal Plain Near-Coast Large River Swamp,234
+West Gulf Coastal Plain Small Stream and River Forest,235
+Atlantic Coastal Plain Streamhead Seepage Swamp -  Pocosin -  and Baygall,236
+Gulf and Atlantic Coastal Plain Swamp Systems,237
+Southern Coastal Plain Hydric Hammock,238
+Southern Coastal Plain Seepage Swamp and Baygall,239
+West Gulf Coastal Plain Seepage Swamp and Baygall,240
+Atlantic Coastal Plain Nonriverine Swamp and Wet Hardwood Forest  - Taxodium/Nyssa Modifier,241
+Atlantic Coastal Plain Nonriverine Swamp and Wet Hardwood Forest - Oak Dominated Modifier,242
+East Gulf Coastal Plain Southern Loblolly-Hardwood Flatwoods,243
+Lower Mississippi River Bottomland Depressions - Forest Modifier,244
+Lower Mississippi River Flatwoods,245
+Northern Atlantic Coastal Plain Basin Swamp and Wet Hardwood Forest,246
+Southern Coastal Plain Nonriverine Basin Swamp,247
+Southern Coastal Plain Nonriverine Basin Swamp - Okefenokee Bay/Gum Modifier,248
+Southern Coastal Plain Nonriverine Basin Swamp - Okefenokee Pine Modifier,249
+Southern Coastal Plain Nonriverine Basin Swamp - Okefenokee Taxodium Modifier,250
+West Gulf Coastal Plain Nonriverine Wet Hardwood Flatwoods,251
+West Gulf Coastal Plain Pine-Hardwood Flatwoods,252
+Edwards Plateau Riparian,253
+Atlantic Coastal Plain Clay-Based Carolina Bay Forested Wetland,254
+Atlantic Coastal Plain Clay-Based Carolina Bay Herbaceous Wetland,255
+Atlantic Coastal Plain Southern Wet Pine Savanna and Flatwoods,256
+Central Atlantic Coastal Plain Wet Longleaf Pine Savanna and Flatwoods,257
+Central Florida Pine Flatwoods,258
+East Gulf Coastal Plain Near-Coast Pine Flatwoods,259
+East Gulf Coastal Plain Near-Coast Pine Flatwoods - Open Understory Modifier,260
+East Gulf Coastal Plain Near-Coast Pine Flatwoods - Scrub/Shrub Understory Modifier,261
+South Florida Pine Flatwoods,262
+Southern Coastal Plain Nonriverine Cypress Dome,263
+West Gulf Coastal Plain Wet Longleaf Pine Savanna and Flatwoods,264
+Columbia Basin Foothill Riparian Woodland and Shrubland,265
+Great Basin Foothill and Lower Montane Riparian Woodland and Shrubland,266
+0,267
+Northern Rocky Mountain Conifer Swamp,268
+Northern Rocky Mountain Lower Montane Riparian Woodland and Shrubland,269
+Rocky Mountain Lower Montane Riparian Woodland and Shrubland,270
+Rocky Mountain Montane Riparian Systems,271
+Rocky Mountain Subalpine-Montane Riparian Woodland,272
+North Pacific Hardwood-Conifer Swamp,273
+North Pacific Lowland Riparian Forest and Shrubland,274
+North Pacific Montane Riparian Woodland and Shrubland,275
+North Pacific Shrub Swamp,276
+California Central Valley Riparian Woodland and Shrubland,277
+Mediterranean California Foothill and Lower Montane Riparian Woodland,278
+Mediterranean California Serpentine Foothill and Lower Montane Riparian Woodland and Seep,279
+North American Warm Desert Lower Montane Riparian Woodland and Shrubland,280
+North American Warm Desert Riparian Systems,281
+North American Warm Desert Riparian Woodland and Shrubland,282
+Tamaulipan Floodplain,283
+Tamaulipan Riparian Systems,284
+Boreal Aspen-Birch Forest,285
+Boreal Jack Pine-Black Spruce Forest,286
+Boreal White Spruce-Fir-Hardwood Forest,287
+Boreal-Laurentian Conifer Acidic Swamp and Treed Poor Fen,288
+Eastern Boreal Floodplain,289
+South Florida Shell Hash Beach,290
+Southeast Florida Beach,291
+Southwest Florida Beach,292
+South Florida Everglades Sawgrass Marsh,293
+South Florida Freshwater Slough and Gator Hole,294
+South Florida Wet Marl Prairie,295
+California Maritime Chaparral,296
+California Mesic Chaparral,297
+California Xeric Serpentine Chaparral,298
+Klamath-Siskiyou Xeromorphic Serpentine Savanna and Chaparral,299
+Mediterranean California Mesic Serpentine Woodland and Chaparral,300
+Northern and Central California Dry-Mesic Chaparral,301
+Southern California Dry-Mesic Chaparral,302
+Southern California Coastal Scrub,303
+California Central Valley and Southern Coastal Grassland,304
+California Mesic Serpentine Grassland,305
+Columbia Basin Foothill and Canyon Dry Grassland,306
+Columbia Basin Palouse Prairie,307
+North Pacific Alpine and Subalpine Dry Grassland,308
+North Pacific Montane Grassland,309
+North Pacific Montane Shrubland,310
+"Northern Rocky Mountain Lower Montane, Foothill and Valley Grassland",311
+Northern Rocky Mountain Montane-Foothill Deciduous Shrubland,312
+Northern Rocky Mountain Subalpine Deciduous Shrubland,313
+Northern Rocky Mountain Subalpine-Upper Montane Grassland,314
+Southern Rocky Mountain Montane-Subalpine Grassland,315
+Rocky Mountain Gambel Oak-Mixed Montane Shrubland,316
+Rocky Mountain Lower Montane-Foothill Shrubland,317
+California Northern Coastal Grassland,318
+North Pacific Herbaceous Bald and Bluff,319
+North Pacific Hypermaritime Shrub and Herbaceous Headland,320
+Willamette Valley Upland Prairie and Savanna,321
+Mediterranean California Subalpine Meadow,322
+Rocky Mountain Subalpine-Montane Mesic Meadow,323
+Central Mixedgrass Prairie,324
+Northwestern Great Plains Mixedgrass Prairie,325
+Western Great Plains Foothill and Piedmont Grassland,326
+Western Great Plains Tallgrass Prairie,327
+Western Great Plains Sand Prairie,328
+Western Great Plains Sandhill Steppe,329
+Western Great Plains Mesquite Woodland and Shrubland,330
+Western Great Plains Shortgrass Prairie,331
+Arkansas Valley Prairie and Woodland,332
+Central Tallgrass Prairie,333
+North-Central Interior Oak Savanna,334
+North-Central Interior Sand and Gravel Tallgrass Prairie,335
+North-Central Oak Barrens,336
+Northern Tallgrass Prairie,337
+Southeastern Great Plains Tallgrass Prairie,338
+Texas Blackland Tallgrass Prairie,339
+Texas-Louisiana Coastal Prairie,340
+Central Appalachian Pine-Oak Rocky Woodland,341
+Southern Appalachian Grass and Shrub Bald,342
+Southern Appalachian Grass and Shrub Bald - Herbaceous Modifier,343
+Southern Appalachian Grass and Shrub Bald - Shrub Modifier,344
+Central Appalachian Alkaline Glade and Woodland,345
+Central Interior Highlands Calcareous Glade and Barrens,346
+Central Interior Highlands Dry Acidic Glade and Barrens,347
+Cumberland Sandstone Glade and Barrens,348
+Great Lakes Alvar,349
+Nashville Basin Limestone Glade,350
+Southern Ridge and Valley / Cumberland Dry Calcareous Forest,351
+Southern Piedmont Glade and Barrens,352
+East Gulf Coastal Plain Black Belt Calcareous Prairie and Woodland - Herbaceous Modifier,353
+East Gulf Coastal Plain Jackson Prairie and Woodland,354
+Eastern Highland Rim Prairie and Barrens - Dry Modifier,355
+Coahuilan Chaparral,356
+Madrean Oriental Chaparral,357
+Mogollon Chaparral,358
+Sonora-Mojave Semi-Desert Chaparral,359
+California Montane Woodland and Chaparral,360
+Great Basin Semi-Desert Chaparral,361
+Florida Dry Prairie,362
+Florida Peninsula Inland Scrub,363
+West Gulf Coastal Plain Catahoula Barrens,364
+West Gulf Coastal Plain Nepheline Syenite Glade,365
+East Gulf Coastal Plain Jackson Plain Dry Flatwoods - Open Understory Modifier,366
+West Gulf Coastal Plain Northern Calcareous Prairie,367
+West Gulf Coastal Plain Southern Calcareous Prairie,368
+Acadian-Appalachian Subalpine Woodland and Heath-Krummholz,369
+Atlantic and Gulf Coastal Plain Interdunal Wetland,370
+Atlantic Coastal Plain Southern Dune and Maritime Grassland,371
+Central and Upper Texas Coast Dune and Coastal Grassland,372
+East Gulf Coastal Plain Dune and Coastal Grassland,373
+Great Lakes Dune,374
+Northern Atlantic Coastal Plain Dune and Swale,375
+Northern Atlantic Coastal Plain Heathland and Grassland,376
+South Texas Dune and Coastal Grassland,377
+South Texas Sand Sheet Grassland,378
+Southwest Florida Dune and Coastal Grassland,379
+North Pacific Coastal Cliff and Bluff,380
+North Pacific Maritime Coastal Sand Dune and Strand,381
+Northern California Coastal Scrub,382
+Mediterranean California Coastal Bluff,383
+Mediterranean California Northern Coastal Dune,384
+Mediterranean California Southern Coastal Dune,385
+Atlantic Coastal Plain Northern Sandy Beach,386
+Atlantic Coastal Plain Sea Island Beach,387
+Atlantic Coastal Plain Southern Beach,388
+Florida Panhandle Beach Vegetation,389
+Louisiana Beach,390
+Northern Atlantic Coastal Plain Sandy Beach,391
+Texas Coastal Bend Beach,392
+Upper Texas Coast Beach,393
+0,394
+Mediterranean California Serpentine Fen,395
+Mediterranean California Subalpine-Montane Fen,396
+North Pacific Bog and Fen,397
+Rocky Mountain Subalpine-Montane Fen,398
+Atlantic Coastal Plain Peatland Pocosin,399
+Southern and Central Appalachian Bog and Fen,400
+Atlantic Coastal Plain Central Fresh-Oligohaline Tidal Marsh,401
+Atlantic Coastal Plain Embayed Region Tidal Freshwater Marsh,402
+Atlantic Coastal Plain Northern Fresh and Oligohaline Tidal Marsh,403
+Florida Big Bend Fresh-Oligohaline Tidal Marsh,404
+Atlantic Coastal Plain Depression Pondshore,405
+Atlantic Coastal Plain Large Natural Lakeshore,406
+Central Florida Herbaceous Pondshore,407
+Central Florida Herbaceous Seep,408
+East Gulf Coastal Plain Savanna and Wet Prairie,409
+East Gulf Coastal Plain Depression Pondshore,410
+Floridian Highlands Freshwater Marsh,411
+Southern Coastal Plain Herbaceous Seepage Bog,412
+Southern Coastal Plain Nonriverine Basin Swamp - Okefenokee Clethra Modifier,413
+Southern Coastal Plain Nonriverine Basin Swamp - Okefenokee Nupea Modifier,414
+Texas-Louisiana Coastal Prairie Slough,415
+Central Interior and Appalachian Shrub-Herbaceous Wetland Systems,416
+Great Lakes Coastal Marsh Systems,417
+0,418
+0,419
+Laurentian-Acadian Shrub-Herbaceous Wetland Systems,420
+0,421
+"Eastern Great Plains Wet Meadow, Prairie  and Marsh",422
+Great Lakes Wet-Mesic Lakeplain Prairie,423
+Great Plains Prairie Pothole,424
+Western Great Plains Closed Depression Wetland,425
+Western Great Plains Depressional Wetland Systems,426
+Western Great Plains Open Freshwater Depression Wetland,427
+Cumberland Riverscour,428
+Inter-Mountain Basins Interdunal Swale Wetland,429
+North Pacific Avalanche Chute Shrubland,430
+North Pacific Intertidal Freshwater Wetland,431
+Temperate Pacific Freshwater Emergent Marsh,432
+Temperate Pacific Freshwater Mudflat,433
+Columbia Plateau Vernal Pool,434
+Northern California Claypan Vernal Pool,435
+Northern Rocky Mountain Wooded Vernal Pool,436
+Columbia Plateau Silver Sagebrush Seasonally Flooded Shrub-Steppe,437
+Rocky Mountain Alpine-Montane Wet Meadow,438
+Rocky Mountain Subalpine-Montane Riparian Shrubland,439
+Temperate Pacific Montane Wet Meadow,440
+Willamette Valley Wet Prairie,441
+Chihuahuan-Sonoran Desert Bottomland and Swale Grassland,442
+North American Arid West Emergent Marsh,443
+North American Warm Desert Riparian Mesquite Bosque,444
+Western Great Plains Saline Depression Wetland,445
+Acadian Salt Marsh and Estuary Systems,446
+Atlantic Coastal Plain Central Salt and Brackish Tidal Marsh,447
+Atlantic Coastal Plain Embayed Region Tidal Salt and Brackish Marsh,448
+Atlantic Coastal Plain Indian River Lagoon Tidal Marsh,449
+Atlantic Coastal Plain Northern Tidal Salt Marsh,450
+Florida Big Bend Salt-Brackish Tidal Marsh,451
+Gulf and Atlantic Coastal Plain Tidal Marsh Systems,452
+Mississippi Sound Salt and Brackish Tidal Marsh,453
+Texas Saline Coastal Prairie,454
+Temperate Pacific Tidal Salt and Brackish Marsh,455
+Inter-Mountain Basins Alkaline Closed Depression,456
+Inter-Mountain Basins Greasewood Flat,457
+Inter-Mountain Basins Playa,458
+North American Warm Desert Playa,459
+Apacherian-Chihuahuan Mesquite Upland Scrub,460
+Apacherian-Chihuahuan Semi-Desert Grassland and Steppe,461
+"Chihuahuan Creosotebush, Mixed Desert and Thorn Scrub",462
+Chihuahuan Gypsophilous Grassland and Steppe,463
+Chihuahuan Loamy Plains Desert Grassland,464
+Chihuahuan Mixed Desert and Thorn Scrub,465
+Chihuahuan Sandy Plains Semi-Desert Grassland,466
+Chihuahuan Stabilized Coppice Dune and Sand Flat Scrub,467
+Chihuahuan Succulent Desert Scrub,468
+Madrean Juniper Savanna,469
+Mojave Mid-Elevation Mixed Desert Scrub,470
+North American Warm Desert Active and Stabilized Dune,471
+Sonora-Mojave Creosotebush-White Bursage Desert Scrub,472
+Sonoran Mid-Elevation Desert Scrub,473
+Sonoran Paloverde-Mixed Cacti Desert Scrub,474
+Chihuahuan Mixed Salt Desert Scrub,475
+Sonora-Mojave Mixed Salt Desert Scrub,476
+North American Warm Desert Wash,477
+South Texas Lomas,478
+Tamaulipan Calcareous Thornscrub,479
+Tamaulipan Clay Grassland,480
+Tamaulipan Mesquite Upland Scrub,481
+Tamaulipan Mixed Deciduous Thornscrub,482
+Tamaulipan Savanna Grassland,483
+Inter-Mountain Basins Mat Saltbush Shrubland,484
+Inter-Mountain Basins Mixed Salt Desert Scrub,485
+Inter-Mountain Basins Wash,486
+Columbia Plateau Steppe and Grassland,487
+Great Basin Xeric Mixed Sagebrush Shrubland,488
+Inter-Mountain Basins Big Sagebrush Shrubland,489
+Inter-Mountain Basins Big Sagebrush Steppe,490
+Inter-Mountain Basins Montane Sagebrush Steppe,491
+Colorado Plateau Mixed Low Sagebrush Shrubland,492
+Columbia Plateau Low Sagebrush Steppe,493
+Columbia Plateau Scabland Shrubland,494
+Wyoming Basins Dwarf Sagebrush Shrubland and Steppe,495
+Colorado Plateau Blackbrush-Mormon-tea Shrubland,496
+Inter-Mountain Basins Semi-Desert Grassland,497
+Inter-Mountain Basins Semi-Desert Shrub Steppe,498
+Southern Colorado Plateau Sand Shrubland,499
+Acadian-Appalachian Alpine Tundra,500
+Rocky Mountain Alpine Dwarf-Shrubland,501
+Rocky Mountain Alpine Fell-Field,502
+Rocky Mountain Alpine Turf,503
+Mediterranean California Alpine Dry Tundra,504
+Mediterranean California Alpine Fell-Field,505
+"North Pacific Dry and Mesic Alpine Dwarf-Shrubland, Fell-field and Meadow",506
+Rocky Mountain Alpine Tundra/Fell-field/Dwarf-shrub Map Unit,507
+Temperate Pacific Intertidal Mudflat,508
+Mediterranean California Eelgrass Bed,509
+North Pacific Maritime Eelgrass Bed,510
+South-Central Interior Large Floodplain - Herbaceous Modifier,511
+East Gulf Coastal Plain Large River Floodplain Forest - Herbaceous Modifier,512
+Temperate Pacific Freshwater Aquatic Bed,513
+Central California Coast Ranges Cliff and Canyon,514
+Mediterranean California Serpentine Barrens,515
+Southern California Coast Ranges Cliff and Canyon,516
+Central Interior Acidic Cliff and Talus,517
+Central Interior Calcareous Cliff and Talus,518
+East Gulf Coastal Plain Dry Chalk Bluff,519
+North-Central Appalachian Acidic Cliff and Talus,520
+North-Central Appalachian Circumneutral Cliff and Talus,521
+Southern Appalachian Montane Cliff,522
+Southern Interior Acid Cliff,523
+Southern Interior Calcareous Cliff,524
+Southern Piedmont Cliff,525
+Southern Appalachian Granitic Dome,526
+Southern Appalachian Rocky Summit,527
+Southern Piedmont Granite Flatrock,528
+"Rocky Mountain Cliff, Canyon and Massive Bedrock",529
+Klamath-Siskiyou Cliff and Outcrop,530
+"North Pacific Montane Massive Bedrock, Cliff and Talus",531
+North Pacific Serpentine Barren,532
+North Pacific Active Volcanic Rock and Cinder Land,533
+Sierra Nevada Cliff and Canyon,534
+Western Great Plains Badland,535
+Southwestern Great Plains Canyon,536
+Western Great Plains Cliff and Outcrop,537
+North American Warm Desert Badland,538
+North American Warm Desert Bedrock Cliff and Outcrop,539
+North American Warm Desert Pavement,540
+North American Warm Desert Volcanic Rockland,541
+Colorado Plateau Mixed Bedrock Canyon and Tableland,542
+Columbia Plateau Ash and Tuff Badland,543
+Geysers and Hot Springs,544
+Inter-Mountain Basins Active and Stabilized Dune,545
+Inter-Mountain Basins Cliff and Canyon,546
+Inter-Mountain Basins Shale Badland,547
+Inter-Mountain Basins Volcanic Rock and Cinder Land,548
+Rocky Mountain Alpine Bedrock and Scree,549
+Mediterranean California Alpine Bedrock and Scree,550
+North Pacific Alpine and Subalpine Bedrock and Scree,551
+Unconsolidated Shore,552
+Undifferentiated Barren Land,553
+North American Alpine Ice Field,554
+Orchards Vineyards and Other High Structure Agriculture,555
+Cultivated Cropland,556
+Pasture/Hay,557
+Introduced Upland Vegetation - Annual Grassland,558
+Introduced Upland Vegetation - Perennial Grassland and Forbland,559
+Modified/Managed Southern Tall Grassland,560
+Introduced Upland Vegetation - Shrub,561
+Introduced Riparian and Wetland Vegetation,562
+Introduced Upland Vegetation - Treed,563
+0,564
+"Disturbed, Non-specific",565
+Recently Logged Areas,566
+Harvested Forest - Grass/Forb Regeneration,567
+Harvested Forest-Shrub Regeneration,568
+Harvested Forest - Northwestern Conifer Regeneration,569
+Recently Burned,570
+Recently burned grassland,571
+Recently burned shrubland,572
+Recently burned forest,573
+Disturbed/Successional - Grass/Forb Regeneration,574
+Disturbed/Successional - Shrub Regeneration,575
+Disturbed/Successional - Recently Chained Pinyon-Juniper,576
+Open Water (Aquaculture),577
+Open Water (Brackish/Salt),578
+Open Water (Fresh),579
+"Quarries, Mines, Gravel Pits and Oil Wells",580
+"Developed, Open Space",581
+"Developed, Low Intensity",582
+"Developed, Medium Intensity",583
+"Developed, High Intensity",584
