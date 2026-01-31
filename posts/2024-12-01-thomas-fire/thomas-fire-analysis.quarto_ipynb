@@ -1,0 +1,701 @@
+{
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "---\n",
+        "title: Thomas Fire AQI and Burn Scar\n",
+        "description: Exploring the Environmental and Health Effects of the 2017 Thomas Fire\n",
+        "author:\n",
+        "  - name: Haylee Oyler\n",
+        "    url: https://haylee360.github.io/\n",
+        "    orcid: 0009-0008-2133-3708\n",
+        "    affiliation: MEDS\n",
+        "    affiliation-url: https://bren.ucsb.edu/masters-programs/master-environmental-data-science\n",
+        "date: '2024-12-07'\n",
+        "categories:\n",
+        "  - Environmental-Health\n",
+        "  - Python\n",
+        "  - MEDS\n",
+        "toc: true\n",
+        "bibliography: references.bib\n",
+        "csl: plos-computational-biology.csl\n",
+        "image: thomas-fire-repo.jpeg\n",
+        "citation:\n",
+        "  url: https://haylee360.github.io/posts/2024-12-01-thomas-fire/\n",
+        "# draft: true\n",
+        "# draft-mode: visible\n",
+        "jupyter: python3\n",
+        "execute:\n",
+        "  warning: false\n",
+        "  message: false\n",
+        "# website: \n",
+        "#   navbar:\n",
+        "#     foreground: $navyblue\n",
+        "---\n",
+        "\n",
+        "\n",
+        "\n",
+        "\n",
+        "# Exploring the 2017 Thomas Fire's Environmental and Health Impacts\n",
+        "\n",
+        "<img src=\"https://www.dailynews.com/wp-content/uploads/2017/12/1208_nws_ldn-l-thomas-fire-from-space11.jpg?w=1310\" style=\"width:600px;\"/>\n",
+        "\n",
+        "Image credits: [LA Daily News](https://www.dailynews.com/2017/12/08/see-the-destruction-and-fury-of-venturas-thomas-fire-from-space/)\n",
+        "\n",
+        "*Author: Haylee Oyler*\n",
+        "\n",
+        "This project contains **two analyses** of the 2017 Thomas Fire in Santa Barbara and Ventura Counties.\n",
+        "\n",
+        "-   **Part 1: Visualizing AQI during the 2017 Thomas Fire in Santa Barbara County** uses air quality index data to examine the change in air quality before and after the fire.\n",
+        "\n",
+        "-   **Part 2: False Color Imagery of the 2017 Thomas Fire** uses geospatial Landsat and fire perimeter data to create a false color map of the residual fire scar.\n",
+        "\n",
+        "Additional information can be found at [the GitHub repository](https://github.com/haylee360/thomas-fire-analysis) for this project.\n",
+        "\n",
+        "# Part 1: Visualizing AQI during the 2017 Thomas Fire in Santa Barbara County\n",
+        "\n",
+        "### About\n",
+        "\n",
+        "#### Purpose\n",
+        "\n",
+        "Part one of this analysis explores the change in air quality in Santa Barbara County during the 2017 Thomas Fire. The Thomas Fire was one of the region's largest fires to date, burning over 280,000 acres in Ventura and Santa Barbara counties in December 2017. It caused widespread ecological damage, displaced communities, and left lasting environmental impacts. Additionally, wildfire smoke is a strong trigger for respiratory diseases such as asthma. One way to measure wildfire's environmental health effects is through air quality.\n",
+        "\n",
+        "The air quality index (AQI) is a measure of how clean or polluted the air is and what associated health effects might be a concern. It is a scale that ranges from 0-500 with 0-50 being good, 151-200 being unhealthy, and 301-500 being hazardous.\n",
+        "\n",
+        "Part 1 will use AQI data to explore the Thomas Fire's effects on air quality and environmental health in Santa Barbara County.\n",
+        "\n",
+        "#### Highlights\n",
+        "\n",
+        "-   Import AQI data using `pandas`\n",
+        "-   Explore and clean AQI data using `pandas`\n",
+        "-   Filter AQI data to Santa Barbara county during the Thomas Fire using `pandas`\n",
+        "-   Calculate a rolling 5 day average AQI using `pandas`\n",
+        "-   Visualize the AQI over time during the Thomas Fire using `matplotlib`\n",
+        "\n",
+        "#### About the Data\n",
+        "\n",
+        "This analysis uses data from the [Air Quality Index Daily Values Report](https://www.epa.gov/outdoor-air-quality-data/air-quality-index-daily-values-report) which provides daily AQI values for a specified year and location. We're working with two data sets `daily_aqi_by_county_2017` and `daily_aqi_by_county_2018`. These contain daily AQI values for U.S. counties in 2017 and 2018 respectively. The Thomas Fire occurred in December of 2017, so we've selected data before and after the fire to see a clear picture of its effect on air quality.\n",
+        "\n",
+        "\n",
+        "### Load Libraries\n",
+        "Before we begin our analysis, we'll start by loading all the necessary libraries for this project. "
+      ],
+      "id": "f76bafc6"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "# Import libraries\n",
+        "import os # To set file paths\n",
+        "import pandas as pd \n",
+        "import matplotlib.pyplot as plt\n",
+        "import geopandas as gpd\n",
+        "import rioxarray as rioxr\n",
+        "import matplotlib.patches as mpatches # To create a custom legend\n",
+        "\n",
+        "# Change display settings to see all column names\n",
+        "pd.set_option(\"display.max.columns\", None)"
+      ],
+      "id": "a6928e39",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "## Import AQI data and explore\n",
+        "We'll start by importing our air quality index data for 2017 and 2018 and conducting a preliminary exploration. "
+      ],
+      "id": "35e965ec"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "# Read in AQI data for both years\n",
+        "aqi_17 = pd.read_csv('https://aqs.epa.gov/aqsweb/airdata/daily_aqi_by_county_2017.zip', \n",
+        "                    compression = 'zip')\n",
+        "\n",
+        "aqi_18 = pd.read_csv('https://aqs.epa.gov/aqsweb/airdata/daily_aqi_by_county_2018.zip', \n",
+        "                    compression = 'zip')"
+      ],
+      "id": "11c3ed97",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "# View the first few rows of aqi 2017\n",
+        "aqi_17.head(3)"
+      ],
+      "id": "2896b7e5",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "# View the first few rows of aqi 2018\n",
+        "aqi_18.head(3)"
+      ],
+      "id": "25ec961b",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "# View unique defining parameters of the aqi data \n",
+        "aqi_17['Defining Parameter'].unique()"
+      ],
+      "id": "58ed8dde",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "# View the info of the aqi data\n",
+        "aqi_17.info()"
+      ],
+      "id": "b6306ba0",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "Our AQI data contains information about the state and county location, date, and air quality index. We can also see that the defining parameter of air pollution is either PM 2.5, ozone, NO2, PM10, or CO. Additionally, our AQI data has no missing values and 4 of our variables are type `int64` and 6 are type `object`. Something notable about these data types is that our `Date` column is not being recognized as a `datetime` object. We will fix this later on... \n",
+        "\n",
+        "## Clean the AQI data\n",
+        "\n",
+        "Currently, our AQI data is housed in two separate data frames. We will join them together using the `pandas` function `pd.concat()` and save them as one data frame named `aqi`.\n",
+        "\n",
+        "NOTE: When we concatenate data frames without any extra parameters specified in `pd.concat()`, the indices are simply stacked on top of one another. Therefore, the resulting index values of `aqi` will not match the length of the new data frame.\n"
+      ],
+      "id": "8cb3a2d6"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "# Bind 2017 and 2018 AQI data together\n",
+        "aqi = pd.concat([aqi_17, aqi_18])\n",
+        "aqi.head(3)"
+      ],
+      "id": "7c81cde6",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "Notice that our data frame dimensions of 654344 rows by 10 columns do not match the last row index of 327542. To address our confusing index, we will change the index of our data frame to the date column.\n",
+        "\n",
+        "First, we will ensure that our `Date` column is a `pandas` `datetime` object. Then, we will set our index to the `Date` column.\n"
+      ],
+      "id": "2f0cac20"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "# Convert date to a datetime object\n",
+        "aqi.Date = pd.to_datetime(aqi.Date)\n",
+        "\n",
+        "# Set the index to our datetime to make visualizing easier later on\n",
+        "aqi = aqi.set_index('Date')\n",
+        "aqi.head(3)"
+      ],
+      "id": "2ef4d4f5",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "Next, we will clean the column names of our new data frame. We will make all the column names lower snake case via the operations below. Here is a step-by-step of what the functions do:\n",
+        "\n",
+        "-   `aqi.columns = (aqi.columns` selects the columns from the `aqi` data frame and reassigns them to the original data frame\n",
+        "-   `.str.lower()` uses the string operator to make all the letters lowercase\n",
+        "-   `.str.replace(' ','_')` converts the output of the lowercase columns to a string and replaces all spaces with an underscore\n",
+        "-   `)` closes the method chaining\n",
+        "-   `print(aqi.columns, '\\n')` lets us view the output of our modified column names\n"
+      ],
+      "id": "2becb06a"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "# Initial column names: notice caps and spaces\n",
+        "print(aqi.columns, '\\n')\n",
+        "\n",
+        "# Simplify column names\n",
+        "aqi.columns = (aqi.columns\n",
+        "                  .str.lower()\n",
+        "                  .str.replace(' ','_')\n",
+        "                )\n",
+        "print(aqi.columns, '\\n')"
+      ],
+      "id": "702de724",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "## Filter AQI data\n",
+        "\n",
+        "For this specific analysis, we're only interested in the air quality Santa Barbara County. We will filter our data frame to Santa Barbara and drop columns with unnecessary information.\n"
+      ],
+      "id": "3c08e9e1"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "# Filter data to Santa Barbara county \n",
+        "aqi_sb = aqi[aqi['county_name'] == 'Santa Barbara']\n",
+        "\n",
+        "# Drop the columns we're not interested in working with\n",
+        "aqi_sb = aqi_sb.drop(['state_name', 'county_name', 'state_code', 'county_code'], axis=1)\n",
+        "aqi_sb.head(3)"
+      ],
+      "id": "4f62b4b1",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "## AQI rolling average\n",
+        "\n",
+        "In the next cell we will calculate an average over a [rolling window](https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.Series.rolling.html) using the `rolling()` method for `pandas.Series`:\n",
+        "\n",
+        "-   `rolling()` is a lazy method, so we need to specify what we want to calculate over each window before it does something.\n",
+        "-   in this example, we use the aggregator function `mean()` to calculate the average over each window\n",
+        "-   the parameter '5D' indicates we want the window for our rolling average to be 5 days.\n",
+        "-   we get a `pandas.Series` as the output\n"
+      ],
+      "id": "26d58a40"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "# Calculate AQI rolling average over 5 days\n",
+        "rolling_average = aqi_sb['aqi'].rolling(window='5D').mean()"
+      ],
+      "id": "a91a6196",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "# Append our rolling average to our original data frame\n",
+        "aqi_sb['five_day_average'] = rolling_average"
+      ],
+      "id": "4da7163c",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "## Plot AQI during the Thomas Fire\n",
+        "\n",
+        "Now that our data frame contains all the correct, necessary information, we can visualize it using `matplotlib`\n"
+      ],
+      "id": "eb509491"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "#| code-fold: true\n",
+        "#| code-summary: \"Plot the AQI\"\n",
+        "\n",
+        "# Initialize an empty figure (fig) and axis (ax)\n",
+        "fig, ax = plt.subplots()\n",
+        "\n",
+        "# Visualize air quality during the Thomas Fire\n",
+        "aqi_sb.aqi.plot(ax=ax, label = 'AQI') # daily aqi\n",
+        "aqi_sb.five_day_average.plot(ax=ax, label = \"Five day AQI average\") # five day average aqi\n",
+        "\n",
+        "# Show the date of the Thomas fire\n",
+        "plt.axvline(x = '2017-12-04', \n",
+        "            color = 'red', \n",
+        "            linestyle = 'dashed', \n",
+        "            label = \"Thomas Fire\")\n",
+        "\n",
+        "# Customize the plot\n",
+        "ax.set_title('Daily AQI and 5-day AQI averages during the\\nThomas Fire in Santa Barbara County')\n",
+        "ax.set_xlabel('Date')\n",
+        "ax.set_ylabel('AQI')\n",
+        "ax.legend()\n",
+        "\n",
+        "# Display the figure\n",
+        "plt.show()"
+      ],
+      "id": "0b699b22",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "This plot shows the drastic spike in AQI shortly after the Thomas fire in December of 2017. The daily AQI peaks at just over 300, which is into the hazardous classification, and the five day average AQI is around 220, which is in the unhealthy classification. Wildfire's are known to release many harmful chemicals and particulates that contribute to worsening air quality. This in turn leads to worsening health outcomes for illnesses such as respiratory disease, heart disease, asthma, and more. \n",
+        "\n",
+        "# Part 2: False Color Imagery of the 2017 Thomas Fire\n",
+        "\n",
+        "## About\n",
+        "\n",
+        "#### Purpose\n",
+        "\n",
+        "Part 2 of this analysis details the steps to visualize Landsat multispectral geospatial data for the 2017 Thomas Fire. False color imagery, created using satellite data from instruments like Landsat, is a useful tool for monitoring wildfire impacts. By assigning infrared bands to visible colors, these images highlight vegetation health, burn severity, and the extent of fire scars. This approach helps researchers and land managers assess recovery efforts, identify high-risk areas, and plan restoration strategies.\n",
+        "\n",
+        "Part 2 will create a false color image of the Thomas Fire using remote sensing data, highlighting the fire scar and exploring how coding and data visualization support environmental monitoring.\n",
+        "\n",
+        "#### Highlights\n",
+        "\n",
+        "-   Import Thomas fire perimeter data with `geopandas` and `os`\n",
+        "-   Import Landsat data with `rioxarray` and `os`\n",
+        "-   Explore and clean geospatial data with `pandas` and `rioxarray`\n",
+        "-   Construct a true color image of the Thomas Fire with `rioxarray`\n",
+        "-   Construct a false color image of the Thomas Fire with `rioxarray`\n",
+        "-   Visualize the Thomas Fire false color scar with the fire perimeter data using `matplotlib`\n",
+        "\n",
+        "#### About the Data\n",
+        "\n",
+        "The Landsat data is a simplified collection of bands (red, green, blue, near-infrared and shortwave infrared) from the Landsat Collection 2 Level-2 atmospherically corrected surface reflectance data, collected by the Landsat 8 satellite. It was pre-processed in the Microsoft Planetary data catalogue to remove data outside land and coarsen the spatial resolution\n",
+        "\n",
+        "The Thomas Fire perimeter data comes from CalFire's data portal. CalFire is the department of forestry and fire protection. They have a Geodatabase of all historical fire perimeters in the state of California from 1878 until present. The database includes information on the fire date, managing agency, cause, acres, and the geospatial boundary of the fire, among other information. This data was pre-processed to select only the Thomas fire boundary geometry.\n",
+        "\n",
+        "\n",
+        "## Import geospatial data and explore\n"
+      ],
+      "id": "0f1b7941"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "# Import Landsat nc data\n",
+        "landsat = rioxr.open_rasterio(os.path.join('data',\n",
+        "                                    'landsat8-2018-01-26-sb-simplified.nc')\n",
+        "                                    )\n",
+        "landsat = landsat.rio.write_crs(\"EPSG:4326\")\n",
+        "\n",
+        "# Import fire perimeter data\n",
+        "thomas_boundary = gpd.read_file(os.path.join('data',\n",
+        "                                    'thomas_boundary.geojson')\n",
+        "                                    )"
+      ],
+      "id": "34da5c82",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "# View the Landsat data\n",
+        "landsat"
+      ],
+      "id": "0f1ebc8c",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "#| code-fold: true\n",
+        "#| code-summary: \"Landsat info\"\n",
+        "\n",
+        "# Examine raster attributes using rio accessor\n",
+        "print('Height: ', landsat.rio.height)\n",
+        "print('Width: ', landsat.rio.width, '\\n')\n",
+        "\n",
+        "print('Spatial bounding box: ')\n",
+        "print(landsat.rio.bounds(), '\\n')\n",
+        "\n",
+        "print('CRS: ', landsat.rio.crs)"
+      ],
+      "id": "f93e4eae",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "#### Landsat data description\n",
+        "\n",
+        "Our Landsat data contains the variables `red`, `green`, `blue`, `nir08`, and `swir22`. These are different bands of our lansat data. The dimensions of our data for each band are an (x,y) coordinate of projection of (870, 731). The CRS is EPSG: 32611 and the height and width of the data are 731 and 870. Each variable in our dataset contains the dimensions (band, y, x).\n"
+      ],
+      "id": "58cb170b"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "thomas_boundary.head()"
+      ],
+      "id": "d6befcf2",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "thomas_boundary.info()"
+      ],
+      "id": "3e1e5970",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "thomas_boundary.crs"
+      ],
+      "id": "d2361bfa",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "#### Fire perimeter data description\n",
+        "\n",
+        "This fire perimeter data comes from CalFire and includes data for all fire perimeters from 1878 to 2023. It has data on the year, the fire name, the reporting agency, the cause, and the duration, among other data. The CRS is NAD83 California Albers and it is a projected CRS (EPSG:3310)\n",
+        "\n",
+        "## Clean the Landsat data\n"
+      ],
+      "id": "7bc438a1"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "# Remove the band dimension and variable\n",
+        "landsat = landsat.squeeze().drop_vars('band')\n",
+        "\n",
+        "# Confirm it was removed correctly\n",
+        "print(landsat.sizes)"
+      ],
+      "id": "560263c4",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "## Visualize the Thomas Fire with true color imagery\n"
+      ],
+      "id": "52c6c132"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "#| eval: false\n",
+        "#| echo: true\n",
+        "# First attempt to visualize the Landsat data \n",
+        "landsat[['red', 'green', 'blue']].to_array().plot.imshow()"
+      ],
+      "id": "b5fc91e0",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "![](images/map1.png){width=80%}\n",
+        "\n",
+        "Our first attempt to map the data didn't go quite as planned. Let's try adjusting the `robust` parameter of `.imshow()` and see what happens\n"
+      ],
+      "id": "ad8bcf90"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "#| eval: false\n",
+        "#| echo: true\n",
+        "# Visualize the Landsat data using true color imagery\n",
+        "landsat[['red', 'green', 'blue']].to_array().plot.imshow(robust=True)"
+      ],
+      "id": "b0c81502",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "![](images/map2.png){width=80%}\n",
+        "\n",
+        "After we adjusted the scale for plotting the bands, we got a much more comprehensible image. The clouds were throwing off the scale for plotting. The `robust=True` argument allows us to infer a different set vmin and vmax values to properly color the image. It takes out the 2nd and 98th percentile, removing outliers which makes it easier to visualize.\n",
+        "\n",
+        "Next, we will use false color imagery to view the fire...\n",
+        "\n",
+        "## Visualize the Thomas Fire with false color imagery\n",
+        "To make the Thomas Fire burn scar more visible, we will use false color imagery by assigning short-wave infrared radiation to red, near infrared to green, and red to blue.\n"
+      ],
+      "id": "0d50e3a7"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "#| eval: false\n",
+        "#| echo: true\n",
+        "# Visualize the Landsat data using false color imagery\n",
+        "landsat[['swir22', 'nir08', 'red']].to_array().plot.imshow(robust=True)"
+      ],
+      "id": "1f9b1e91",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "![](images/map3.png){width=80%}\n",
+        "\n",
+        "## Map the Thomas Fire scar and boundary\n"
+      ],
+      "id": "0eede58a"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "#| code-fold: true\n",
+        "#| code-summary: \"Reproject CRS\"\n",
+        "#| eval: false\n",
+        "#| echo: true\n",
+        "\n",
+        "# Reproject data to match the CRS between our two datasets\n",
+        "thomas_boundary= thomas_boundary.to_crs(\"EPSG:4326\")\n",
+        "landsat = landsat.rio.reproject(\"EPSG:4326\")\n",
+        "\n",
+        "# Confirm that the CRS of our data match\n",
+        "assert landsat.rio.crs == thomas_boundary.crs"
+      ],
+      "id": "effe8227",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "#| code-fold: true\n",
+        "#| code-summary: \"Map the Thomas Fire\"\n",
+        "#| eval: false\n",
+        "#| echo: true\n",
+        "\n",
+        "# Initialize figure\n",
+        "fig, ax = plt.subplots()\n",
+        "\n",
+        "# Plot the Landsat data\n",
+        "landsat[['swir22', 'nir08', 'red']].to_array().plot.imshow(ax = ax, \n",
+        "                                                        robust = True)\n",
+        "\n",
+        "# Plot the fire perimeter\n",
+        "thomas_boundary.boundary.plot(ax=ax, \n",
+        "                            edgecolor='#f83c36', \n",
+        "                            linewidth=2, \n",
+        "                            label='Thomas Fire Boundary')\n",
+        "\n",
+        "# Create a legend for the false color bands and boundary\n",
+        "legend_swir = mpatches.Patch(color = \"#eb6a4b\", label = 'SWIR\\n- Burned Area')\n",
+        "legend_nir = mpatches.Patch(color = \"#a1fc81\", label = 'NIR\\n- Vegetation')\n",
+        "legend_bound = mpatches.Patch(color = \"#f83c36\", label = 'Thomas Fire\\nBoundary')\n",
+        "\n",
+        "# Plot legend\n",
+        "ax.legend(handles = [legend_swir, legend_nir, legend_bound], bbox_to_anchor=(1.38,1), fontsize = 10)\n",
+        "\n",
+        "# Set title and axes labels\n",
+        "ax.set_title('False Color Map of the 2017 Thomas Fire in California\\nwith the Fire Perimeter',\n",
+        "            fontsize=14)\n",
+        "ax.set_xlabel('Longitude (degrees)')\n",
+        "ax.set_ylabel('Latitude (degrees)')\n",
+        "\n",
+        "plt.show()"
+      ],
+      "id": "937585ba",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "![](images/map4.png)\n",
+        "\n",
+        "**Figure Description**\n",
+        "\n",
+        "This map shows a false color image of the Thomas Fire in Santa Barbara and Ventura Counties. The fire boundary is outlined in red. Satellite data works with wavelengths of light beyond what the human eye can see. False color imagery is the process of assigning colors to these wavelengths (i.e. near-infrared and short-wave infrared). In our map, we've chosen to visualize short-wave infrared as red, near-infrared as green, and red wavelengths as blue. This lets us produce an image that highlights exactly where the fire scar is, as opposed to the true color image where it is much harder to distinguish. A true color image assigns the red, green, and blue wavelengths of light to the correct corresponding colors.\n",
+        "\n",
+        "#### References\n",
+        "\n",
+        "- [Air Quality Index (AQI)](https://www.airnow.gov/aqi/aqi-basics/) from [US Environmental Protection Agency](https://www.epa.gov).\n",
+        "\n",
+        "    - US Environmental Protection Agency. Air Quality System Data Mart AirNow available via https://www.epa.gov/outdoor-air-quality-data. Accessed October 17 2024.\n",
+        "\n",
+        "- [Landsat Data](https://planetarycomputer.microsoft.com/dataset/landsat-c2-l2) from Microsoft's Planetary Computer Data Catalogue.\n",
+        "\n",
+        "    - Earth Resources Observation and Science (EROS) Center. (2020). Landsat 4-5 Thematic Mapper Level-2, Collection 2. U.S. Geological Survey. https://doi.org/10.5066/P9IAXOVV\n",
+        "    - Earth Resources Observation and Science (EROS) Center. (2020). Landsat 7 Enhanced Thematic Mapper Plus Level-2, Collection 2. U.S. Geological Survey. https://doi.org/10.5066/P9C7I13B\n",
+        "    - Earth Resources Observation and Science (EROS) Center. (2020). Landsat 8-9 Operational Land Imager / Thermal Infrared Sensor Level-2, Collection 2. U.S. Geological Survey. https://doi.org/10.5066/P9OGBGM6\n",
+        "\n",
+        "- [CalFire Fire Perimeter Data](https://www.fire.ca.gov/what-we-do/fire-resource-assessment-program/fire-perimeters)\n",
+        "\n",
+        "    - California Department of Forestry and Fire Protection (CAL FIRE), \\[calfire_all.gdb\\], \\[2024-11-17\\], retrieved from [CAL FIRE data portal.](https://www.fire.ca.gov/what-we-do/fire-resource-assessment-program/fire-perimeters)\n",
+        "\n",
+        "\n",
+        "#### Acknowledgements\n",
+        "\n",
+        "This code is based on exercises from [Carmen Galaz-Garcia](https://github.com/carmengg) for [EDS-220: Working with Environmental Data](https://meds-eds-220.github.io/MEDS-eds-220-course/)."
+      ],
+      "id": "70651698"
+    }
+  ],
+  "metadata": {
+    "kernelspec": {
+      "display_name": "Python 3",
+      "language": "python",
+      "name": "python3"
+    }
+  },
+  "nbformat": 4,
+  "nbformat_minor": 5
+}

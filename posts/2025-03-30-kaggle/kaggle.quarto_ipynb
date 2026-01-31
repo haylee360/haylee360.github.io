@@ -1,0 +1,449 @@
+{
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "---\n",
+        "title: So You Want to Win a Kaggle Competition?\n",
+        "description: Building an Extreme Gradient Boosted Model to Predict Seawater Chemistry\n",
+        "author:\n",
+        "  - name: Haylee Oyler\n",
+        "    url: https://haylee360.github.io/\n",
+        "    orcid: 0009-0008-2133-3708\n",
+        "    affiliation: MEDS\n",
+        "    affiliation-url: https://bren.ucsb.edu/masters-programs/master-environmental-data-science\n",
+        "date: '2025-03-30'\n",
+        "categories:\n",
+        "  - Machine-Learning\n",
+        "  - Python\n",
+        "  - MEDS\n",
+        "toc: true\n",
+        "bibliography: references.bib\n",
+        "csl: plos-computational-biology.csl\n",
+        "image: images/sample.jpg\n",
+        "citation:\n",
+        "  url: https://haylee360.github.io/posts/2025-03-30-kaggle/\n",
+        "jupyter: python3\n",
+        "execute:\n",
+        "  warning: false\n",
+        "  message: false\n",
+        "---\n",
+        "\n",
+        "\n",
+        "\n",
+        "# Machine Learning Models\n",
+        "\n",
+        "Are growing in prevalence and efficacy in environmental science. What began in 1949 as an attempt to write a computer program that could play checkers @Widerhold1992 has grown into one of the fastest developing fields today. Machine learning is used to across multiple disciplines—from image recognition models designed to improve the speed of medical diagnoses @PintoCoehlo2023 to the program that filters your spam from your normal inbox @Dada2019—machine learning's reach has spread far and wide. The study of our natural world and its processes is no exception. \n",
+        "\n",
+        "Machine learning has allowed major advances in the environmental field as well. As data collection techniques only become more refined, frequent, and numerous, we need processing techniques that can match the scale of this data. \n",
+        "\n",
+        "As part of a final project in [Dr. Matteo Robbin's](https://bren.ucsb.edu/people/mateo-robbins) [Machine Learning in Environmental Science](https://bren.ucsb.edu/courses/eds-232), my class was tasked with optimizing a machine learning model that would predict dissolved inorganic carbon content (DIC) in a sample of seawater based on a number of other associated characteristics. This was held as part of a [kaggle competiton](https://www.kaggle.com/competitions/eds-232-cal-cofi-ocean-chemistry-prediction-2025/overview) where the evaluation metric was root mean squared error (rmse). The winner was determined based on which model had the smallest rmse on the private leaderboard. Overall, this assesses how accurate each model is at predicting DIC when generalizing to unseen data. \n",
+        "\n",
+        "I will walk through my winning model for this competition: **an extreme gradient boosted model (XGB) with bayesian hyperoptimization of parameters**.\n",
+        "\n",
+        "## The Model Breakdown\n",
+        "\n",
+        "### eXtreme Gradient Boosting\n",
+        "Let's go word by word through an extreme gradient boosted model and explain each piece.\n",
+        "\n",
+        "- **Boosted**: Boosting is an [ensemble method](https://www.ibm.com/think/topics/ensemble-learning) in which multiple weak [decision trees](https://scikit-learn.org/stable/modules/tree.html) are trained sequentially. In simpler terms, you train many \"short\" decision trees on top of each other and you use the residual error from the previous tree to train the following tree. This allows the model to iteratively optimize performance without a tendency to overfit. \n",
+        "\n",
+        "- **Gradient**: Gradient refers to the idea of [gradient descent](https://developers.google.com/machine-learning/crash-course/linear-regression/gradient-descent), which is the optimization technique used to minimize the loss function. This starts to get into the math weeds, so I'll link some resources for those who'd like more detail @Kwiatkowski2023 @Google2024. But at it's most conceptual, let's imagine our parameter space as standing on top of a hill. If we look down, there are numerous different slopes and valleys that mark the terrain between the peak and the bottom of the hill. This \"terrain variation\" can be thought of as the unique parameter space of our model. Now, imagine I were to drop 100 ping pong balls from the top of this hill and I want to know which ball reached the bottom the fastest. The fastest ping pong boll can be thought of as akin to the gradient of our loss function. That is, gradient descent finds the direction of steepest increase to minimize the loss function.\n",
+        "\n",
+        "- **Extreme**: Now that we have a conceptual understanding of gradient descent, there are many different ways you can set up your how your model finds the most optimum gradient. The term \"extreme\" comes from the popular [xgboost](https://xgboost.readthedocs.io/en/release_3.0.0/) library that is designed to be especially efficient and flexible. There are other types of gradient descent, like batch gradient descent or stochastic gradient descent @IBM2025, but XGB is a very common method due to its high performance, built-in [regularization](https://www.ibm.com/think/topics/regularization#:~:text=Regularization%20is%20a%20set%20of,overfitting%20in%20machine%20learning%20models.), and [parallel computing](https://www.ibm.com/think/topics/parallel-computing) capabilities.\n",
+        "\n",
+        "### `hyperopt`: Bayesian Hyperoptimization\n",
+        "Now that we have our model itself established, let's talk about how I decided to select parameters for the model with [hyperopt](https://hyperopt.github.io/hyperopt/). hyperopt is a python library that uses bayesian optimization to find the best parameters. It has three main parts: an objective function, a domain space, and a search algorithm @Banerjee2020. \n",
+        "\n",
+        "- **Bayesian optimization**: This is another area that gets into the weeds @Noguiera2014, but it can be thought of as a probabilistic, model-based technique to minimize a function. It's quicker than a random search of parameters because it uses the [posterior distribution](https://www.statisticshowto.com/posterior-distribution-probability/) to establish which parameter spaces are most worth exploring. In this way, the future parameter combinations are informed by the previous ones. \n",
+        "  - **Objective function**: This is the function we want our bayesian model to minimize. This function will take our input domain space and output the validation metric (in our case, [RMSE](https://statisticsbyjim.com/regression/root-mean-square-error-rmse/)). The objective function for this model is the XGB model discussed above. We want to minimize our error given that exact model construction, so naturally, we optimize our hyperparameters based on that model. \n",
+        "  - **Domain space**: The set of hyperparameters and their input values over which we want to search. \n",
+        "  - **Optimization algorithm**: The optimization algorithm used in this model is [Tree of Parzen Estimators (TPE)](https://towardsdatascience.com/building-a-tree-structured-parzen-estimator-from-scratch-kind-of-20ed31770478/). This is where the Bayesian optimization discussed above actually happens. \n",
+        "  \n",
+        "At the end of the hyperopt process, we have a set of parameters that returns the smallest RMSE. Then, we can train our model on the best parameters. \n",
+        "\n",
+        "### Data \n",
+        "The data used in this model comes courtesy of [Dr. Erin Satterthwaite](https://scripps.ucsd.edu/profiles/esatterthwaite) at the [California Cooperative Oceanic Fisheries Investigations(CalCOFI)](https://calcofi.org/)\n",
+        "\n",
+        "#### Metadata\n",
+        "- `Lat_Dec`: Observed Latitude in decimal degrees\n",
+        "- `Lon_Dec`: Observed Longitude in decimal degrees\n",
+        "- `NO2uM`: Micromoles Nitrite per liter of seawater\n",
+        "- `NO3uM`: Micromoles Nitrate per liter of seawater\n",
+        "- `NH3uM`: Micromoles Ammonia per liter of seawater\n",
+        "- `R_TEMP`: Reported (Potential) Temperature in degrees Celsius\n",
+        "- `R_Depth`: Reported Depth (from pressure) in meters\n",
+        "- `R_Sal`: Reported Salinity (from Specific Volume Anomoly, M³/Kg)\n",
+        "- `R_DYNHT`: Reported Dynamic Height in units of dynamic meters (work per unit mass)\n",
+        "- `R_Nuts`: Reported Ammonium concentration\n",
+        "- `R_Oxy_micromol.Kg`: Reported Oxygen micromoles/kilogram\n",
+        "- `PO4uM`: Micromoles Phosphate per liter of seawater\n",
+        "- `SiO3uM`: Micromoles Silicate per liter of seawater\n",
+        "- `TA1.x`: Total Alkalinity micromoles per kilogram solution\n",
+        "- `Salinity1`: Salinity (Practical Salinity Scale 1978)\n",
+        "- `Temperature_degC`: Water temperature in degrees Celsius\n",
+        "- `DIC`: Dissolved Inorganic Carbon micromoles per kilogram solution\n",
+        "\n",
+        "## The Coding Breakdown\n"
+      ],
+      "id": "9d5fa054"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "# Load basic libraries\n",
+        "import pandas as pd\n",
+        "import seaborn as sns\n",
+        "import numpy as np\n",
+        "import matplotlib.pyplot as plt\n",
+        "import statistics as stats\n",
+        "import time\n",
+        "\n",
+        "# XGB libraries\n",
+        "from sklearn.model_selection import train_test_split,RandomizedSearchCV, cross_val_score, KFold\n",
+        "import xgboost as xgb\n",
+        "from hyperopt import hp, fmin, tpe, Trials, STATUS_OK\n",
+        "from xgboost import XGBRegressor\n",
+        "from sklearn.metrics import mean_squared_error\n",
+        "from scipy.stats import uniform, randint\n",
+        "from sklearn.preprocessing import StandardScaler"
+      ],
+      "id": "4605a08d",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "### Import Data and Explore\n"
+      ],
+      "id": "da370337"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "# Import data\n",
+        "train_df = pd.read_csv(\"~/MEDS/website/haylee360.github.io/posts/2025-03-30-kaggle/data/train.csv\")\n",
+        "test_df = pd.read_csv(\"~/MEDS/website/haylee360.github.io/posts/2025-03-30-kaggle/data/test.csv\")\n",
+        "\n",
+        "# Fix column name error\n",
+        "test_df = test_df.rename(columns={'TA1':'TA1.x'})\n",
+        "\n",
+        "# Remove NA column from training data\n",
+        "train_df = train_df.drop(columns='Unnamed: 12')"
+      ],
+      "id": "24a73e63",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "# Get a feel for feature summary stats\n",
+        "train_df.describe()"
+      ],
+      "id": "a9557993",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "# Check NAs\n",
+        "train_df.isna().sum()"
+      ],
+      "id": "5f071241",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "# Visualize feature relationships\n",
+        "sns.pairplot(train_df, y_vars=['DIC'], x_vars= train_df.columns[1:-1], diag_kind='kde')"
+      ],
+      "id": "0a47f1d2",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "### Model Selection: XGB with Hyperoptimization \n",
+        "The relationships look mostly linear, but we're working with a lot of features. I figured gradient boosting would be a good approach.\n"
+      ],
+      "id": "31112c03"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "#| eval: false\n",
+        "#| echo: true\n",
+        "\n",
+        "# Assign features\n",
+        "X = train_df.drop(columns=['id', 'DIC'], axis=1)\n",
+        "y = train_df['DIC']\n",
+        "X_test = test_df.drop(columns=['id'], axis=1) \n",
+        "\n",
+        "# Scale the data\n",
+        "scaler = StandardScaler()\n",
+        "X_scaled = pd.DataFrame(scaler.fit_transform(X), columns=X.columns)\n",
+        "# For predictions later on...\n",
+        "X_test_scaled = pd.DataFrame(scaler.transform(X_test), columns=X_test.columns)"
+      ],
+      "id": "0b00f864",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "### Define Objective Function\n"
+      ],
+      "id": "6f679a73"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "#| eval: false\n",
+        "#| echo: true\n",
+        "\n",
+        "# Set up kfold cross validation\n",
+        "kf = KFold(n_splits=5, shuffle=True, random_state=808)\n",
+        "\n",
+        "# Define objective function to minimize\n",
+        "def objective(params):\n",
+        "    model = XGBRegressor(\n",
+        "        n_estimators=int(params[\"n_estimators\"]),\n",
+        "        learning_rate=params[\"learning_rate\"],\n",
+        "        max_depth=int(params[\"max_depth\"]),\n",
+        "        min_child_weight=params[\"min_child_weight\"],\n",
+        "        subsample=params[\"subsample\"],\n",
+        "        colsample_bytree=params[\"colsample_bytree\"],\n",
+        "        gamma=params[\"gamma\"],\n",
+        "        reg_alpha=params[\"reg_alpha\"],\n",
+        "        reg_lambda=params[\"reg_lambda\"],\n",
+        "        random_state=808\n",
+        "    )\n",
+        "    \n",
+        "    # Perform cross-validation\n",
+        "    scores = -cross_val_score(model, X_scaled, y, cv=kf, scoring='neg_root_mean_squared_error', n_jobs=-1)\n",
+        "\n",
+        "    # Average RMSE across folds\n",
+        "    rmse = np.mean(scores)\n",
+        "\n",
+        "    return {'loss': rmse, 'status': STATUS_OK}"
+      ],
+      "id": "f6a92e2c",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "### Create Domain space\n"
+      ],
+      "id": "fdd1c0bf"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "#| eval: false\n",
+        "#| echo: true\n",
+        "\n",
+        "# Create hyperparameter space\n",
+        "space = {\n",
+        "    \"n_estimators\": hp.quniform(\"n_estimators\", 100, 1200, 10),\n",
+        "    \"learning_rate\": hp.uniform(\"learning_rate\", 0.005, 0.3),\n",
+        "    \"max_depth\": hp.quniform(\"max_depth\", 3, 20, 1),\n",
+        "    \"min_child_weight\": hp.uniform(\"min_child_weight\", 1, 10),\n",
+        "    \"subsample\": hp.uniform(\"subsample\", 0.5, 1.0),\n",
+        "    \"colsample_bytree\": hp.uniform(\"colsample_bytree\", 0.5, 1.0),\n",
+        "    \"gamma\": hp.uniform(\"gamma\", 0, 10),  \n",
+        "    \"reg_alpha\": hp.uniform(\"reg_alpha\", 0, 1),  \n",
+        "    \"reg_lambda\": hp.uniform(\"reg_lambda\", 0, 1),  \n",
+        "}"
+      ],
+      "id": "5923a646",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "### Run Optimization Algorithm\n"
+      ],
+      "id": "d62c3825"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "#| eval: false\n",
+        "#| echo: true\n",
+        "# Run hyperopt\n",
+        "trials = Trials()\n",
+        "best_params = fmin(\n",
+        "    fn=objective, \n",
+        "    space=space,      \n",
+        "    algo=tpe.suggest, \n",
+        "    max_evals=200,\n",
+        "    trials=trials,       \n",
+        "    rstate=np.random.default_rng(808)  \n",
+        ")"
+      ],
+      "id": "de8ceb94",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "### Train the Model on the Best Parameters\n",
+        " \n",
+        "Now that we've optimized all of our relevant parameters, we can train our XGB model. We use `**best_params` to unpack the best parameters from before and initialize an `XGBRegressor` model. \n"
+      ],
+      "id": "0819c34a"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "#| eval: false\n",
+        "#| echo: true\n",
+        "\n",
+        "# Convert int hyperparameters to fix type error\n",
+        "best_params[\"n_estimators\"] = int(best_params[\"n_estimators\"])\n",
+        "best_params[\"max_depth\"] = int(best_params[\"max_depth\"])\n",
+        "\n",
+        "# Initialize best hyperopt model\n",
+        "xgb_hyper = XGBRegressor(**best_params, eval_metric='rmse', random_state=808)\n",
+        "\n",
+        "# Fit model\n",
+        "xgb_hyper.fit(X_scaled, y)\n",
+        "\n",
+        "# Predict on test data\n",
+        "y_pred_hyper = xgb_hyper.predict(X_test_scaled)"
+      ],
+      "id": "051983d7",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "#| eval: false\n",
+        "#| echo: true\n",
+        "\n",
+        "# Get feature importance\n",
+        "feat_imp_hyper = pd.DataFrame({'Feature': X_scaled.columns, 'Importance': xgb_hyper.feature_importances_})\n",
+        "\n",
+        "# Sort by importance\n",
+        "feat_imp_hyper = feat_imp_hyper.sort_values(by=\"Importance\", ascending=False)\n",
+        "feat_imp_hyper"
+      ],
+      "id": "986856bd",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "#| eval: true\n",
+        "#| echo: false\n",
+        "\n",
+        "feat_imp_hyper = pd.read_csv(\"~/MEDS/website/haylee360.github.io/posts/2025-03-30-kaggle/feat_imp_hyper.csv\")\n",
+        "feat_imp_hyper.style.hide()"
+      ],
+      "id": "c96490b4",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "Now that we've generated our predictions on the test data, all we need to do is add those to their associated ID's in the `test_df` and export to csv for submission to the competition. \n"
+      ],
+      "id": "35f1be70"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "#| eval: false\n",
+        "#| echo: true\n",
+        "\n",
+        "# Add DIC to test dataset\n",
+        "test_df['DIC'] = y_pred_hyper\n",
+        "submission = test_df[['id', 'DIC']]\n",
+        "submission.head()"
+      ],
+      "id": "77b99bb3",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "#| eval: true\n",
+        "#| echo: false\n",
+        "\n",
+        "submission = pd.read_csv(\"~/MEDS/website/haylee360.github.io/posts/2025-03-30-kaggle/submission.csv\")\n",
+        "submission.head()"
+      ],
+      "id": "1aca4a47",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "#| eval: false\n",
+        "#| echo: true\n",
+        "\n",
+        "# Export for submission\n",
+        "submission.to_csv('submission.csv', index=False)"
+      ],
+      "id": "4deef893",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "And just like that, you can have a competition-winning machine learning model! A very big thanks to Professor Robbins for his guidance in this course, Dr. Satterthwaite for her wonderful guest lecture, and [Annie Adams](https://github.com/annieradams) for her assistance all quarter. "
+      ],
+      "id": "57a52304"
+    }
+  ],
+  "metadata": {
+    "kernelspec": {
+      "display_name": "Python 3",
+      "language": "python",
+      "name": "python3"
+    }
+  },
+  "nbformat": 4,
+  "nbformat_minor": 5
+}
